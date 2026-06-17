@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hakan Ataş'ın son 4 ayda yayınladığı ve güncellediği tüm interaktif web projeleri, matematik maceraları, fen bilimleri oyunları ve web araçları tek bir eğlenceli sayfada!">
+  <meta name="keywords" content="Hakan Ataş, hakan.fun, neal.fun, interaktif oyunlar, matematik macerası, kraliçeyi kurtarmak, kesir şefi, llm simulator, canopy ftc, eğitim oyunları">
+  <meta name="author" content="Hakan Ataş">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hakanatas.github.io/">
+  <meta property="og:title" content="ALKEV.BİLİŞİM — İnteraktif Projeler & Oyunlar">
+  <meta property="og:description" content="Matematik maceraları, fen simülasyonları ve interaktif web deneyimleri. Hepsini neal.fun tarzında keşfedin!">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="ALKEV.BİLİŞİM — İnteraktif Projeler & Oyunlar">
+  <meta property="twitter:description" content="Matematik maceraları, fen simülasyonları ve interaktif web deneyimleri. Hepsini neal.fun tarzında keşfedin!">
+
+  <title>ALKEV.BİLİŞİM — İnteraktif Projeler & Oyunlar</title>
+  
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Üst Başlık ve Logo Bölümü -->
+    <header>
+      <div class="logo-container" id="logo-trigger" title="Bana Tıkla! 🌦️">
+        <h1 class="logo">ALKEV.BİLİŞİM</h1>
+      </div>
+      <p class="subtitle">ALKEV Bilişim Bölümü tarafından yapılan eğlenceli ve interaktif web işleri</p>
+      
+      <!-- Eğlence Puanı Easter Egg -->
+      <div class="easter-egg" id="fun-points-badge" title="Eğlence puanını artırmak için tıkla!">
+        <span>🎉 Eğlence Puanı:</span>
+        <span id="clicker-count">0</span>
+      </div>
+    </header>
+
+    <!-- Kontroller ve Filtreler -->
+    <main>
+      <section class="controls-section" aria-label="Arama ve Filtreleme Kontrolleri">
+        <!-- Arama Çubuğu -->
+        <div class="search-wrapper">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input 
+            type="search" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Proje ara (örn: kralice, kesir)..." 
+            aria-label="Proje Arama Çubuğu"
+          >
+        </div>
+
+        <!-- Kategori Filtre Butonları -->
+        <nav class="filters" aria-label="Kategori Seçimi">
+          <button class="filter-btn active" data-category="hepsi" id="filter-all">Hepsi</button>
+          <button class="filter-btn" data-category="matematik" id="filter-math">🧮 Matematik</button>
+          <button class="filter-btn" data-category="fen bilimleri" id="filter-science">⚡ Fen Bilimleri</button>
+          <button class="filter-btn" data-category="oyun" id="filter-games">🎮 Oyun</button>
+          <button class="filter-btn" data-category="araçlar" id="filter-tools">🛠️ Araçlar</button>
+          <button class="filter-btn" data-category="deneyim" id="filter-experience">🌳 Deneyim</button>
+        </nav>
+      </section>
+
+      <!-- Proje Kartları Izgarası -->
+      <section class="projects-grid" id="projects-grid" aria-label="Proje Listesi">
+        <!-- Kartlar JS ile dinamik olarak doldurulacaktır -->
+      </section>
+    </main>
+
+    <!-- Sayfa Alt Bilgisi -->
+    <footer>
+      <p>© 2026 Hakan Ataş. Tüm hakları saklıdır. Bu site neal.fun tasarımından esinlenilerek Antigravity AI tarafından geliştirilmiştir.</p>
+      <p style="margin-top: 0.5rem;">
+        Takip Et: 
+        <a href="https://github.com/hakanatas" target="_blank" class="footer-link" id="github-profile-link">GitHub Profile</a>
+      </p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
