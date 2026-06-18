@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALKEV - Dijital Portfolyo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #fafafa;
+            --card-bg: #ffffff;
+            --text: #09090b;
+            --text-muted: #71717a;
+            --border: #e4e4e7;
+            
+            /* SiteInspire style soft visual mockups */
+            --preview-bg-1: #edf6f4; --preview-text-1: #357a6e;
+            --preview-bg-2: #fdf0ed; --preview-text-2: #b06b5e;
+            --preview-bg-3: #eef3f7; --preview-text-3: #4a709c;
+            --preview-bg-4: #f5f0ff; --preview-text-4: #6c4bb8;
+            --preview-bg-5: #fff5eb; --preview-text-5: #bf6a1d;
+            --preview-bg-6: #ebfbf5; --preview-text-6: #1b805c;
+            --preview-bg-7: #fdf0f5; --preview-text-7: #ac4d76;
+            --preview-bg-8: #f4f4f5; --preview-text-8: #52525b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding: 60px 20px 48px;
+            text-align: center;
+        }
+        .header .school-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .header h1 {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .header p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* NAVIGATION & SEARCH CONTAINER */
+        .nav-section {
+            max-width: 1200px;
+            width: 100%;
+            margin: 32px auto 0;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .filter-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .grade-tabs, .section-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .grade-btn, .section-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .grade-btn:hover, .section-btn:hover {
+            background: #f4f4f5;
+            border-color: #d4d4d8;
+            color: var(--text);
+        }
+
+        .grade-btn.active, .section-btn.active {
+            background: #18181b;
+            border-color: #18181b;
+            color: #ffffff;
+        }
+
+        /* SEARCH */
+        .search-wrap {
+            width: 100%;
+            max-width: 300px;
+            position: relative;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            outline: none;
+            background: #ffffff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") 14px center no-repeat;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-box::placeholder { color: var(--text-muted); }
+        .search-box:focus {
+            border-color: #18181b;
+            box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.08);
+        }
+
+        /* STATS */
+        .stats-bar {
+            max-width: 1200px;
+            width: 100%;
+            margin: 24px auto 0;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .stats-title {
+            font-weight: 600;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stats-pills {
+            display: flex;
+            gap: 12px;
+        }
+        .pill {
+            font-weight: 500;
+        }
+        .pill span {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* CARDS */
+        .cards-wrap {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 20px 80px;
+            flex-grow: 1;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 32px;
+        }
+
+        .portfolio-card {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+            opacity: 0;
+            animation: fadeIn 0.4s forwards ease-out;
+        }
+        
+        .portfolio-card.disabled {
+            cursor: default;
+            pointer-events: none;
+        }
+        
+        .portfolio-card:hover .card-preview {
+            border-color: #a1a1aa;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+        }
+        
+        .portfolio-card:hover .card-title {
+            color: #000000;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-preview {
+            aspect-ratio: 4 / 3;
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #f4f4f5;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .portfolio-card.disabled .card-preview {
+            opacity: 0.6;
+        }
+
+        /* Browser Chrome header */
+        .browser-chrome {
+            height: 24px;
+            background: #f4f4f5;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+            position: relative;
+            user-select: none;
+        }
+        .browser-dots {
+            display: flex;
+            gap: 4px;
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .browser-address {
+            font-size: 9px;
+            color: var(--text-muted);
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 1px 8px;
+            margin: 0 auto;
+            width: 60%;
+            max-width: 180px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+
+        .browser-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 16px;
+        }
+
+        .preview-initials {
+            font-family: 'Inter', sans-serif;
+            font-size: 40px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .preview-mock-lines {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0.25;
+        }
+        .mock-line {
+            height: 3px;
+            background-color: currentColor;
+            border-radius: 2px;
+            width: 100%;
+        }
+        .mock-line.short { width: 40%; }
+        .mock-line.medium { width: 70%; }
+
+        .status-badge {
+            position: absolute;
+            top: 36px;
+            right: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+        .status-badge.active {
+            background: #eefdf6;
+            color: #10b981;
+            border-color: #d1fae5;
+        }
+        .status-badge.pending {
+            background: #f4f4f5;
+            color: #71717a;
+            border-color: #e4e4e7;
+        }
+
+        .card-info {
+            margin-top: 12px;
+            padding: 0 4px;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+            transition: color 0.2s;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .card-visit-link {
+            font-size: 11px;
+            font-weight: 600;
+            color: #18181b;
+        }
+
+        /* CONFETTI PARTIKUL */
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px; height: 10px;
+            border-radius: 2px;
+            animation: confettiFall 1.2s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+            opacity: 0;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(120px) rotate(720deg) scale(0.3); }
+        }
+
+        /* NO RESULTS */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .no-results .nr-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 40px 20px 48px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-top: 1px solid var(--border);
+            background: #ffffff;
+        }
+        .footer a { color: var(--text); text-decoration: underline; font-weight: 600; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+            .search-wrap {
+                max-width: none;
+            }
+        }
+        @media (max-width: 640px) {
+            .header { padding: 40px 16px 32px; }
+            .filters-container { gap: 16px; }
+            .filter-group { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+            .grade-tabs, .section-tabs { width: 100%; justify-content: space-between; }
+            .grade-btn, .section-btn { flex-grow: 1; text-align: center; padding: 8px 10px; }
+            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+            .stats-bar { flex-direction: column; gap: 8px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="school-tag">ALKEV ÖZEL İLKOKULU</div>
+    <h1>DİJİTAL PORTFOLYO VİTRİNİ</h1>
+    <p>5. ve 6. Sınıf Öğrenci Çalışmaları &bull; 2025-2026</p>
+</header>
+
+<div class="nav-section">
+    <div class="filters-container">
+        <div class="filter-group">
+            <span class="filter-label">Sınıf</span>
+            <div class="grade-tabs">
+                <button class="grade-btn active" onclick="selectGrade(5)" id="g5">5. Sınıf</button>
+                <button class="grade-btn" onclick="selectGrade(6)" id="g6">6. Sınıf</button>
+            </div>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">Şube</span>
+            <div class="section-tabs" id="sectionTabs"></div>
+        </div>
+    </div>
+    <div class="search-wrap">
+        <input type="text" class="search-box" id="searchBox" placeholder="Öğrenci ara..." oninput="onSearch()">
+    </div>
+</div>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="cards-wrap">
+    <div class="cards-grid" id="grid"></div>
+</div>
+
+<div class="footer">ALKEV ÖZEL İLKOKULU &bull; Dijital Portfolyo Vitrini</div>
+
+<script>
+const data = {
+    "5A": [
+        {n:"ADA YATKIN",u:"https://sites.google.com/stu.alkev.k12.tr/adayatkn/ana-sayfa?authuser=0"},
+        {n:"AL\u0130 AZAD AV\u015eAR",u:"https://sites.google.com/stu.alkev.k12.tr/ali-azad-avar/ana-sayfa?authuser=0"},
+        {n:"ARIN IRMAK",u:"https://sites.google.com/stu.alkev.k12.tr/arn-rmak/ana-sayfa?authuser=0"},
+        {n:"ARIN \u0130K\u0130ZEK",u:"https://sites.google.com/stu.alkev.k12.tr/arin-ikizek/ana-sayfa?authuser=0"},
+        {n:"BARI\u015e KE\u00c7EC\u0130",u:"https://sites.google.com/stu.alkev.k12.tr/baris-kececi/ana-sayfa?authuser=0"},
+        {n:"BEREN AKKOYUN",u:"https://sites.google.com/stu.alkev.k12.tr/berenakkoyun/ana-sayfa?authuser=0"},
+        {n:"\u00c7INAR EM\u0130N KOLAN",u:"https://sites.google.com/stu.alkev.k12.tr/nareminkolan/ana-sayfa?authuser=0"},
+        {n:"DEM\u0130R MATARACI",u:"https://sites.google.com/stu.alkev.k12.tr/demir-mataraci/ana-sayfa?authuser=0"},
+        {n:"DEN\u0130Z HACIHAL\u0130LO\u011eLU",u:"https://sites.google.com/stu.alkev.k12.tr/denizhachalilolu/ana-sayfa?authuser=0"},
+        {n:"D\u0130N\u00c7 \u00d6ZARDA",u:"https://sites.google.com/stu.alkev.k12.tr/din-zarda/ana-sayfa?authuser=0"},
+        {n:"ECE U\u011eUR",u:null},
+        {n:"ELA G\u00d6REN",u:"https://sites.google.com/stu.alkev.k12.tr/ela-gren/ana-sayfa?authuser=0"},
+        {n:"EL\u0130F KAYA",u:"https://sites.google.com/stu.alkev.k12.tr/elif-kaya/ana-sayfa?authuser=0"},
+        {n:"EM\u0130R URAL",u:"https://sites.google.com/stu.alkev.k12.tr/emir-ural/ana-sayfa?authuser=0"},
+        {n:"EM\u0130R URCU",u:"https://sites.google.com/stu.alkev.k12.tr/emir-urcu/ana-sayfa?authuser=0"},
+        {n:"EMRE AYDIN",u:"https://sites.google.com/stu.alkev.k12.tr/emre-aydn/ana-sayfa?authuser=0"},
+        {n:"HELEN SONDURU\u00c7",u:"https://sites.google.com/stu.alkev.k12.tr/helensonduruc/ana-sayfa?authuser=0"},
+        {n:"KAHRAMAN YILDIRIM",u:null},
+        {n:"KUZEY \u00d6ZER",u:null},
+        {n:"METE ABATAY",u:null},
+        {n:"PEL\u0130N OKUR",u:"https://sites.google.com/stu.alkev.k12.tr/pelin-okur/ana-sayfa?authuser=0"},
+        {n:"SARE \u00c7EL\u0130K",u:null},
+        {n:"SEY\u0130T EM\u0130R AKBAL",u:"https://sites.google.com/stu.alkev.k12.tr/seyit-emir-akbal/ana-sayfa?authuser=0"},
+        {n:"VERYA AYLA KO\u00c7AK",u:"https://sites.google.com/stu.alkev.k12.tr/verasites/ana-sayfa?authuser=0"},
+        {n:"YUSUF DO\u011eAN",u:"https://sites.google.com/stu.alkev.k12.tr/yusuf-doan/ana-sayfa?authuser=0"}
+    ],
+    "5B": [
+        {n:"ARYA K\u00dc\u00c7\u00dcK",u:"https://sites.google.com/stu.alkev.k12.tr/arya-kucuk/ana-sayfa?authuser=0"},
+        {n:"ATLAS AK\u00c7AY",u:"https://sites.google.com/stu.alkev.k12.tr/atlas/ana-sayfa?authuser=0"},
+        {n:"AYAZ Y\u00dcREKL\u0130ER",u:"https://sites.google.com/stu.alkev.k12.tr/ayazyureklier/ana-sayfa?authuser=0"},
+        {n:"BADE BULUTSUZ",u:"https://sites.google.com/stu.alkev.k12.tr/badebulutsuz/ana-sayfa?authuser=0"},
+        {n:"BATUHAN \u00c7INAR",u:"https://sites.google.com/stu.alkev.k12.tr/batuhan-cinar/ana-sayfa?authuser=0"},
+        {n:"BORA PARS K\u00d6KSAL",u:"https://sites.google.com/stu.alkev.k12.tr/boraparskoksal/ana-sayfa?authuser=0"},
+        {n:"CEMRE B\u0130\u00c7ER",u:"https://sites.google.com/stu.alkev.k12.tr/cemre-bicer/ana-sayfa?authuser=0"},
+        {n:"DEN\u0130Z H\u00dcNKAR AYDINDAG",u:"https://sites.google.com/stu.alkev.k12.tr/deniz-hunkar-aydndag/ana-sayfa?authuser=0"},
+        {n:"DER\u0130N G\u00dcZEL",u:"https://sites.google.com/stu.alkev.k12.tr/derin-gzel/ana-sayfa?authuser=0"},
+        {n:"EBRU KURT",u:"https://sites.google.com/stu.alkev.k12.tr/ebru/ana-sayfa?authuser=0"},
+        {n:"EL\u0130F BADE \u00c7AKIRCA",u:"https://sites.google.com/stu.alkev.k12.tr/elifbadecakirca/ana-sayfa?authuser=0"},
+        {n:"EL\u0130S MELEK \u00d6Z",u:"https://sites.google.com/stu.alkev.k12.tr/elismelekoz/ana-sayfa?authuser=0"},
+        {n:"EMRE AYDIN",u:"https://sites.google.com/stu.alkev.k12.tr/emre-aydin/ana-sayfa?authuser=0"},
+        {n:"ERK ARUN",u:"https://sites.google.com/stu.alkev.k12.tr/erkarun/ana-sayfa?authuser=0"},
+        {n:"G\u00dcL D\u0130NDAR",u:null},
+        {n:"HAKAN TUNA TURGUT",u:null},
+        {n:"I\u015eIL R\u00dcYA K\u00dc\u00c7\u00dcK\u00d6MER",u:"https://sites.google.com/stu.alkev.k12.tr/isilruyakucukomer/ana-sayfa?authuser=0"},
+        {n:"KUZEY BA\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/kuzeybas/ana-sayfa?authuser=0"},
+        {n:"SAL\u0130H KEREM \u00d6ZKA\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/salihkeremozkas/ana-sayfa?authuser=0"},
+        {n:"SEDEF \u00d6ZER",u:"https://sites.google.com/stu.alkev.k12.tr/sedef-ozerr/ana-sayfa?authuser=0"},
+        {n:"SEL\u0130M ACAR",u:"https://sites.google.com/stu.alkev.k12.tr/selimacar/ana-sayfa?authuser=0"},
+        {n:"TAH\u0130R AKG\u00dcL",u:"https://sites.google.com/stu.alkev.k12.tr/tahir-akgl/ana-sayfa?authuser=0"},
+        {n:"ULA\u015e BALCI",u:"https://sites.google.com/stu.alkev.k12.tr/ulasbalci/ana-sayfa?authuser=0"},
+        {n:"URAZ TOPDEM\u0130R",u:"https://sites.google.com/stu.alkev.k12.tr/uraztopdemir/ana-sayfa?authuser=0"},
+        {n:"ZEYNEP SERDAR",u:"https://sites.google.com/stu.alkev.k12.tr/zeynep/ana-sayfa?authuser=0"}
+    ],
+    "5C": [
+        {n:"ATA T\u00dcRKYILMAZ",u:"https://sites.google.com/stu.alkev.k12.tr/ata-trkyilmaz/ana-sayfa?authuser=0"},
+        {n:"AZRA AYDO\u011eAN",u:"https://sites.google.com/stu.alkev.k12.tr/azra-aydoan/ana-sayfa?authuser=0"},
+        {n:"BULUT Y\u0130\u011e\u0130T YILDIRIM",u:"https://sites.google.com/stu.alkev.k12.tr/bulutyiityildirim/ana-sayfa?authuser=0"},
+        {n:"CAN ATE\u015e SA\u011eLAM",u:"https://sites.google.com/stu.alkev.k12.tr/canatesalam/ana-sayfa?authuser=0"},
+        {n:"CESUR ATABEYO\u011eLU",u:"https://sites.google.com/stu.alkev.k12.tr/cesur-atabeyoglu/ana-sayfa?authuser=0"},
+        {n:"DAMRA G\u00d6KALP",u:"https://sites.google.com/stu.alkev.k12.tr/damra-gkalp/ana-sayfa?authuser=0"},
+        {n:"DEM\u0130R SAROVA",u:"https://sites.google.com/stu.alkev.k12.tr/demirsarova/ana-sayfa?authuser=0"},
+        {n:"DEN\u0130Z \u015e\u0130RE",u:"https://sites.google.com/stu.alkev.k12.tr/deniz-sire/ana-sayfa?authuser=0"},
+        {n:"DER\u0130N KO\u00c7AN",u:"https://sites.google.com/stu.alkev.k12.tr/derin-kocan/ana-sayfa?authuser=0"},
+        {n:"EL\u0130F G\u00dcNEYSEL",u:"https://sites.google.com/stu.alkev.k12.tr/elif-guneysel/ana-sayfa?authuser=0"},
+        {n:"\u0130PEK G\u00d6RG\u00dcL\u00dc",u:"https://sites.google.com/stu.alkev.k12.tr/ipek-grgl/ana-sayfa?authuser=0"},
+        {n:"MELDA SUADA G\u00d6RMEZ",u:"https://sites.google.com/stu.alkev.k12.tr/suadagormez12/ana-sayfa?authuser=0"},
+        {n:"MEL\u0130NDA ASLANDO\u011eAN",u:"https://sites.google.com/stu.alkev.k12.tr/melindaaslandoan/ana-sayfa?authuser=0"},
+        {n:"MEL\u0130S SOYLU",u:"https://sites.google.com/stu.alkev.k12.tr/melis-soylu/ana-sayfa?authuser=0"},
+        {n:"NESL\u0130\u015eAH LARA DOLU",u:"https://sites.google.com/stu.alkev.k12.tr/nesliah-lara-dolu/ana-sayfa?authuser=0"},
+        {n:"\u00d6MER CAN \u015eAH\u0130N",u:"https://sites.google.com/stu.alkev.k12.tr/omer-can/ana-sayfa?authuser=0"},
+        {n:"SA\u0130T DEM\u0130R TANRIVERD\u0130",u:"https://sites.google.com/stu.alkev.k12.tr/saitdemirtanrverdi/ana-sayfa?authuser=0"},
+        {n:"SEDAT EM\u0130R TEBER",u:"https://sites.google.com/stu.alkev.k12.tr/sedatemirteber/ana-sayfa?authuser=0"},
+        {n:"YAMAN G\u00dcRKAYA",u:"https://sites.google.com/stu.alkev.k12.tr/yaman-grkaya/ana-sayfa?authuser=0"},
+        {n:"MEL\u0130S M\u0130RA YORGUN",u:"https://sites.google.com/stu.alkev.k12.tr/melismirayorgun/ana-sayfa?authuser=0"},
+        {n:"TOLGA ALKAN",u:"https://sites.google.com/stu.alkev.k12.tr/tolgaalkan/ana-sayfa?authuser=0"},
+        {n:"GENAR \u00c7EL\u0130K",u:"https://sites.google.com/stu.alkev.k12.tr/genar-celik/ana-sayfa?authuser=0"},
+        {n:"AL\u0130 MUH\u0130TT\u0130N YAZICILAR",u:"https://sites.google.com/stu.alkev.k12.tr/alimuhittin/ana-sayfa?authuser=0"},
+        {n:"AHMET C\u0130HAN D\u00d6LEK",u:"https://sites.google.com/stu.alkev.k12.tr/ahmetcihandlek1/ana-sayfa?authuser=0"},
+        {n:"\u00c7INAR \u00c7EL\u0130K",u:"https://sites.google.com/stu.alkev.k12.tr/narelik/ana-sayfa?authuser=0"}
+    ],
+    "5D": [
+        {n:"ADNAN MENDERES ERT\u00dcRK",u:"http://sites.google.com/stu.alkev.k12.tr/adnan-menderes/ana-sayfa?authuser=0"},
+        {n:"AL\u0130 EFE KARATA\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/ali-efe-karata/ana-sayfa?authuser=0"},
+        {n:"AL\u0130 MERT \u00d6RNAL",u:"https://sites.google.com/stu.alkev.k12.tr/alimert-rnal/ana-sayfa?authuser=0"},
+        {n:"ASLAN ARSLAN",u:"https://sites.google.com/stu.alkev.k12.tr/aslanarslan/ana-sayfa?authuser=0"},
+        {n:"BEREN TALAY",u:"https://sites.google.com/stu.alkev.k12.tr/beren-talay/ana-sayfa?authuser=0"},
+        {n:"D\u0130LEK SARE BA\u015eBU\u011e",u:"https://sites.google.com/stu.alkev.k12.tr/dilek-sare-babu/ana-sayfa?authuser=0"},
+        {n:"DORUK HAKAN G\u00d6REN",u:"https://sites.google.com/stu.alkev.k12.tr/dorukhakangren/ana-sayfa?authuser=0"},
+        {n:"EGE SAMANCI",u:"https://sites.google.com/stu.alkev.k12.tr/ege-samanci/ana-sayfa?authuser=0"},
+        {n:"EKREM VARLIK",u:"https://sites.google.com/stu.alkev.k12.tr/ekrem-varlik/ana-sayfa?authuser=0"},
+        {n:"EL\u0130F M\u0130NA C\u0130HANG\u0130R",u:"https://sites.google.com/stu.alkev.k12.tr/minacihangir/ana-sayfa?authuser=0"},
+        {n:"EL\u0130F ZEYNEP G\u00dcMR\u00dcK\u00c7\u00dcO\u011eLU",u:"https://sites.google.com/stu.alkev.k12.tr/elif-zeynep-gmrkolu/ana-sayfa?authuser=0"},
+        {n:"EL\u0130S UYGUR",u:"https://sites.google.com/stu.alkev.k12.tr/elis-uygur-5d/ana-sayfa?authuser=0"},
+        {n:"EM\u0130R ORU\u00c7",u:"https://sites.google.com/stu.alkev.k12.tr/emiroruc/ana-sayfa?authuser=0"},
+        {n:"EREN BAKAN",u:"https://sites.google.com/stu.alkev.k12.tr/erenbakan/ana-sayfa?authuser=0"},
+        {n:"ERTU\u011eRUL ORU\u00c7",u:"https://sites.google.com/stu.alkev.k12.tr/ertugrul-oruc/ana-sayfa?authuser=0"},
+        {n:"G\u00dcNE\u015e ASAR",u:"https://sites.google.com/stu.alkev.k12.tr/gne-asar/ana-sayfa?authuser=0"},
+        {n:"\u0130SMET RAUF K\u00dc\u00c7\u00dcKSOLAK",u:"https://sites.google.com/stu.alkev.k12.tr/ismetrauf/ana-sayfa?authuser=0"},
+        {n:"KEREM \u0130LKENTAPAR",u:"https://sites.google.com/stu.alkev.k12.tr/keremilkentapar/ana-sayfa?authuser=0"},
+        {n:"LAL N\u0130LAY ALTINOVA",u:"https://sites.google.com/stu.alkev.k12.tr/ll-nilay-altinova/ana-sayfa?authuser=0"},
+        {n:"TOPRAK \u00d6NEL",u:"https://sites.google.com/stu.alkev.k12.tr/toprak/ana-sayfa?authuser=0"},
+        {n:"TUANA CO\u015eKUN",u:"https://sites.google.com/stu.alkev.k12.tr/tuanacokun/ana-sayfa?authuser=0"},
+        {n:"ULA\u015e BOZ",u:"https://sites.google.com/stu.alkev.k12.tr/ulaboz/ana-sayfa?authuser=0"},
+        {n:"URAS SAROVA",u:"https://sites.google.com/stu.alkev.k12.tr/urassarova/ana-sayfa?authuser=0"},
+        {n:"ZEYNEP EBRAR ELKATMI\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/zeynepebrar-elkatmis/ana-sayfa?authuser=0"},
+        {n:"ZEYNEP ECE GEN\u00c7O\u011eLU",u:"https://sites.google.com/stu.alkev.k12.tr/zeynep-ece-genolu/ana-sayfa?authuser=0"}
+    ],
+    "6A": [
+        {n:"ADA YURDAKUL",u:"https://sites.google.com/stu.alkev.k12.tr/ada-yurdakul/ana-sayfa?authuser=0"},
+        {n:"CANSIN DEM\u0130R",u:"https://sites.google.com/stu.alkev.k12.tr/cansndemir/ana-sayfa?authuser=0"},
+        {n:"BEREN SOYLU",u:"https://sites.google.com/stu.alkev.k12.tr/berensoylu/ana-sayfa?authuser=0"},
+        {n:"METE ALTA\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/metealtas/ana-sayfa?authuser=0"},
+        {n:"METE \u00d6ZKALAYCI",u:"https://sites.google.com/stu.alkev.k12.tr/meteozkalayci/ana-sayfa?authuser=0"},
+        {n:"ARIKAN KOT\u0130L",u:"https://sites.google.com/stu.alkev.k12.tr/arkan/ana-sayfa?authuser=0"},
+        {n:"NURG\u00dcL ASYA \u015e\u00dcK\u00dcN",u:"https://sites.google.com/stu.alkev.k12.tr/asya/ana-sayfa?authuser=0"},
+        {n:"S\u00dcLEYMAN AL\u0130 ERGEN",u:"https://sites.google.com/stu.alkev.k12.tr/ali-ergen/ana-sayfa?authuser=0"},
+        {n:"EM\u0130R SA\u0130D KARACA",u:"https://sites.google.com/stu.alkev.k12.tr/emirsaidkaraca/ana-sayfa?authuser=0"},
+        {n:"URAS \u00c7ET\u0130N",u:"https://sites.google.com/stu.alkev.k12.tr/urasetin6-a132/ana-sayfa?authuser=0"},
+        {n:"PERA MEM\u0130K",u:"https://sites.google.com/stu.alkev.k12.tr/peramemik/ana-sayfa?authuser=0"},
+        {n:"ULU\u00c7 EGE YOLDA\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/ulucege/ana-sayfa?authuser=0"},
+        {n:"Y\u0130\u011e\u0130T HAL\u0130L YOLCUBA\u015eI",u:"https://sites.google.com/stu.alkev.k12.tr/yiit-halil-yolcubai/ana-sayfa?authuser=0"},
+        {n:"\u00d6MER HAMZA MERMER",u:"https://sites.google.com/stu.alkev.k12.tr/merhamzamermer/ana-sayfa?authuser=0"},
+        {n:"ARAS G\u00dcNEY IRMAK",u:"https://sites.google.com/stu.alkev.k12.tr/aras-guney-irmak/ana-sayfa?authuser=0"},
+        {n:"\u00c7A\u011eAN \u015eENOL",u:"https://sites.google.com/stu.alkev.k12.tr/cagansenol/ana-sayfa?authuser=0"},
+        {n:"\u0130D\u0130L \u00c7ENGEL",u:"https://sites.google.com/stu.alkev.k12.tr/idilcengel/ana-sayfa?authuser=0"},
+        {n:"EL\u0130Z BARLAK",u:"https://sites.google.com/stu.alkev.k12.tr/elizbarlak/ana-sayfa?authuser=0"},
+        {n:"SARE B\u0130LGE KAAN",u:"https://sites.google.com/stu.alkev.k12.tr/sare-bilge-kaan/ana-sayfa?authuser=0"},
+        {n:"DEN\u0130Z AL\u0130 G\u00d6RM\u00dc\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/denizaligormus/ana-sayfa?authuser=0"},
+        {n:"G\u0130ZEM DEMET",u:"https://sites.google.com/stu.alkev.k12.tr/gizem-demet/ana-sayfa?authuser=0"},
+        {n:"RE\u0130SHAN METE YORGUN",u:"https://sites.google.com/stu.alkev.k12.tr/reishan-mete-yorgun/ana-sayfa?authuser=0"},
+        {n:"ALP FERHAT BOZKURT",u:"https://sites.google.com/d/15gSNMVaipdkOs6mYSpDIq-9Ww52E1S74/p/1uc7XjPTtPPTpAv9rzDoKTHTSzrQ4cmDv/edit"},
+        {n:"BERRA BARA\u00c7KILI\u00c7",u:"https://sites.google.com/stu.alkev.k12.tr/berra-barakl/ana-sayfa?authuser=0"},
+        {n:"ECE N\u0130L YAVUZ",u:"https://sites.google.com/stu.alkev.k12.tr/ecenilyavuz/ana-sayfa?authuser=0"}
+    ],
+    "6B": [
+        {n:"DURU B\u0130Z\u0130M",u:"https://sites.google.com/stu.alkev.k12.tr/durubizim/ana-sayfa?authuser=0"},
+        {n:"ELA DEN\u0130Z KARATA\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/ela-deniz-karata/ana-sayfa?authuser=0"},
+        {n:"KENAN DEM\u0130R DEM\u0130RAL",u:"https://sites.google.com/stu.alkev.k12.tr/kenandemirdemiral/ana-sayfa?authuser=0"},
+        {n:"METE KARA",u:"https://sites.google.com/stu.alkev.k12.tr/mete-kara-alkev/ana-sayfa?authuser=0"},
+        {n:"ATA G\u00dcNE\u015e",u:"https://sites.google.com/stu.alkev.k12.tr/ata/ana-sayfa?authuser=0"},
+        {n:"\u0130REM DEMET",u:"https://sites.google.com/stu.alkev.k12.tr/irem-demet/ana-sayfa?authuser=0"},
+        {n:"N\u0130L ERDEM",u:"https://sites.google.com/stu.alkev.k12.tr/nil-erdem/ana-sayfa?authuser=0"},
+        {n:"KEREM SADIK O\u011eUZ",u:"https://sites.google.com/stu.alkev.k12.tr/keremsadikoguz/ana-sayfa?authuser=0"},
+        {n:"EL\u0130F NAZ YILMAZ",u:"https://sites.google.com/stu.alkev.k12.tr/elif-naz/ana-sayfa?authuser=0"},
+        {n:"M\u0130RAN UMUT KESK\u0130N",u:"https://sites.google.com/stu.alkev.k12.tr/miran/ana-sayfa?authuser=0"},
+        {n:"N\u0130L KARA",u:"https://sites.google.com/stu.alkev.k12.tr/nilkara/ana-sayfa?authuser=0"},
+        {n:"PEL\u0130N HEP\u015eEN",u:"https://sites.google.com/stu.alkev.k12.tr/pelinhespen/ana-sayfa?authuser=0"},
+        {n:"Y\u00dcKSEL KI\u00c7IRTI",u:"https://sites.google.com/stu.alkev.k12.tr/yuksel-kicirti/ana-sayfa?authuser=0"},
+        {n:"UTKU EGE KAZANAN",u:"https://sites.google.com/stu.alkev.k12.tr/utkuegekazanan/ana-sayfa?authuser=0"},
+        {n:"\u00c7INAR BALABANLI",u:"https://sites.google.com/stu.alkev.k12.tr/nar-balabanl/ana-sayfa?authuser=0"},
+        {n:"MEHMET BERK TU\u011eRUL",u:"https://sites.google.com/stu.alkev.k12.tr/mehmet-berk-tugrul/ana-sayfa?authuser=0"},
+        {n:"YUSUF ENSAR BA\u015eBU\u011e",u:"https://sites.google.com/stu.alkev.k12.tr/yusuf-ensar-babu/ana-sayfa?authuser=0"},
+        {n:"NEH\u0130R BULUT",u:"https://sites.google.com/stu.alkev.k12.tr/nehir-bulut/ana-sayfa?authuser=0"},
+        {n:"MEHMET SA\u0130D AKDEM\u0130R",u:"https://sites.google.com/stu.alkev.k12.tr/mehmetsaid/ana-sayfa?authuser=0"},
+        {n:"KUZEY NA\u0130L YETK\u0130N",u:"https://sites.google.com/stu.alkev.k12.tr/kuzeynail/ana-sayfa?authuser=0"},
+        {n:"EYL\u00dcL ARSLAN",u:"https://sites.google.com/stu.alkev.k12.tr/eyll-arslan/ana-sayfa?authuser=0"},
+        {n:"KAREN YILMAZ",u:"https://sites.google.com/stu.alkev.k12.tr/karen-ylmaz/ana-sayfa?authuser=0"},
+        {n:"ERDEM KUL",u:"https://sites.google.com/stu.alkev.k12.tr/erdem-kul/ana-sayfa?authuser=0"},
+        {n:"BEYZA KIZILBA\u011e",u:"https://sites.google.com/stu.alkev.k12.tr/beyzakzlba/ana-sayfa?authuser=0"}
+    ],
+    "6C": [
+        {n:"ZEK\u0130 UFUK \u00d6Z\u00dcNL\u00dc",u:null},{n:"G\u00dcNEY DEM\u0130RKANO\u011eLU",u:null},{n:"SEV\u0130N\u00c7 ZEL\u0130HA KAMAN",u:null},
+        {n:"EREN \u00c7O\u011eAN",u:null},{n:"RAB\u0130A M\u0130RA YALÇINTA\u015e",u:null},{n:"MAYA DURUKAN",u:null},
+        {n:"ATA MERT \u00c7UHALI",u:null},{n:"EFE SARIYAR",u:null},{n:"\u00c7INAR ATA KO\u00c7AK",u:null},
+        {n:"ALYA G\u00dcVEN\u0130L\u0130R",u:null},{n:"ADA MERVE KIZILKAYA",u:null},{n:"EM\u0130R TOPALO\u011eLU",u:null},
+        {n:"ARYA DEM\u0130RKAN",u:null},{n:"DEFNE ERTOK",u:null},{n:"ZEREN EN\u00dcL",u:null},
+        {n:"ALP KEST\u0130",u:null},{n:"YA\u011eIZ BOZKURT",u:null},{n:"DA\u011eHAN ATLAS AKAYDIN",u:null},
+        {n:"TOLGA BARI\u015e KE\u015eC\u0130O\u011eLU",u:null},{n:"MURAT VARDARLI",u:null},{n:"AYBARS METE K\u00d6\u00c7KEN",u:null},
+        {n:"MEHMET TOPRAK Y\u00dcKSEL",u:null},{n:"ZEYNEP ADA \u00c7AKIR",u:null},{n:"MET\u0130N R\u00dcZGAR S\u00d6NMEZ",u:null},
+        {n:"AY\u015eENUR ECEM G\u00d6ZEN",u:null}
+    ],
+    "6D": [
+        {n:"L\u0130NA T\u00dcRKYILMAZ",u:null},{n:"MAH\u0130R AHMET YETK\u0130N",u:null},{n:"KEMAL \u00c7EL\u0130K",u:null},
+        {n:"\u00d6MER SEL\u0130M I\u015eIK",u:null},{n:"YAVUZ BUDAK",u:null},{n:"\u0130STANBUL VURAL",u:null},
+        {n:"\u015eEREF KEREM \u0130NAL\u00d6Z",u:null},{n:"\u015eEHRAZAT M\u0130RA SARA\u00c7",u:null},{n:"SAADET ECR\u0130N KORKUT",u:null},
+        {n:"DEFNE KABASAKAL",u:null},{n:"CEMRE TEM\u0130Z",u:null},{n:"DURU KO\u00c7",u:null},
+        {n:"TU\u011eRUL CESUR",u:null},{n:"DEN\u0130Z BEYHAN",u:null},{n:"KAYRA TOKMAK",u:null},
+        {n:"Y\u0130\u011e\u0130T YARLI",u:null},{n:"DORUK BESN\u0130L\u0130",u:null},{n:"ERKAN KOLCU",u:null},
+        {n:"CEMRE KEBAB\u00c7I",u:null},{n:"EL\u0130F H\u0130RA AKYOL",u:null},{n:"\u00c7INAR OSMANBA\u015eO\u011eLU",u:null},
+        {n:"MEHMET TERZ\u0130O\u011eLU",u:null},{n:"BEYZA SENA B\u00d6L\u00dcKBA\u015e",u:null},{n:"DER\u0130N TEKSOY",u:null},
+        {n:"AY\u015eE M\u0130NA BAKAN",u:null}
+    ]
+};
+const confettiColors = ['#18181b', '#71717a', '#a1a1aa'];
+
+let grade = 5, section = 'A';
+
+function ini(n) { 
+    const p = n.trim().split(' '); 
+    return p.length === 1 ? p[0][0] : p[0][0] + p[p.length-1][0]; 
+}
+
+/* CONFETTI */
+function spawnConfetti(x, y) {
+    const container = document.createElement('div');
+    container.className = 'confetti-container';
+    document.body.appendChild(container);
+    for (let i = 0; i < 18; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = (x + (Math.random()-0.5) * 120) + 'px';
+        c.style.top = (y - 10) + 'px';
+        c.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        c.style.animationDelay = (Math.random() * 0.15) + 's';
+        c.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+        c.style.width = (6 + Math.random() * 8) + 'px';
+        c.style.height = (6 + Math.random() * 8) + 'px';
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        container.appendChild(c);
+    }
+    setTimeout(() => container.remove(), 1500);
+}
+
+/* 3D TILT EFFECT FOR CARD PREVIEWS */
+function initTilt() {
+    document.querySelectorAll('.portfolio-card:not(.disabled) .card-preview').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const rotateX = ((y - cy) / cy) * -4;
+            const rotateY = ((x - cx) / cx) * 4;
+            card.style.transform = 'perspective(600px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-2px)';
+            card.style.boxShadow = '0 12px 24px rgba(0,0,0,0.06)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.boxShadow = '';
+        });
+    });
+}
+
+/* CONFETTI ON CARD CLICK */
+function initConfetti() {
+    document.querySelectorAll('.portfolio-card:not(.disabled)').forEach(btn => {
+        btn.addEventListener('click', e => {
+            spawnConfetti(e.clientX, e.clientY);
+        });
+    });
+}
+
+function selectGrade(g) {
+    grade = g; section = 'A';
+    document.getElementById('searchBox').value = '';
+    document.getElementById('g5').className = 'grade-btn' + (g===5?' active':'');
+    document.getElementById('g6').className = 'grade-btn' + (g===6?' active':'');
+    renderSections(); render(); renderStats();
+}
+
+function selectSection(s) {
+    section = s;
+    document.getElementById('searchBox').value = '';
+    document.querySelectorAll('.section-btn').forEach((b,i) => {
+        b.className = 'section-btn' + (['A','B','C','D'][i]===s?' active':'');
+    });
+    render(); renderStats();
+}
+
+function onSearch() {
+    render();
+}
+
+function renderSections() {
+    document.getElementById('sectionTabs').innerHTML = ['A','B','C','D'].map(s =>
+        '<button class="section-btn' + (s===section?' active':'') + '" onclick="selectSection(\'' + s + '\')">' + s + '</button>'
+    ).join('');
+}
+
+function renderStats() {
+    const students = data[grade+section] || [];
+    const active = students.filter(s => s.u).length;
+    document.getElementById('statsBar').innerHTML =
+        '<div class="stats-title">' + grade + '/' + section + ' Şubesi</div>' +
+        '<div class="stats-pills">' +
+        '<span class="pill">Öğrenci: <span>' + students.length + '</span></span>' +
+        '<span class="pill">Aktif: <span>' + active + '</span></span>' +
+        '</div>';
+}
+
+function render() {
+    const searchVal = (document.getElementById('searchBox').value || '').toUpperCase().trim();
+    let students = data[grade+section] || [];
+    if (searchVal) {
+        students = students.filter(s => s.n.toUpperCase().includes(searchVal));
+    }
+
+    if (students.length === 0) {
+        document.getElementById('grid').innerHTML =
+            '<div class="no-results"><span class="nr-icon">🕵️‍♂️</span>Eşleşen sonuç bulunamadı</div>';
+        return;
+    }
+
+    const sectionLabel = grade + '/' + section;
+    document.getElementById('grid').innerHTML = students.map((s, i) => {
+        const initials = ini(s.n);
+        const hasUrl = !!s.u;
+        const colorIndex = (i % 8) + 1;
+        const previewBgColor = `var(--preview-bg-${colorIndex})`;
+        const previewTextColor = `var(--preview-text-${colorIndex})`;
+        
+        const cardOpenTag = hasUrl 
+            ? `<a href="${s.u}" target="_blank" rel="noopener" class="portfolio-card"`
+            : `<div class="portfolio-card disabled"`;
+        const cardCloseTag = hasUrl ? `</a>` : `</div>`;
+        
+        const statusBadge = hasUrl 
+            ? `<span class="status-badge active">Aktif</span>` 
+            : `<span class="status-badge pending">Hazırlanıyor</span>`;
+            
+        return `${cardOpenTag} style="animation-delay: ${i * 0.02}s">
+            <div class="card-preview" style="background-color: ${previewBgColor}; color: ${previewTextColor};">
+              <div class="browser-chrome">
+                <div class="browser-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="browser-address">${s.n.toLowerCase().replace(/[^a-z0-9]/g, "")}.alkev.k12.tr</div>
+              </div>
+              <div class="browser-body">
+                <div class="preview-initials">${initials}</div>
+                <div class="preview-mock-lines">
+                  <div class="mock-line short"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-line medium"></div>
+                </div>
+              </div>
+              ${statusBadge}
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">${s.n}</h3>
+              <div class="card-meta">
+                <span>${sectionLabel} Sınıfı</span>
+                ${hasUrl ? `<span class="card-visit-link">İncele ↗</span>` : ''}
+              </div>
+            </div>
+        ${cardCloseTag}`;
+    }).join('');
+
+    initTilt();
+    initConfetti();
+}
+
+renderSections(); render(); renderStats();
+</script>
+</body>
+</html>
