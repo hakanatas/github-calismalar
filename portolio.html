@@ -37,43 +37,105 @@
 
         /* HEADER */
         .header {
-            background: radial-gradient(at 10% 20%, rgba(74, 157, 142, 0.06) 0px, transparent 50%), 
-                        radial-gradient(at 90% 10%, rgba(212, 137, 122, 0.06) 0px, transparent 50%), 
-                        radial-gradient(at 50% 90%, rgba(123, 157, 191, 0.06) 0px, transparent 50%);
             background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(74, 157, 142, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(212, 137, 122, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(123, 157, 191, 0.12) 0px, transparent 50%),
+                radial-gradient(#e4e4e7 1.5px, transparent 1.5px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px;
+            background-position: 0 0, 0 0, 0 0, 12px 12px;
             border-bottom: 1px solid var(--border);
-            padding: 72px 20px 56px;
+            padding: 80px 20px 64px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #357a6e, #b06b5e, #4a709c, #6c4bb8);
+        }
+        .header-icon-wrap {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .header-icon {
+            color: #18181b;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .header-icon:hover {
+            transform: rotate(45deg);
+            border-color: #a1a1aa;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
         }
         .header .school-tag {
             font-size: 10px;
             font-weight: 700;
-            color: #357a6e;
-            background: #edf6f4;
-            border: 1px solid rgba(74, 157, 142, 0.15);
-            padding: 6px 16px;
+            color: #ffffff;
+            background: #18181b;
+            border: 1px solid #27272a;
+            padding: 6px 14px 6px 24px;
             border-radius: 9999px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             display: inline-block;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .header .school-tag::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: translateY(-50%) scale(0.9); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+            100% { opacity: 0.6; transform: translateY(-50%) scale(0.9); }
         }
         .header h1 {
-            font-size: clamp(26px, 4.5vw, 40px);
+            font-size: clamp(28px, 4.5vw, 42px);
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #09090b 20%, #71717a 100%);
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            color: #09090b;
+            line-height: 1.1;
+        }
+        .header h1 span {
+            background: linear-gradient(135deg, #357a6e 20%, #4a709c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
-            line-height: 1.1;
         }
         .header p {
             font-size: 14px;
             color: var(--text-muted);
             font-weight: 500;
             letter-spacing: 0.2px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .header p strong {
+            color: #18181b;
+            font-weight: 600;
         }
 
         /* NAVIGATION & SEARCH CONTAINER */
@@ -467,9 +529,15 @@
 <body>
 
 <header class="header">
+    <div class="header-icon-wrap">
+        <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+        </svg>
+    </div>
     <div class="school-tag">ALKEV ÖZEL İLKOKULU</div>
-    <h1>DİJİTAL PORTFOLYO VİTRİNİ</h1>
-    <p>5. Sınıf Öğrenci Çalışmaları &bull; 2025-2026</p>
+    <h1>DİJİTAL <span>PORTFOLYO VİTRİNİ</span></h1>
+    <p>5. Sınıf Öğrencilerinin <strong>Bilişim Teknolojileri ve Yazılım</strong> Çalışmaları &bull; 2025-2026</p>
 </header>
 
 <div class="nav-section">
