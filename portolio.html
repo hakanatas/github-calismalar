@@ -37,30 +37,43 @@
 
         /* HEADER */
         .header {
-            background: #ffffff;
+            background: radial-gradient(at 10% 20%, rgba(74, 157, 142, 0.06) 0px, transparent 50%), 
+                        radial-gradient(at 90% 10%, rgba(212, 137, 122, 0.06) 0px, transparent 50%), 
+                        radial-gradient(at 50% 90%, rgba(123, 157, 191, 0.06) 0px, transparent 50%);
+            background-color: #ffffff;
             border-bottom: 1px solid var(--border);
-            padding: 60px 20px 48px;
+            padding: 72px 20px 56px;
             text-align: center;
         }
         .header .school-tag {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            color: var(--text-muted);
-            letter-spacing: 2px;
+            color: #357a6e;
+            background: #edf6f4;
+            border: 1px solid rgba(74, 157, 142, 0.15);
+            padding: 6px 16px;
+            border-radius: 9999px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 18px;
+            display: inline-block;
         }
         .header h1 {
-            font-size: clamp(24px, 4vw, 36px);
+            font-size: clamp(26px, 4.5vw, 40px);
             font-weight: 800;
-            color: var(--text);
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #09090b 20%, #71717a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            line-height: 1.1;
         }
         .header p {
             font-size: 14px;
             color: var(--text-muted);
             font-weight: 500;
+            letter-spacing: 0.2px;
         }
 
         /* NAVIGATION & SEARCH CONTAINER */
