@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Öğrenme Atölyesi — Proje Dizini · Hakan Ataş</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ece5d6; --card:#f6f1e6; --ink:#20211c; --ink-soft:#585647;
+    --line:#cdc4ad; --line-2:#d8cfb9;
+    --fen:#1f5a86; --mat:#c0432b; --yz:#5b4a9e; --rob:#b5791b;
+    --doga:#3a7a4d; --sanat:#9c3f74; --oyun:#1f7a78; --diger:#7c7663;
+    --focus:#c0432b;
+    --disp:"Fraunces",Georgia,serif; --ui:"Space Grotesk",system-ui,sans-serif; --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--ui); -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% -5%, rgba(255,255,255,.5), transparent 40%),radial-gradient(circle at 90% 0%, rgba(180,121,27,.06), transparent 45%);
+    background-attachment:fixed;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+  header{padding:64px 0 30px; border-bottom:1px solid var(--line);}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 20px;}
+  .eyebrow a{color:inherit; text-decoration:none; border-bottom:1px solid var(--line);}
+  .eyebrow a:hover{color:var(--mat);}
+  h1{font-family:var(--disp); font-weight:600; font-size:clamp(42px,7vw,86px); line-height:.98; margin:0 0 18px; letter-spacing:-.015em;}
+  h1 em{font-style:italic; color:var(--mat);}
+  .thesis{font-family:var(--disp); font-weight:400; font-size:clamp(17px,2.4vw,22px); line-height:1.45; color:var(--ink-soft); max-width:56ch; margin:0;}
+  .thesis b{color:var(--ink); font-weight:500;}
+  .controls{position:sticky; top:0; z-index:20; background:rgba(236,229,214,.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:16px 0;}
+  .controls-inner{display:flex; flex-direction:column; gap:14px;}
+  .searchrow{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .search{flex:1; min-width:220px; position:relative;}
+  .search input{width:100%; font-family:var(--ui); font-size:15px; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:2px; padding:11px 14px 11px 38px; outline:none;}
+  .search input:focus{border-color:var(--focus); box-shadow:0 0 0 3px rgba(192,67,43,.14);}
+  .search svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.5;}
+  .livetoggle{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; display:inline-flex; align-items:center; gap:8px; cursor:pointer; user-select:none; color:var(--ink-soft); padding:9px 13px; border:1px solid var(--line); border-radius:2px; background:var(--card);}
+  .livetoggle:hover{color:var(--ink);}
+  .livetoggle input{accent-color:var(--mat); width:15px; height:15px;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{font-family:var(--mono); font-size:12px; letter-spacing:.04em; cursor:pointer; background:transparent; border:1px solid var(--line); border-radius:2px; color:var(--ink-soft); padding:7px 12px; display:inline-flex; align-items:center; gap:7px; transition:all .15s;}
+  .chip .dot{width:9px; height:9px; border-radius:50%; background:var(--c,var(--diger));}
+  .chip .n{opacity:.55; font-size:11px;}
+  .chip:hover{border-color:var(--c,var(--ink)); color:var(--ink);}
+  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .chip.active .n{opacity:.7;}
+  .chip.active .dot{box-shadow:0 0 0 2px rgba(246,241,230,.35);}
+  main{padding:34px 0 80px; position:relative; z-index:1;}
+  .count{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 20px;}
+  .count b{color:var(--ink);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:16px;}
+  .card{position:relative; background:var(--card); border:1px solid var(--line-2); border-radius:3px; padding:20px 20px 16px 26px; display:flex; flex-direction:column; min-height:172px; text-decoration:none; color:inherit; overflow:hidden; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;}
+  .card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--c,var(--diger));}
+  .card:hover{transform:translateY(-3px); box-shadow:0 12px 26px -14px rgba(32,33,28,.4); border-color:var(--c,var(--line));}
+  .card:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+  .card .clabel{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--c,var(--diger)); font-weight:500; margin-bottom:10px;}
+  .card h3{font-family:var(--disp); font-weight:600; font-size:20px; line-height:1.12; margin:0 0 8px; letter-spacing:-.01em;}
+  .card p{font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:0 0 auto; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+  .card .foot{display:flex; align-items:center; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid var(--line-2);}
+  .card .meta{font-family:var(--mono); font-size:10.5px; color:var(--ink-soft); letter-spacing:.03em; display:flex; gap:9px; align-items:center; flex:1; min-width:0;}
+  .card .meta .sep{opacity:.4;}
+  .links{display:flex; gap:7px; flex-shrink:0;}
+  .lnk{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; padding:5px 9px; border-radius:2px; border:1px solid var(--line); color:var(--ink-soft); display:inline-flex; align-items:center; gap:4px; transition:all .13s;}
+  .lnk.live{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .lnk.live:hover{background:var(--mat); border-color:var(--mat);}
+  .lnk.code:hover{border-color:var(--ink); color:var(--ink);}
+  .msg{font-family:var(--disp); font-style:italic; color:var(--ink-soft); font-size:18px; padding:50px 0; text-align:center;}
+  .msg a{color:var(--mat);}
+  footer{border-top:1px solid var(--line); padding:26px 0 60px; position:relative; z-index:1;}
+  footer p{font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:var(--ink-soft); margin:0; line-height:1.7;}
+  footer a{color:var(--mat); text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  #bg{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;}
+  @media (max-width:560px){
+    header{padding:44px 0 24px;}
+    .grid{grid-template-columns:1fr;}
+    .card{min-height:auto;}
+    .controls{padding:12px 0;}
+    .controls-inner{gap:11px;}
+    .chips{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -24px; padding:0 24px 2px;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);}
+    .chips::-webkit-scrollbar{display:none;}
+    .chip{flex:0 0 auto;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important; scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Hakan Ataş &nbsp;·&nbsp; <a href="https://github.com/hakanatas" target="_blank" rel="noopener">github.com/hakanatas</a></p>
+    <h1>Öğrenme<br><em>Atölyesi</em></h1>
+    <p class="thesis">Fen, matematik, yapay zeka ve robotik için <b><span id="hcount">65</span> interaktif proje</b> — dersler, oyunlar ve deney araçları. Hepsi tek bir dizinde toplandı.</p>
+  </header>
+</div>
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="searchrow">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Proje ara — isim ya da açıklama…" aria-label="Proje ara">
+      </div>
+      <label class="livetoggle"><input type="checkbox" id="liveonly"> Sadece canlı demolu</label>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+<main>
+  <div class="wrap">
+    <p class="count" id="count">Yükleniyor…</p>
+    <div class="grid" id="grid"></div>
+    <p class="msg" id="msg" style="display:none"></p>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <p>65 depo · 50 canlı demo · <a href="https://github.com/hakanatas?tab=repositories" target="_blank" rel="noopener">github.com/hakanatas</a> genel depolarından derlendi.</p>
+  </div>
+</footer>
+
+<script>
+const CATS = {
+  fen:{label:"Fen Bilimleri",c:"var(--fen)"}, mat:{label:"Matematik",c:"var(--mat)"},
+  yz:{label:"Yapay Zeka",c:"var(--yz)"}, rob:{label:"Robotik",c:"var(--rob)"},
+  doga:{label:"Doğa & BIOBUZZ",c:"var(--doga)"}, sanat:{label:"Müzik & Sanat",c:"var(--sanat)"},
+  oyun:{label:"Oyun & Kültür",c:"var(--oyun)"}, diger:{label:"Arşiv & Diğer",c:"var(--diger)"},
+};
+const ORDER = ["fen","mat","yz","rob","doga","sanat","oyun","diger"];
+let PROJECTS=[], activeCat="all", query="", liveOnly=false;
+const $=id=>document.getElementById(id);
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+async function load(){
+  try{
+    const res=await fetch("./dizin-data.json",{cache:"no-cache"});
+    if(!res.ok) throw new Error(res.status);
+    PROJECTS=await res.json();
+    $("hcount").textContent=PROJECTS.length;
+    buildChips(); render();
+  }catch(e){
+    $("count").style.display="none";
+    const m=$("msg"); m.style.display="block";
+    m.innerHTML='Proje listesi yüklenemedi. <a href="https://github.com/hakanatas?tab=repositories">github.com/hakanatas</a> üzerinden görebilirsin.';
+  }
+}
+function counts(){const m={}; PROJECTS.forEach(p=>m[p.cat]=(m[p.cat]||0)+1); return m;}
+function buildChips(){
+  const el=$("chips"); el.innerHTML=""; const cnt=counts();
+  const mk=(id,label,c,n)=>{
+    const b=document.createElement("button");
+    b.className="chip"+(id===activeCat?" active":""); b.dataset.cat=id;
+    b.style.setProperty("--c",c||"var(--ink)");
+    b.innerHTML=(c?'<span class="dot"></span>':"")+label+' <span class="n">'+n+'</span>';
+    b.onclick=()=>{activeCat=id; render(); [...el.children].forEach(x=>x.classList.toggle("active",x.dataset.cat===id));};
+    return b;
+  };
+  el.appendChild(mk("all","Tümü",null,PROJECTS.length));
+  ORDER.forEach(k=>{ if(cnt[k]) el.appendChild(mk(k,CATS[k].label,CATS[k].c,cnt[k])); });
+}
+function render(){
+  const list=PROJECTS.filter(p=>{
+    if(activeCat!=="all"&&p.cat!==activeCat) return false;
+    if(liveOnly&&!p.live) return false;
+    if(query){const hay=(p.title+" "+p.desc+" "+p.name).toLowerCase(); if(!hay.includes(query)) return false;}
+    return true;
+  });
+  const grid=$("grid"); grid.innerHTML="";
+  list.forEach(p=>{
+    const meta=CATS[p.cat]||CATS.diger;
+    const a=document.createElement("a");
+    a.className="card"; a.style.setProperty("--c",meta.c);
+    a.href=p.live||p.repo; a.target="_blank"; a.rel="noopener";
+    const desc=p.desc||"İnteraktif proje — açmak için tıkla.";
+    const langBit=p.lang?'<span>'+esc(p.lang)+'</span><span class="sep">·</span>':"";
+    const liveLnk=p.live?'<a class="lnk live" href="'+p.live+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">Aç ↗</a>':"";
+    a.innerHTML='<div class="clabel">'+meta.label+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(desc)+'</p>'+
+      '<div class="foot"><div class="meta">'+langBit+'<span>'+esc(p.date)+'</span></div>'+
+      '<div class="links">'+liveLnk+'<a class="lnk code" href="'+p.repo+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">Kod</a></div></div>';
+    grid.appendChild(a);
+  });
+  const c=$("count"); c.style.display="block";
+  c.innerHTML="<b>"+list.length+"</b> proje gösteriliyor"+(liveOnly?" · canlı demolu":"");
+  const msg=$("msg"); if(!list.length){msg.style.display="block"; msg.textContent="Bu ölçütlere uyan proje yok. Filtreyi değiştir.";} else msg.style.display="none";
+}
+$("q").addEventListener("input",e=>{query=e.target.value.toLowerCase().trim(); render();});
+$("liveonly").addEventListener("change",e=>{liveOnly=e.target.checked; render();});
+load();
+</script>
+
+<script>
+/* Dinamik arka plan: kategori renklerinde toz + morflanan harmonograf eğrileri
+   ('harmonograf' ve 'fourier-cizim-makinesi' projelerine gönderme). */
+(function(){
+  const cv=document.getElementById("bg"), ctx=cv.getContext("2d");
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const PAL=["#1f5a86","#c0432b","#5b4a9e","#b5791b","#3a7a4d","#9c3f74","#1f7a78","#7c7663"];
+  let W=0,H=0,dpr=1,motes=[],t=0,raf=null;
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,2); W=innerWidth; H=innerHeight;
+    cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+"px"; cv.style.height=H+"px"; ctx.setTransform(dpr,0,0,dpr,0,0); seed();}
+  function seed(){const n=Math.max(18,Math.min(46,Math.round(W*H/34000))); motes=[];
+    for(let i=0;i<n;i++)motes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:.8+Math.random()*1.9,c:PAL[(Math.random()*PAL.length)|0],a:.28+Math.random()*.3});}
+  function harm(cx,cy,R,f,phase,col,alpha){ctx.beginPath(); const steps=520,T=Math.PI*2*3;
+    for(let i=0;i<=steps;i++){const u=i/steps*T;
+      const dx=R*(Math.sin(f[0]*u+phase)*Math.exp(-9e-4*u)+.55*Math.sin(f[1]*u+phase*1.3)*Math.exp(-.0012*u));
+      const dy=R*(Math.sin(f[2]*u+phase*.8)*Math.exp(-9e-4*u)+.55*Math.sin(f[3]*u-phase)*Math.exp(-.0012*u));
+      const x=cx+dx,y=cy+dy; i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.strokeStyle=col; ctx.globalAlpha=alpha; ctx.lineWidth=1; ctx.stroke(); ctx.globalAlpha=1;}
+  function dots(){for(const m of motes){ctx.beginPath(); ctx.arc(m.x,m.y,m.r,0,Math.PI*2); ctx.fillStyle=m.c; ctx.globalAlpha=m.a; ctx.fill();} ctx.globalAlpha=1;}
+  function frame(){ctx.clearRect(0,0,W,H); const R=Math.min(W,H)*.34;
+    harm(W*.30,H*.42,R,[1.001,2.003,1.502,2.997],t*.14,"#1f5a86",.055);
+    harm(W*.74,H*.60,R*.82,[2.002,1.004,2.501,1.499],-t*.11+1.6,"#9c3f74",.05);
+    for(const m of motes){m.x+=m.vx; m.y+=m.vy; if(m.x<-6)m.x=W+6; else if(m.x>W+6)m.x=-6; if(m.y<-6)m.y=H+6; else if(m.y>H+6)m.y=-6;}
+    dots(); t+=.006; raf=requestAnimationFrame(frame);}
+  function stat(){ctx.clearRect(0,0,W,H); const R=Math.min(W,H)*.34;
+    harm(W*.30,H*.42,R,[1.001,2.003,1.502,2.997],.9,"#1f5a86",.06);
+    harm(W*.74,H*.60,R*.82,[2.002,1.004,2.501,1.499],1.6,"#9c3f74",.05); dots();}
+  function start(){if(!raf&&!document.hidden)raf=requestAnimationFrame(frame);}
+  function stop(){if(raf){cancelAnimationFrame(raf); raf=null;}}
+  addEventListener("resize",()=>{resize(); if(reduce)stat();});
+  document.addEventListener("visibilitychange",()=>document.hidden?stop():start());
+  resize(); reduce?stat():start();
+})();
+</script>
+</body>
+</html>
