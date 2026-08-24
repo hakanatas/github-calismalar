@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Öğrenme Atölyesi — Proje Dizini · Hakan Ataş</title>
+<meta name="description" content="Hakan Ataş'ın matematik, fen, yapay zekâ ve robotik alanındaki interaktif eğitim projelerinin tam dizini — kategoriye göre ayrılmış, canlı demolarıyla birlikte.">
+<meta name="author" content="Hakan Ataş">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Öğrenme Atölyesi — Proje Dizini">
+<meta property="og:description" content="Matematik, fen, yapay zekâ ve robotik için interaktif projeler. On kategori, tek dizin.">
+<meta property="og:url" content="https://hakanatas.github.io/github-calismalar/proje-dizini.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ece5d6; --card:#f6f1e6; --ink:#20211c; --ink-soft:#585647;
+    --line:#cdc4ad; --line-2:#d8cfb9;
+    /* Kategori renkleri — renk çemberinde olabildiğince ayrık seçildi */
+    --mat:#c0432b; --rob:#b5791b; --arastirma:#7a7526; --doga:#3a7a4d;
+    --oyun:#1f7a78; --fen:#1d6fa5; --toplum:#3a3f74; --yz:#6b46a8;
+    --sanat:#9c3f74; --diger:#7c7663;
+    --focus:#c0432b;
+    --disp:"Fraunces",Georgia,serif; --ui:"Space Grotesk",system-ui,sans-serif; --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--ui); -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% -5%, rgba(255,255,255,.5), transparent 40%),radial-gradient(circle at 90% 0%, rgba(180,121,27,.06), transparent 45%);
+    background-attachment:fixed;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+
+  /* ---------- Başlık ---------- */
+  header{padding:64px 0 30px; border-bottom:1px solid var(--line);}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 20px;}
+  .eyebrow a{color:inherit; text-decoration:none; border-bottom:1px solid var(--line);}
+  .eyebrow a:hover{color:var(--mat);}
+  h1{font-family:var(--disp); font-weight:600; font-size:clamp(42px,7vw,86px); line-height:.98; margin:0 0 18px; letter-spacing:-.015em;}
+  h1 em{font-style:italic; color:var(--mat);}
+  .thesis{font-family:var(--disp); font-weight:400; font-size:clamp(17px,2.4vw,22px); line-height:1.45; color:var(--ink-soft); max-width:56ch; margin:0 0 26px;}
+  .thesis b{color:var(--ink); font-weight:500;}
+
+  /* Kategori şeridi: renk kodunu daha ilk ekranda öğret */
+  .spectrum{display:flex; gap:3px; margin:0; padding:0; list-style:none;}
+  .spectrum li{flex:1 1 0; min-width:0;}
+  .spectrum button{width:100%; border:0; padding:0; background:transparent; cursor:pointer; text-align:left; font:inherit; color:inherit;}
+  .spectrum .bar{display:block; height:7px; border-radius:1px; background:var(--c); opacity:.85; transition:opacity .15s, transform .15s;}
+  .spectrum button:hover .bar,.spectrum button:focus-visible .bar{opacity:1; transform:scaleY(1.7);}
+  .spectrum .lbl{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:7px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .spectrum button:hover .lbl{color:var(--c);}
+
+  /* ---------- Kontroller ---------- */
+  .controls{position:sticky; top:0; z-index:20; background:rgba(236,229,214,.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:16px 0;}
+  .controls-inner{display:flex; flex-direction:column; gap:14px;}
+  .searchrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+  .search{flex:1 1 240px; min-width:200px; position:relative;}
+  .search input{width:100%; font-family:var(--ui); font-size:15px; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:2px; padding:11px 14px 11px 38px; outline:none;}
+  .search input:focus{border-color:var(--focus); box-shadow:0 0 0 3px rgba(192,67,43,.14);}
+  .search svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.5;}
+  .toggle{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; display:inline-flex; align-items:center; gap:8px; cursor:pointer; user-select:none; color:var(--ink-soft); padding:9px 13px; border:1px solid var(--line); border-radius:2px; background:var(--card);}
+  .toggle:hover{color:var(--ink);}
+  .toggle input{accent-color:var(--mat); width:15px; height:15px;}
+  .seg{display:inline-flex; border:1px solid var(--line); border-radius:2px; overflow:hidden; background:var(--card);}
+  .seg button{font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; border:0; background:transparent; color:var(--ink-soft); padding:10px 13px; cursor:pointer;}
+  .seg button+button{border-left:1px solid var(--line);}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper);}
+
+  .chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{font-family:var(--mono); font-size:12px; letter-spacing:.04em; cursor:pointer; background:var(--card); border:1px solid var(--line); border-radius:2px; color:var(--ink-soft); padding:6px 11px; display:inline-flex; align-items:center; gap:7px; transition:all .15s;}
+  .chip .g{width:15px; height:15px; flex:0 0 15px; color:var(--c,var(--ink-soft));}
+  .chip .n{opacity:.55; font-size:11px;}
+  .chip:hover{border-color:var(--c,var(--ink)); color:var(--ink);}
+  .chip.active{background:var(--c,var(--ink)); color:#fdfaf3; border-color:var(--c,var(--ink));}
+  .chip.active .g{color:#fdfaf3;}
+  .chip.active .n{opacity:.75;}
+  .chip.all.active{background:var(--ink); border-color:var(--ink);}
+
+  /* ---------- Ana bölüm ---------- */
+  main{padding:30px 0 80px; position:relative; z-index:1;}
+  .count{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 24px;}
+  .count b{color:var(--ink);}
+
+  .catsec{margin:0 0 44px; scroll-margin-top:150px;}
+  .cathead{display:flex; align-items:flex-start; gap:14px; padding:0 0 12px; border-bottom:3px solid var(--c); margin-bottom:18px;}
+  .cathead .g{width:30px; height:30px; flex:0 0 30px; color:var(--c); margin-top:3px;}
+  .cathead .txt{flex:1; min-width:0;}
+  .cathead h2{font-family:var(--disp); font-weight:600; font-size:clamp(24px,3.4vw,32px); line-height:1.05; margin:0 0 5px; letter-spacing:-.015em; color:var(--c);}
+  .cathead p{font-size:13.5px; line-height:1.45; color:var(--ink-soft); margin:0; max-width:62ch;}
+  .cathead .tally{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--c); border:1px solid var(--c); border-radius:2px; padding:4px 8px; flex:0 0 auto; margin-top:4px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:16px;}
+
+  .card{position:relative; background:var(--card); border:1px solid var(--line-2); border-radius:3px; padding:18px 20px 16px 26px; display:flex; flex-direction:column; min-height:180px; color:inherit; overflow:hidden; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;}
+  .card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--c,var(--diger)); z-index:3;}
+  .card::after{content:""; position:absolute; inset:0; background:var(--c,var(--diger)); opacity:.028; pointer-events:none;}
+  .card:hover{transform:translateY(-3px); box-shadow:0 12px 26px -14px rgba(32,33,28,.4); border-color:var(--c,var(--line));}
+  .card:focus-within{outline:2px solid var(--focus); outline-offset:2px;}
+  .card>*{position:relative; z-index:1;}
+  /* Başlık bağlantısı tüm kartı tıklanabilir yapar — iç içe <a> kullanmadan. */
+  .titlelink{color:inherit; text-decoration:none;}
+  .titlelink::after{content:""; position:absolute; inset:0; z-index:2;}
+  .card .links{position:relative; z-index:4;}
+  .tagrow{display:flex; align-items:center; gap:8px; margin-bottom:11px;}
+  .ctag{display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; font-weight:500;
+    color:var(--c,var(--diger)); border:1px solid var(--c,var(--diger)); border-radius:2px; padding:3px 7px; background:transparent;}
+  .ctag .g{width:12px; height:12px; flex:0 0 12px;}
+  /* Kategoriye göre gruplanmış görünümde başlık zaten kategoriyi söylüyor;
+     kartta yalnızca renkli simge kalsın. */
+  .catsec .ctag{border-color:transparent; padding:3px 0;}
+  .catsec .ctag .ctxt{display:none;}
+  .state{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); display:inline-flex; align-items:center; gap:5px; margin-left:auto;}
+  .state i{width:6px; height:6px; border-radius:50%; background:var(--ink-soft); display:block;}
+  .state.on i{background:#3a7a4d;}
+  .state.on{color:#3a7a4d;}
+  .card h3{font-family:var(--disp); font-weight:600; font-size:20px; line-height:1.14; margin:0 0 8px; letter-spacing:-.01em;}
+  .card p{font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:0 0 auto; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+  .card .foot{display:flex; align-items:center; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid var(--line-2);}
+  .card .meta{font-family:var(--mono); font-size:10.5px; color:var(--ink-soft); letter-spacing:.03em; display:flex; gap:9px; align-items:center; flex:1; min-width:0;}
+  .card .meta .sep{opacity:.4;}
+  .links{display:flex; gap:7px; flex-shrink:0;}
+  .lnk{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; text-decoration:none; padding:5px 9px; border-radius:2px; border:1px solid var(--line); color:var(--ink-soft); display:inline-flex; align-items:center; gap:4px; transition:all .13s;}
+  .lnk.live{background:var(--c,var(--ink)); color:#fdfaf3; border-color:var(--c,var(--ink));}
+  .lnk.live:hover{filter:brightness(1.15);}
+  .lnk.code:hover{border-color:var(--ink); color:var(--ink);}
+
+  .msg{font-family:var(--disp); font-style:italic; color:var(--ink-soft); font-size:18px; padding:50px 0; text-align:center;}
+  .msg a{color:var(--mat);}
+  footer{border-top:1px solid var(--line); padding:26px 0 60px; position:relative; z-index:1;}
+  footer p{font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:var(--ink-soft); margin:0; line-height:1.7;}
+  footer a{color:var(--mat); text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  #bg{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;}
+
+  @media (max-width:860px){
+    .spectrum .lbl{display:none;}
+    .spectrum .bar{height:10px;}
+  }
+  @media (max-width:560px){
+    header{padding:44px 0 24px;}
+    .grid{grid-template-columns:1fr;}
+    .card{min-height:auto;}
+    .controls{padding:12px 0;}
+    .controls-inner{gap:11px;}
+    .cathead{gap:11px;}
+    .cathead .g{width:24px; height:24px; flex-basis:24px;}
+    .cathead .tally{display:none;}
+    .chips{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; margin:0 -24px; padding:0 24px 2px;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);}
+    .chips::-webkit-scrollbar{display:none;}
+    .chip{flex:0 0 auto;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important; scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Hakan Ataş &nbsp;·&nbsp; <a href="https://github.com/hakanatas" target="_blank" rel="noopener">github.com/hakanatas</a></p>
+    <h1>Öğrenme<br><em>Atölyesi</em></h1>
+    <p class="thesis">Fen, matematik, yapay zekâ ve robotik için <b><span id="hcount">—</span> interaktif proje</b> — dersler, oyunlar ve deney araçları. On kategoriye ayrıldı, her birinin kendi rengi var.</p>
+    <ul class="spectrum" id="spectrum" aria-label="Kategoriler"></ul>
+  </header>
+</div>
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="searchrow">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Proje ara — isim ya da açıklama…" aria-label="Proje ara">
+      </div>
+      <div class="seg" role="group" aria-label="Görünüm">
+        <button id="vGroup" aria-pressed="true">Kategoriler</button>
+        <button id="vFlat" aria-pressed="false">Tek liste</button>
+      </div>
+      <label class="toggle"><input type="checkbox" id="liveonly"> Sadece canlı</label>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+<main>
+  <div class="wrap">
+    <p class="count" id="count">Yükleniyor…</p>
+    <div id="out"></div>
+    <p class="msg" id="msg" style="display:none"></p>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <p id="footline"><a href="https://github.com/hakanatas?tab=repositories" target="_blank" rel="noopener">github.com/hakanatas</a> genel depolarından derlendi.</p>
+  </div>
+</footer>
+
+<script>
+/* Kategori tanımları: renk, simge ve ne anlattığı.
+   Simgeler konunun kendi dünyasından — pergel, atom, yaprak, düğüm, dişli… */
+const G = {
+  mat:'<circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/><path d="M6.3 6.3l11.4 11.4"/>',
+  fen:'<circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9.5" ry="4"/><ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(120 12 12)"/>',
+  yz:'<circle cx="6" cy="7" r="2"/><circle cx="6" cy="17" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 7.8 16 11.2M8 16.2 16 12.8M6 9v6"/>',
+  rob:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1M18.7 18.7l-2.1-2.1M7.4 7.4 5.3 5.3"/>',
+  doga:'<path d="M20 4C10 4 4 9 4 16c0 2 .6 3.4.6 3.4S9 8 20 4z"/><path d="M4.6 19.4C7 21 17 21 20 4"/>',
+  sanat:'<path d="M2 14c2.5 0 2.5-8 5-8s2.5 12 5 12 2.5-10 5-10 2.5 4 5 4"/>',
+  oyun:'<rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/>',
+  toplum:'<path d="M12 3 3 8h18L12 3z"/><path d="M6 8v9M10 8v9M14 8v9M18 8v9"/><path d="M3.5 21h17"/>',
+  arastirma:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m20.5 20.5-5.4-5.4"/><path d="M7.5 12.2 9.8 9l2.2 2.6 2.4-3.6"/>',
+  diger:'<path d="M2.5 6.5h19v3h-19z"/><path d="M4 9.5v11h16v-11"/><path d="M9.5 13.5h5"/>'
+};
+const CATS = {
+  mat:      {label:"Matematik",              short:"Matematik",   c:"var(--mat)",       tag:"Kesirlerden Fourier serilerine — elle oynanan matematik."},
+  fen:      {label:"Fen Bilimleri",          short:"Fen",         c:"var(--fen)",       tag:"Deneyler, simülasyonlar ve etkileşimli bilim levhaları."},
+  yz:       {label:"Yapay Zekâ & Kodlama",   short:"Yapay Zekâ",  c:"var(--yz)",        tag:"Yapay zekâyı ve blok kodlamayı öğreten araçlar, kitapçıklar, oyunlar."},
+  doga:     {label:"Doğa & Biyoçeşitlilik",  short:"Doğa",        c:"var(--doga)",      tag:"BIOBUZZ ve FIRST CANOPY sezonu için hazırlanan doğa çalışmaları."},
+  rob:      {label:"Robotik & FTC",          short:"Robotik",     c:"var(--rob)",       tag:"FTC ve Jr. FTC takımlarının yarışma sezonu robot kodları."},
+  oyun:     {label:"Oyun & Bulmaca",         short:"Oyun",        c:"var(--oyun)",      tag:"Zekâ oyunları, kelime avları ve bulmaca üreticileri."},
+  sanat:    {label:"Müzik & Sanat",          short:"Sanat",       c:"var(--sanat)",     tag:"Sesin, rengin ve desenin kesiştiği üretici çalışmalar."},
+  toplum:   {label:"Bilim Tarihi & Toplum",  short:"Bilim Tarihi",c:"var(--toplum)",    tag:"Bilim tarihi ve toplumsal temalı anlatı siteleri."},
+  arastirma:{label:"Araştırma",              short:"Araştırma",   c:"var(--arastirma)", tag:"TÜBİTAK ve akademik araştırma projelerinin kod tarafı."},
+  diger:    {label:"Arşiv & Diğer",          short:"Arşiv",       c:"var(--diger)",     tag:"Kişisel sayfalar, ilk denemeler ve eski ders alıştırmaları."}
+};
+const ORDER = ["mat","fen","yz","doga","rob","oyun","sanat","toplum","arastirma","diger"];
+
+let PROJECTS=[], activeCat="all", query="", liveOnly=false, grouped=true;
+const $=id=>document.getElementById(id);
+const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const glyph=(k,cls)=>'<svg class="'+cls+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(G[k]||G.diger)+'</svg>';
+
+async function load(){
+  try{
+    const res=await fetch("./dizin-data.json",{cache:"no-cache"});
+    if(!res.ok) throw new Error(res.status);
+    PROJECTS=await res.json();
+    $("hcount").textContent=PROJECTS.length;
+    const live=PROJECTS.filter(p=>p.live).length;
+    $("footline").innerHTML=PROJECTS.length+" depo · "+live+" canlı demo · "+ORDER.length+
+      ' kategori · <a href="https://github.com/hakanatas?tab=repositories" target="_blank" rel="noopener">github.com/hakanatas</a> genel depolarından derlendi.';
+    buildSpectrum(); buildChips(); render();
+  }catch(e){
+    $("count").style.display="none";
+    const m=$("msg"); m.style.display="block";
+    m.innerHTML='Proje listesi yüklenemedi. <a href="https://github.com/hakanatas?tab=repositories">github.com/hakanatas</a> üzerinden görebilirsin.';
+  }
+}
+const counts=()=>PROJECTS.reduce((m,p)=>(m[p.cat]=(m[p.cat]||0)+1,m),{});
+
+function setCat(id){
+  activeCat=id; render();
+  [...$("chips").children].forEach(x=>x.classList.toggle("active",x.dataset.cat===id));
+}
+function buildSpectrum(){
+  const el=$("spectrum"), cnt=counts(); el.innerHTML="";
+  ORDER.forEach(k=>{
+    if(!cnt[k]) return;
+    const li=document.createElement("li");
+    li.innerHTML='<button type="button" style="--c:'+CATS[k].c+'" title="'+esc(CATS[k].label)+' — '+cnt[k]+' proje">'+
+      '<span class="bar"></span><span class="lbl">'+esc(CATS[k].short)+'</span></button>';
+    li.querySelector("button").onclick=()=>setCat(k);
+    el.appendChild(li);
+  });
+}
+function buildChips(){
+  const el=$("chips"); el.innerHTML=""; const cnt=counts();
+  const mk=(id,label,c,n,all)=>{
+    const b=document.createElement("button");
+    b.className="chip"+(all?" all":"")+(id===activeCat?" active":""); b.dataset.cat=id;
+    if(c) b.style.setProperty("--c",c);
+    b.innerHTML=(all?"":glyph(id,"g"))+label+' <span class="n">'+n+'</span>';
+    b.onclick=()=>setCat(id);
+    return b;
+  };
+  el.appendChild(mk("all","Tümü",null,PROJECTS.length,true));
+  ORDER.forEach(k=>{ if(cnt[k]) el.appendChild(mk(k,CATS[k].label,CATS[k].c,cnt[k],false)); });
+}
+
+function cardHTML(p){
+  const m=CATS[p.cat]||CATS.diger;
+  const desc=p.desc||"Açmak için tıkla.";
+  const langBit=p.lang?'<span>'+esc(p.lang)+'</span><span class="sep">·</span>':"";
+  const liveLnk=p.live?'<a class="lnk live" href="'+esc(p.live)+'" target="_blank" rel="noopener">Aç ↗</a>':"";
+  const state=p.live?'<span class="state on"><i></i>Canlı</span>':'<span class="state"><i></i>Sadece kod</span>';
+  return '<article class="card" style="--c:'+m.c+'">'+
+    '<div class="tagrow"><span class="ctag">'+glyph(p.cat,"g")+'<span class="ctxt">'+esc(m.label)+'</span></span>'+state+'</div>'+
+    '<h3><a class="titlelink" href="'+esc(p.live||p.repo)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a></h3>'+
+    '<p>'+esc(desc)+'</p>'+
+    '<div class="foot"><div class="meta">'+langBit+'<span>'+esc(p.date)+'</span></div>'+
+    '<div class="links">'+liveLnk+'<a class="lnk code" href="'+esc(p.repo)+'" target="_blank" rel="noopener">Kod</a></div></div></article>';
+}
+
+function render(){
+  const list=PROJECTS.filter(p=>{
+    if(activeCat!=="all"&&p.cat!==activeCat) return false;
+    if(liveOnly&&!p.live) return false;
+    if(query&&!((p.title+" "+p.desc+" "+p.name).toLowerCase().includes(query))) return false;
+    return true;
+  });
+  const out=$("out"); out.innerHTML="";
+  if(grouped){
+    ORDER.forEach(k=>{
+      const items=list.filter(p=>p.cat===k);
+      if(!items.length) return;
+      const m=CATS[k];
+      const sec=document.createElement("section");
+      sec.className="catsec"; sec.id="k-"+k; sec.style.setProperty("--c",m.c);
+      sec.innerHTML='<div class="cathead">'+glyph(k,"g")+
+        '<div class="txt"><h2>'+esc(m.label)+'</h2><p>'+esc(m.tag)+'</p></div>'+
+        '<span class="tally">'+items.length+' proje</span></div>'+
+        '<div class="grid">'+items.map(cardHTML).join("")+'</div>';
+      out.appendChild(sec);
+    });
+  }else{
+    const g=document.createElement("div");
+    g.className="grid"; g.innerHTML=list.map(cardHTML).join("");
+    out.appendChild(g);
+  }
+  const c=$("count"); c.style.display="block";
+  const cats=new Set(list.map(p=>p.cat)).size;
+  c.innerHTML="<b>"+list.length+"</b> proje"+(activeCat==="all"?" · "+cats+" kategori":" · "+esc((CATS[activeCat]||{}).label||""))+(liveOnly?" · canlı demolu":"");
+  const msg=$("msg");
+  if(!list.length){msg.style.display="block"; msg.textContent="Bu ölçütlere uyan proje yok. Aramayı ya da filtreyi değiştir.";}
+  else msg.style.display="none";
+}
+
+function setView(isGrouped){
+  grouped=isGrouped;
+  $("vGroup").setAttribute("aria-pressed",String(isGrouped));
+  $("vFlat").setAttribute("aria-pressed",String(!isGrouped));
+  render();
+}
+$("q").addEventListener("input",e=>{query=e.target.value.toLowerCase().trim(); render();});
+$("liveonly").addEventListener("change",e=>{liveOnly=e.target.checked; render();});
+$("vGroup").addEventListener("click",()=>setView(true));
+$("vFlat").addEventListener("click",()=>setView(false));
+load();
+</script>
+
+<script>
+/* Dinamik arka plan: kategori renklerinde toz + morflanan harmonograf eğrileri
+   ('harmonograf' ve 'fourier-cizim-makinesi' projelerine gönderme). */
+(function(){
+  const cv=document.getElementById("bg"), ctx=cv.getContext("2d");
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const PAL=["#c0432b","#1d6fa5","#6b46a8","#3a7a4d","#b5791b","#1f7a78","#9c3f74","#3a3f74","#7a7526","#7c7663"];
+  let W=0,H=0,dpr=1,motes=[],t=0,raf=null;
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,2); W=innerWidth; H=innerHeight;
+    cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+"px"; cv.style.height=H+"px"; ctx.setTransform(dpr,0,0,dpr,0,0); seed();}
+  function seed(){const n=Math.max(18,Math.min(46,Math.round(W*H/34000))); motes=[];
+    for(let i=0;i<n;i++)motes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:.8+Math.random()*1.9,c:PAL[(Math.random()*PAL.length)|0],a:.28+Math.random()*.3});}
+  function harm(cx,cy,R,f,phase,col,alpha){ctx.beginPath(); const steps=520,T=Math.PI*2*3;
+    for(let i=0;i<=steps;i++){const u=i/steps*T;
+      const dx=R*(Math.sin(f[0]*u+phase)*Math.exp(-9e-4*u)+.55*Math.sin(f[1]*u+phase*1.3)*Math.exp(-.0012*u));
+      const dy=R*(Math.sin(f[2]*u+phase*.8)*Math.exp(-9e-4*u)+.55*Math.sin(f[3]*u-phase)*Math.exp(-.0012*u));
+      const x=cx+dx,y=cy+dy; i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.strokeStyle=col; ctx.globalAlpha=alpha; ctx.lineWidth=1; ctx.stroke(); ctx.globalAlpha=1;}
+  function dots(){for(const m of motes){ctx.beginPath(); ctx.arc(m.x,m.y,m.r,0,Math.PI*2); ctx.fillStyle=m.c; ctx.globalAlpha=m.a; ctx.fill();} ctx.globalAlpha=1;}
+  function frame(){ctx.clearRect(0,0,W,H); const R=Math.min(W,H)*.34;
+    harm(W*.30,H*.42,R,[1.001,2.003,1.502,2.997],t*.14,"#1d6fa5",.055);
+    harm(W*.74,H*.60,R*.82,[2.002,1.004,2.501,1.499],-t*.11+1.6,"#9c3f74",.05);
+    for(const m of motes){m.x+=m.vx; m.y+=m.vy; if(m.x<-6)m.x=W+6; else if(m.x>W+6)m.x=-6; if(m.y<-6)m.y=H+6; else if(m.y>H+6)m.y=-6;}
+    dots(); t+=.006; raf=requestAnimationFrame(frame);}
+  function stat(){ctx.clearRect(0,0,W,H); const R=Math.min(W,H)*.34;
+    harm(W*.30,H*.42,R,[1.001,2.003,1.502,2.997],.9,"#1d6fa5",.06);
+    harm(W*.74,H*.60,R*.82,[2.002,1.004,2.501,1.499],1.6,"#9c3f74",.05); dots();}
+  function start(){if(!raf&&!document.hidden)raf=requestAnimationFrame(frame);}
+  function stop(){if(raf){cancelAnimationFrame(raf); raf=null;}}
+  addEventListener("resize",()=>{resize(); if(reduce)stat();});
+  document.addEventListener("visibilitychange",()=>document.hidden?stop():start());
+  resize(); reduce?stat():start();
+})();
+</script>
+</body>
+</html>
