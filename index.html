@@ -84,8 +84,7 @@ a{color:inherit}
 .plate{display:flex;flex-direction:column;gap:11px}
 .frame{display:block;border:1px solid var(--ink);padding:6px;background:var(--paper2);position:relative}
 .frame img{display:block;width:100%;aspect-ratio:420/262;object-fit:cover;object-position:top center;
-  border:1px solid var(--rule);filter:sepia(.24) saturate(.86) contrast(1.03);transition:filter .35s ease}
-.plate:hover .frame img{filter:none}
+  border:1px solid var(--rule)}
 .frame.blank{background:var(--paper2);position:relative}
 .frame.blank svg{display:block;width:100%;height:auto;border:1px solid var(--rule)}
 .frame.blank span{position:absolute;left:14px;bottom:14px;font-size:.7rem;color:var(--muted)}
@@ -108,6 +107,41 @@ footer{border-top:1px solid var(--ink);padding:26px 0 70px;font-size:.92rem;colo
 footer p{margin:0 0 8px;max-width:70ch}
 footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rule);padding:1px 6px}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ---------- vitrin ---------- */
+.sechead{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:.95rem;margin:36px 0 20px}
+.sechead::before,.sechead::after{content:"";flex:1;border-top:1px solid var(--rule)}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;border:1px solid var(--ink);background:var(--paper2)}
+.hero>a{display:block}
+.hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;border-right:1px solid var(--ink)}
+.hero .tx{padding:30px 30px 24px;display:flex;flex-direction:column}
+.hero .tx .k{font-size:.74rem;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
+.hero h2{font-weight:500;font-size:1.9rem;margin:8px 0 10px;line-height:1.15}
+.hero h2 a{text-decoration:none}
+.hero p{margin:0;font-size:1.02rem;color:#3A342B}
+.hero .go{margin-top:auto;padding-top:16px;font-size:.8rem}
+.hero .go a{margin-right:1.2em}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
+.trio .c{border:1px solid var(--ink);background:var(--paper)}
+.trio img{display:block;width:100%;aspect-ratio:420/262;object-fit:cover;object-position:top center;border-bottom:1px solid var(--ink)}
+.trio .b{padding:12px 14px 14px}
+.trio h3{margin:0 0 4px;font-weight:500;font-size:1.12rem}
+.trio h3 a{text-decoration:none}
+.trio .b p{margin:0;font-size:.88rem;color:var(--muted)}
+
+/* ---------- liste görünümü ---------- */
+.plates.aslist{display:block}
+.lrow{display:flex;align-items:baseline;gap:10px;padding:7px 2px;border-bottom:1px solid var(--paper2)}
+.lrow .g{flex:0 0 12px}
+.lrow .t{font-size:1.06rem}
+.lrow .t a{text-decoration:none}
+.lrow .t a:hover{border-bottom:1px solid var(--ink)}
+.lrow .d{color:var(--muted);font-size:.9rem;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:36ch}
+.lrow .dots{flex:1;border-bottom:1px dotted var(--rule);transform:translateY(-4px);min-width:24px}
+.lrow .m{font-size:.76rem;color:var(--muted);white-space:nowrap}
+.lrow .m a{margin:0}
+.lrow .m .on{color:var(--red)}
+.plates.aslist .yearrow{display:flex;margin:26px 0 4px}
 
 /* ---------- yıl ayracı ---------- */
 .yearrow{grid-column:1/-1;display:flex;align-items:center;gap:18px;color:var(--muted);
@@ -133,6 +167,10 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
   .masthead{padding:46px 0 24px}
   .plates{grid-template-columns:1fr;gap:40px}
   .toolrow{gap:16px}
+  .hero{grid-template-columns:1fr}
+  .hero img{border-right:0;border-bottom:1px solid var(--ink)}
+  .trio{grid-template-columns:1fr}
+  .lrow .d{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -152,7 +190,10 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
     <hr class="hr"><hr class="hr thin">
   </header>
 
+  <section id="vitrin" aria-label="Seçme levhalar"></section>
+
   <section class="legend">
+    <p class="sechead sc">fihrist — tamamı</p>
     <p class="lede">Her levhanın işareti, konusunu gösterir. Bir işarete dokun, yalnız o konu kalsın.</p>
     <ul class="keys" id="keys"></ul>
   </section>
@@ -166,6 +207,7 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
         <input id="q" type="search" placeholder="proje, konu ya da dil…" aria-label="Çalışmalarda ara">
       </label>
       <button class="tbtn sc" id="liveOnly" aria-pressed="false">yalnız yayında olanlar</button>
+      <button class="tbtn sc" id="viewBtn" aria-pressed="false">liste görünümü</button>
       <select id="lang" aria-label="Dil süzgeci"><option value="all">her dil</option></select>
       <select id="sort" aria-label="Sıralama">
         <option value="new">yeniden eskiye</option>
@@ -188,7 +230,7 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 
 <footer class="wrap">
   <p>Kapaksız görünen depolarda sayfa yayını kapalı: <code>Settings → Pages → Deploy from branch → main / (root)</code>. Yayına aldıktan sonra levhaya kapak eklemek için 420×262 boyutunda bir ekran görüntüsünü <code>covers.js</code> içindeki <code>IMG</code> listesine yaz.</p>
-  <p>Yeni bir depo eklediğinde fihriste bir satır ekle: bu dosyadaki <code>D</code> listesinin alanları — depo adı, başlık, açıklama, konu, dil, tarih, yayın durumu.</p>
+  <p>Yeni bir depo eklediğinde fihriste bir satır ekle: bu dosyadaki <code>D</code> listesinin alanları — depo adı, başlık, açıklama, konu, dil, tarih, yayın durumu. Vitrindeki dört işi değiştirmek için <code>FEATURED</code> listesindeki depo adlarını düzenle.</p>
 </footer>
 
 <button class="totop sc" id="totop" aria-label="Sayfa başına dön">başa dön ↑</button>
@@ -248,7 +290,9 @@ function figure(cat,no){
 }
 
 
-const state={q:"",cat:"all",live:false,sort:"new",lang:"all"};
+const state={q:"",cat:"all",live:false,sort:"new",lang:"all",view:"plates"};
+/* vitrindeki seçme levhalar: ilki kahraman boyutunda */
+const FEATURED=["interactive-periodic-table","fourier-cizim-makinesi","yz-oyunu-kozmo","doga-dedektifleri"];
 const $=s=>document.querySelector(s);
 
 /* ---- adres çubuğuyla eşleşme: süzgeçler paylaşılabilir bağlantı olur ---- */
@@ -259,6 +303,7 @@ function readHash(){
   state.lang=h.get("dil")||"all";
   state.sort=["new","old","az"].includes(h.get("sira"))?h.get("sira"):"new";
   state.live=h.get("yayin")==="1";
+  state.view=h.get("gorunum")==="liste"?"list":"plates";
 }
 function writeHash(){
   const h=new URLSearchParams();
@@ -267,6 +312,7 @@ function writeHash(){
   if(state.lang!=="all") h.set("dil",state.lang);
   if(state.sort!=="new") h.set("sira",state.sort);
   if(state.live) h.set("yayin","1");
+  if(state.view==="list") h.set("gorunum","liste");
   const s=h.toString();
   try{history.replaceState(null,"",s?"#"+s:location.pathname+location.search)}catch(e){}
 }
@@ -294,6 +340,32 @@ Object.entries(langCounts).sort((a,b)=>b[1]-a[1]).forEach(([l,n])=>{
 if(![...$("#lang").options].some(o=>o.value===state.lang)) state.lang="all";
 $("#lang").value=state.lang; $("#sort").value=state.sort; $("#q").value=state.q;
 
+/* ---- vitrin ---- */
+function urlOf(r){ return {live:"https://"+U+".github.io/"+r.n+"/"+(r.p||""), repo:"https://github.com/"+U+"/"+r.n}; }
+(function buildVitrin(){
+  const F=FEATURED.map(n=>D.find(r=>r.n===n)).filter(r=>r&&r.v&&IMG[r.n]);
+  if(F.length<4) return;
+  const [h,...rest]=F, hu=urlOf(h);
+  document.querySelector("#vitrin").innerHTML=`
+    <p class="sechead sc">vitrin — seçme levhalar</p>
+    <div class="hero">
+      <a href="${hu.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${IMG[h.n]}" alt=""></a>
+      <div class="tx">
+        <span class="k sc">${glyph(h.c,11)} ${CATS[h.c][0]} · levha ${h.no}</span>
+        <h2><a href="${hu.live}" target="_blank" rel="noopener">${h.t}</a></h2>
+        <p>${h.d}</p>
+        <p class="go sc"><a href="${hu.live}" target="_blank" rel="noopener" style="color:var(--red)">sayfayı aç</a><a href="${hu.repo}" target="_blank" rel="noopener">kodu gör</a></p>
+      </div>
+    </div>
+    <div class="trio">${rest.map(r=>{
+      const u=urlOf(r);
+      return `<div class="c">
+        <a href="${u.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="${IMG[r.n]}" alt=""></a>
+        <div class="b"><h3><a href="${u.live}" target="_blank" rel="noopener">${r.t}</a></h3><p>${r.d}</p></div>
+      </div>`;}).join("")}
+    </div>`;
+})();
+
 /* ---- levhalar ---- */
 function render(){
   document.querySelectorAll(".key").forEach(b=>b.setAttribute("aria-pressed",b.dataset.cat===state.cat));
@@ -315,9 +387,12 @@ function render(){
     +(state.lang!=="all"?" · "+state.lang:"")
     +(state.live?" · yayında":"");
   $("#empty").hidden = list.length>0;
+  $("#viewBtn").setAttribute("aria-pressed",state.view==="list");
+  $("#vitrin").hidden = state.cat!=="all"||state.lang!=="all"||state.live||!!q;
   writeHash();
 
   const wrap=$("#plates"); wrap.innerHTML="";
+  wrap.classList.toggle("aslist",state.view==="list");
   let lastYear="";
   list.forEach(r=>{
     if(state.sort!=="az"){
@@ -328,23 +403,33 @@ function render(){
         wrap.append(yr);
       }
     }
-    const live="https://"+U+".github.io/"+r.n+"/"+(r.p||""), repo="https://github.com/"+U+"/"+r.n;
-    const li=document.createElement("li"); li.className="plate";
-    const cover = (r.v && IMG[r.n])
-      ? `<a class="frame" href="${live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="${IMG[r.n]}" alt=""></a>`
-      : `<div class="frame blank">${figure(r.c,r.no)}<span class="sc">yalnız kod deposu</span></div>`;
-    li.innerHTML = cover + `
-      <div class="pl-meta">
-        <span class="cat sc">${glyph(r.c,11)} ${CATS[r.c][0]}</span>
-        <span class="sc">levha ${r.no}</span>
-      </div>
-      <h3><a href="${r.v?live:repo}" target="_blank" rel="noopener">${r.t}</a></h3>
-      <p>${r.d}</p>
-      <p class="fine">
-        ${r.v?`<a class="sc" href="${live}" target="_blank" rel="noopener">sayfayı aç</a>`:`<span class="sc off">yayın kapalı</span> `}
-        <a class="sc" href="${repo}" target="_blank" rel="noopener">kodu gör</a>
-        <span class="slug" lang="en">· ${r.n}${r.l&&r.l!=="—"?" · "+r.l:""} · ${r.u.slice(0,7).replace("-",".")}</span>
-      </p>`;
+    const {live,repo}=urlOf(r);
+    const li=document.createElement("li");
+    if(state.view==="list"){
+      li.className="lrow";
+      li.innerHTML=`<span class="g">${glyph(r.c,11)}</span>
+        <span class="t"><a href="${r.v?live:repo}" target="_blank" rel="noopener">${r.t}</a></span>
+        <span class="d">${r.d.replace(/[.!?]$/,"")}</span>
+        <span class="dots"></span>
+        <span class="m sc">${r.v?`<a class="on" href="${live}" target="_blank" rel="noopener">sayfa</a>`:`yayın kapalı`} · <a href="${repo}" target="_blank" rel="noopener">kod</a><span lang="en">${r.l&&r.l!=="—"?" · "+r.l:""} · ${r.u.slice(0,7).replace("-",".")}</span></span>`;
+    }else{
+      li.className="plate";
+      const cover = (r.v && IMG[r.n])
+        ? `<a class="frame" href="${live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="${IMG[r.n]}" alt=""></a>`
+        : `<div class="frame blank">${figure(r.c,r.no)}<span class="sc">yalnız kod deposu</span></div>`;
+      li.innerHTML = cover + `
+        <div class="pl-meta">
+          <span class="cat sc">${glyph(r.c,11)} ${CATS[r.c][0]}</span>
+          <span class="sc">levha ${r.no}</span>
+        </div>
+        <h3><a href="${r.v?live:repo}" target="_blank" rel="noopener">${r.t}</a></h3>
+        <p>${r.d}</p>
+        <p class="fine">
+          ${r.v?`<a class="sc" href="${live}" target="_blank" rel="noopener">sayfayı aç</a>`:`<span class="sc off">yayın kapalı</span> `}
+          <a class="sc" href="${repo}" target="_blank" rel="noopener">kodu gör</a>
+          <span class="slug" lang="en">· ${r.n}${r.l&&r.l!=="—"?" · "+r.l:""} · ${r.u.slice(0,7).replace("-",".")}</span>
+        </p>`;
+    }
     wrap.append(li);
   });
 }
@@ -353,6 +438,7 @@ $("#q").addEventListener("input",e=>{state.q=e.target.value;render()});
 $("#sort").addEventListener("change",e=>{state.sort=e.target.value;render()});
 $("#lang").addEventListener("change",e=>{state.lang=e.target.value;render()});
 $("#liveOnly").addEventListener("click",()=>{state.live=!state.live;render()});
+$("#viewBtn").addEventListener("click",()=>{state.view=state.view==="list"?"plates":"list";render()});
 $("#reset").addEventListener("click",()=>{state.q="";$("#q").value="";state.cat="all";state.live=false;state.lang="all";$("#lang").value="all";render();$("#q").focus()});
 document.addEventListener("keydown",e=>{
   if(e.key==="/"&&document.activeElement!==$("#q")){e.preventDefault();$("#q").focus()}
