@@ -14,7 +14,6 @@ Tek sayfalık, derlemesiz bir site: HTML, CSS ve düz JavaScript. Bağımlılık
 | `kapak/` | Levha kapakları, 420×262 boyutunda `.webp`. `og.jpg` sosyal paylaşım görseli. |
 | `404.html` | GitHub Pages'in bulunamayan adreslerde gösterdiği sayfa. |
 | `proje-dizini.html` + `dizin-data.json` | Fihristin öncülü olan eski dizin sayfası. Fihristte 70. levha olarak duruyor; verisi ayrı bir dosyada. |
-| `portolio.html` | Fihristle ilgisi olmayan, ALKEV 5. sınıf öğrenci portfolyo vitrini. Hiçbir sayfadan bağlantı verilmiyor; `robots.txt` ile arama motorlarına kapatıldı. |
 | `robots.txt`, `sitemap.xml` | Arama motorları için. |
 
 ## Yeni depo eklemek

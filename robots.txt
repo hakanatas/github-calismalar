@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /portolio.html
 
 Sitemap: https://hakanatas.github.io/github-calismalar/sitemap.xml

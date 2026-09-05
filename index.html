@@ -99,18 +99,18 @@ a{color:inherit}
   border:1px solid var(--rule)}
 .frame.blank{background:var(--paper2);position:relative}
 .frame.blank svg{display:block;width:100%;height:auto;border:1px solid var(--rule)}
-.frame.blank span{position:absolute;left:14px;bottom:14px;font-size:.7rem;color:var(--muted)}
+.frame.blank span{position:absolute;left:14px;bottom:14px;font-size:.76rem;color:var(--muted)}
 .frame.blank.pending span{color:var(--red)}
-.pl-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:.74rem;color:var(--muted)}
+.pl-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:.78rem;color:var(--muted)}
 .pl-meta .cat{display:inline-flex;align-items:center;gap:7px;color:var(--ink)}
 .plate h3{margin:0;font-weight:500;font-size:1.35rem;line-height:1.2}
 .plate h3 a{text-decoration:none;background-image:linear-gradient(var(--rule),var(--rule));
   background-size:100% 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .25s}
 .plate h3 a:hover{background-image:linear-gradient(var(--ink),var(--ink))}
 .plate p{margin:0;font-size:1rem;color:#3A342B}
-.plate .fine{font-size:.78rem;color:var(--muted);margin-top:auto;padding-top:7px;border-top:1px solid var(--rule)}
-.plate .fine a{margin-right:1em;font-size:.74rem}
-.plate .fine .slug{font-size:.72rem;letter-spacing:.01em;white-space:nowrap}
+.plate .fine{font-size:.8rem;color:var(--muted);margin-top:auto;padding-top:7px;border-top:1px solid var(--rule)}
+.plate .fine a{margin-right:1em;font-size:.78rem}
+.plate .fine .slug{display:block;margin-top:5px;font-size:.76rem;letter-spacing:.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .plate .off{color:var(--red);margin-right:1em}
 
 .empty{padding:70px 0 90px;text-align:center;color:var(--muted);font-style:italic}
@@ -128,7 +128,8 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 .hero>a{display:block}
 .hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;border-right:1px solid var(--ink)}
 .hero .tx{padding:30px 30px 24px;display:flex;flex-direction:column}
-.hero .tx .k{font-size:.74rem;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
+.hero .tx .k{font-size:.78rem;color:var(--muted);display:inline-flex;align-items:center;gap:7px}
+.hero .meta{margin-top:14px;font-size:.8rem;color:var(--muted)}
 .hero h2{font-weight:500;font-size:1.9rem;margin:8px 0 10px;line-height:1.15}
 .hero h2 a{text-decoration:none}
 .hero p{margin:0;font-size:1.02rem;color:#3A342B}
@@ -151,7 +152,7 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 .lrow .t a:hover{border-bottom:1px solid var(--ink)}
 .lrow .d{color:var(--muted);font-size:.9rem;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:36ch}
 .lrow .dots{flex:1;border-bottom:1px dotted var(--rule);transform:translateY(-4px);min-width:24px}
-.lrow .m{font-size:.76rem;color:var(--muted);white-space:nowrap}
+.lrow .m{font-size:.8rem;color:var(--muted);white-space:nowrap}
 .lrow .m a{margin:0}
 .lrow .m .on{color:var(--red)}
 .plates.aslist .yearrow{display:flex;margin:26px 0 4px}
@@ -373,6 +374,7 @@ function urlOf(r){ return {live:"https://"+U+".github.io/"+r.n+"/"+(r.p||""), re
         <span class="k sc">${glyph(h.c,11)} ${CATS[h.c][0]} · levha ${h.no}</span>
         <h2><a href="${hu.live}" target="_blank" rel="noopener">${h.t}</a></h2>
         <p>${h.d}</p>
+        <p class="meta sc" lang="en">${h.n}${h.l&&h.l!=="—"?" · "+h.l:""} · ${h.u.slice(0,7).replace("-",".")}</p>
         <p class="go sc"><a href="${hu.live}" target="_blank" rel="noopener" style="color:var(--red)">sayfayı aç</a><a href="${hu.repo}" target="_blank" rel="noopener">kodu gör</a></p>
       </div>
     </div>
@@ -448,7 +450,7 @@ function render(){
         <p class="fine">
           ${r.v?`<a class="sc" href="${live}" target="_blank" rel="noopener">sayfayı aç</a>`:`<span class="sc off">yayın kapalı</span> `}
           <a class="sc" href="${repo}" target="_blank" rel="noopener">kodu gör</a>
-          <span class="slug" lang="en">· ${r.n}${r.l&&r.l!=="—"?" · "+r.l:""} · ${r.u.slice(0,7).replace("-",".")}</span>
+          <span class="slug" lang="en">${r.n}${r.l&&r.l!=="—"?" · "+r.l:""} · ${r.u.slice(0,7).replace("-",".")}</span>
         </p>`;
     }
     wrap.append(li);
