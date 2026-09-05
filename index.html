@@ -5,14 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Çalışmalar Fihristi — Hakan Ataş</title>
 <meta name="description" content="Hakan Ataş'ın GitHub çalışmalarının levha levha fihristi: matematik, fen, yapay zekâ, robotik ve oyun projeleri; her birinin canlı sayfası ve kodu.">
+<meta name="author" content="Hakan Ataş">
 <link rel="canonical" href="https://hakanatas.github.io/github-calismalar/">
 <meta name="theme-color" content="#F4EEE0">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Çalışmalar Fihristi">
 <meta property="og:title" content="Çalışmalar Fihristi — Hakan Ataş">
 <meta property="og:description" content="On bir yılda biriken depolar: derste kullanılan etkileşimli sayfalar, yarışma kodları ve küçük deneyler — her biri kendi levhasıyla.">
 <meta property="og:url" content="https://hakanatas.github.io/github-calismalar/">
+<meta property="og:image" content="https://hakanatas.github.io/github-calismalar/kapak/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Çalışmalar Fihristi — seçme levha kapaklarından bir mozaik">
 <meta property="og:locale" content="tr_TR">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hakanatas.github.io/github-calismalar/kapak/og.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Çalışmalar Fihristi","inLanguage":"tr","url":"https://hakanatas.github.io/github-calismalar/","description":"Hakan Ataş'ın GitHub çalışmalarının fihristi: matematik, fen, yapay zekâ, robotik ve oyun projeleri.","author":{"@type":"Person","name":"Hakan Ataş","jobTitle":"Matematik ve bilişim öğretmeni","url":"https://hakanatas.github.io/kisisel/","sameAs":["https://github.com/hakanatas"]}}
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F4EEE0'/%3E%3Ccircle cx='22' cy='24' r='11' fill='%232B4E8F'/%3E%3Cpolygon points='43,13 54,35 32,35' fill='%23B7392A'/%3E%3Crect x='18' y='40' width='20' height='11' fill='%23DFA71C'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +46,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opa
 .wrap{max-width:1120px;margin:0 auto;padding:0 26px;position:relative;z-index:2}
 a{color:inherit}
 .sc{font-variant:all-small-caps;letter-spacing:.15em}
+.skip{position:absolute;left:-9999px;top:12px;z-index:100;background:var(--paper);border:1px solid var(--ink);padding:8px 14px;text-decoration:none}
+.skip:focus{left:12px}
 
 /* ---------- masthead ---------- */
 .masthead{text-align:center;padding:76px 0 34px}
@@ -88,6 +100,7 @@ a{color:inherit}
 .frame.blank{background:var(--paper2);position:relative}
 .frame.blank svg{display:block;width:100%;height:auto;border:1px solid var(--rule)}
 .frame.blank span{position:absolute;left:14px;bottom:14px;font-size:.7rem;color:var(--muted)}
+.frame.blank.pending span{color:var(--red)}
 .pl-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:.74rem;color:var(--muted)}
 .pl-meta .cat{display:inline-flex;align-items:center;gap:7px;color:var(--ink)}
 .plate h3{margin:0;font-weight:500;font-size:1.35rem;line-height:1.2}
@@ -109,7 +122,7 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
 
 /* ---------- vitrin ---------- */
-.sechead{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:.95rem;margin:36px 0 20px}
+.sechead{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:.95rem;font-weight:400;margin:36px 0 20px}
 .sechead::before,.sechead::after{content:"";flex:1;border-top:1px solid var(--rule)}
 .hero{display:grid;grid-template-columns:1.25fr 1fr;border:1px solid var(--ink);background:var(--paper2)}
 .hero>a{display:block}
@@ -176,6 +189,7 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 </style>
 </head>
 <body>
+<a class="skip sc" href="#fihrist">fihriste geç</a>
 <div class="wrap">
 
   <header class="masthead">
@@ -192,8 +206,8 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 
   <section id="vitrin" aria-label="Seçme levhalar"></section>
 
-  <section class="legend">
-    <p class="sechead sc">fihrist — tamamı</p>
+  <section class="legend" id="fihrist">
+    <h2 class="sechead sc">fihrist — tamamı</h2>
     <p class="lede">Her levhanın işareti, konusunu gösterir. Bir işarete dokun, yalnız o konu kalsın.</p>
     <ul class="keys" id="keys"></ul>
   </section>
@@ -204,7 +218,7 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
     <div class="toolrow">
       <label class="field">
         <span class="sc" style="color:var(--muted);font-size:.78rem">ara</span>
-        <input id="q" type="search" placeholder="proje, konu ya da dil…" aria-label="Çalışmalarda ara">
+        <input id="q" type="search" placeholder="proje, konu ya da dil… (kısayol: /)" aria-label="Çalışmalarda ara" autocomplete="off">
       </label>
       <button class="tbtn sc" id="liveOnly" aria-pressed="false">yalnız yayında olanlar</button>
       <button class="tbtn sc" id="viewBtn" aria-pressed="false">liste görünümü</button>
@@ -229,8 +243,9 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 </main>
 
 <footer class="wrap">
-  <p>Kapaksız görünen depolarda sayfa yayını kapalı: <code>Settings → Pages → Deploy from branch → main / (root)</code>. Yayına aldıktan sonra levhaya kapak eklemek için 420×262 boyutunda bir ekran görüntüsünü <code>covers.js</code> içindeki <code>IMG</code> listesine yaz.</p>
-  <p>Yeni bir depo eklediğinde fihriste bir satır ekle: bu dosyadaki <code>D</code> listesinin alanları — depo adı, başlık, açıklama, konu, dil, tarih, yayın durumu. Vitrindeki dört işi değiştirmek için <code>FEATURED</code> listesindeki depo adlarını düzenle.</p>
+  <p>Kapaksız görünen depolarda sayfa yayını kapalı: <code>Settings → Pages → Deploy from branch → main / (root)</code>. Yayına aldıktan sonra levhaya kapak eklemek için 420×262 boyutunda bir ekran görüntüsünü <code>kapak/&lt;depo-adı&gt;.webp</code> olarak kaydet ve <code>covers.js</code> içindeki <code>IMG</code> listesine bir satır ekle.</p>
+  <p>Yeni bir depo eklediğinde fihriste bir satır ekle: bu dosyadaki <code>D</code> listesinin alanları — depo adı, başlık, açıklama, konu, dil, tarih, yayın durumu. Vitrindeki dört işi değiştirmek için <code>FEATURED</code> listesindeki depo adlarını düzenle. Ayrıntılar <a href="https://github.com/hakanatas/github-calismalar#readme" target="_blank" rel="noopener">README</a> dosyasında.</p>
+  <p>Önceki dizin sayfası hâlâ yerinde: <a href="proje-dizini.html">Öğrenme Atölyesi — Proje Dizini</a>.</p>
 </footer>
 
 <button class="totop sc" id="totop" aria-label="Sayfa başına dön">başa dön ↑</button>
@@ -238,6 +253,10 @@ footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rul
 <script src="covers.js"></script>
 <script>
 const U="hakanatas";
+/* covers.js yüklenemezse fihrist kapaksız ama çalışır kalsın */
+const COVER=(typeof IMG==="undefined")?{}:IMG;
+/* Türkçe düzeltme işaretlerini sadeleştir: "zeka" aranınca "Zekâ" da bulunsun */
+const fold=s=>s.toLocaleLowerCase("tr").replace(/â/g,"a").replace(/î/g,"i").replace(/û/g,"u");
 /* konu: [ad, şekil, renk] — üç şekil, üç renk, dokuz konu */
 const CATS={
   mat:   ["Matematik",     "square",  "var(--yellow)"],
@@ -343,13 +362,13 @@ $("#lang").value=state.lang; $("#sort").value=state.sort; $("#q").value=state.q;
 /* ---- vitrin ---- */
 function urlOf(r){ return {live:"https://"+U+".github.io/"+r.n+"/"+(r.p||""), repo:"https://github.com/"+U+"/"+r.n}; }
 (function buildVitrin(){
-  const F=FEATURED.map(n=>D.find(r=>r.n===n)).filter(r=>r&&r.v&&IMG[r.n]);
+  const F=FEATURED.map(n=>D.find(r=>r.n===n)).filter(r=>r&&r.v&&COVER[r.n]);
   if(F.length<4) return;
   const [h,...rest]=F, hu=urlOf(h);
   document.querySelector("#vitrin").innerHTML=`
-    <p class="sechead sc">vitrin — seçme levhalar</p>
+    <h2 class="sechead sc">vitrin — seçme levhalar</h2>
     <div class="hero">
-      <a href="${hu.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${IMG[h.n]}" alt=""></a>
+      <a href="${hu.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="${COVER[h.n]}" width="420" height="262" fetchpriority="high" alt=""></a>
       <div class="tx">
         <span class="k sc">${glyph(h.c,11)} ${CATS[h.c][0]} · levha ${h.no}</span>
         <h2><a href="${hu.live}" target="_blank" rel="noopener">${h.t}</a></h2>
@@ -360,7 +379,7 @@ function urlOf(r){ return {live:"https://"+U+".github.io/"+r.n+"/"+(r.p||""), re
     <div class="trio">${rest.map(r=>{
       const u=urlOf(r);
       return `<div class="c">
-        <a href="${u.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="${IMG[r.n]}" alt=""></a>
+        <a href="${u.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" decoding="async" src="${COVER[r.n]}" width="420" height="262" alt=""></a>
         <div class="b"><h3><a href="${u.live}" target="_blank" rel="noopener">${r.t}</a></h3><p>${r.d}</p></div>
       </div>`;}).join("")}
     </div>`;
@@ -370,13 +389,13 @@ function urlOf(r){ return {live:"https://"+U+".github.io/"+r.n+"/"+(r.p||""), re
 function render(){
   document.querySelectorAll(".key").forEach(b=>b.setAttribute("aria-pressed",b.dataset.cat===state.cat));
   $("#liveOnly").setAttribute("aria-pressed",state.live);
-  const q=state.q.trim().toLocaleLowerCase("tr");
+  const q=fold(state.q.trim());
   let list=D.filter(r=>{
     if(state.cat!=="all"&&r.c!==state.cat) return false;
     if(state.live&&!r.v) return false;
     if(state.lang!=="all"&&r.l!==state.lang) return false;
     if(!q) return true;
-    return (r.n+" "+r.t+" "+r.d+" "+r.l+" "+CATS[r.c][0]).toLocaleLowerCase("tr").includes(q);
+    return fold(r.n+" "+r.t+" "+r.d+" "+r.l+" "+CATS[r.c][0]+" "+r.u.slice(0,4)).includes(q);
   });
   if(state.sort==="new") list.sort((a,b)=>b.u.localeCompare(a.u));
   if(state.sort==="old") list.sort((a,b)=>a.u.localeCompare(b.u));
@@ -414,9 +433,11 @@ function render(){
         <span class="m sc">${r.v?`<a class="on" href="${live}" target="_blank" rel="noopener">sayfa</a>`:`yayın kapalı`} · <a href="${repo}" target="_blank" rel="noopener">kod</a><span lang="en">${r.l&&r.l!=="—"?" · "+r.l:""} · ${r.u.slice(0,7).replace("-",".")}</span></span>`;
     }else{
       li.className="plate";
-      const cover = (r.v && IMG[r.n])
-        ? `<a class="frame" href="${live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="${IMG[r.n]}" alt=""></a>`
-        : `<div class="frame blank">${figure(r.c,r.no)}<span class="sc">yalnız kod deposu</span></div>`;
+      const cover = (r.v && COVER[r.n])
+        ? `<a class="frame" href="${live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" decoding="async" src="${COVER[r.n]}" width="420" height="262" alt=""></a>`
+        : r.v
+          ? `<a class="frame blank pending" href="${live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${figure(r.c,r.no)}<span class="sc">kapak bekliyor</span></a>`
+          : `<div class="frame blank">${figure(r.c,r.no)}<span class="sc">yalnız kod deposu</span></div>`;
       li.innerHTML = cover + `
         <div class="pl-meta">
           <span class="cat sc">${glyph(r.c,11)} ${CATS[r.c][0]}</span>
@@ -439,7 +460,11 @@ $("#sort").addEventListener("change",e=>{state.sort=e.target.value;render()});
 $("#lang").addEventListener("change",e=>{state.lang=e.target.value;render()});
 $("#liveOnly").addEventListener("click",()=>{state.live=!state.live;render()});
 $("#viewBtn").addEventListener("click",()=>{state.view=state.view==="list"?"plates":"list";render()});
-$("#reset").addEventListener("click",()=>{state.q="";$("#q").value="";state.cat="all";state.live=false;state.lang="all";$("#lang").value="all";render();$("#q").focus()});
+$("#reset").addEventListener("click",()=>{
+  Object.assign(state,{q:"",cat:"all",live:false,lang:"all",sort:"new"});
+  $("#q").value=""; $("#lang").value="all"; $("#sort").value="new";
+  render(); $("#q").focus();
+});
 document.addEventListener("keydown",e=>{
   if(e.key==="/"&&document.activeElement!==$("#q")){e.preventDefault();$("#q").focus()}
   if(e.key==="Escape"&&document.activeElement===$("#q")){state.q="";$("#q").value="";render()}

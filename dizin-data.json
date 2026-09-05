@@ -66,5 +66,6 @@
 {"name": "coursera-test", "title": "Coursera Test", "desc": "Coursera web geliştirme kursu için oluşturulmuş deneme deposu.", "cat": "diger", "lang": "HTML", "live": "https://hakanatas.github.io/coursera-test/", "repo": "https://github.com/hakanatas/coursera-test", "date": "2020-11-22"},
 {"name": "lec0", "title": "Lecture 0 (tekrar)", "desc": "Erken dönem HTML ders alıştırması.", "cat": "diger", "lang": "HTML", "live": "", "repo": "https://github.com/hakanatas/lec0", "date": "2019-01-22"},
 {"name": "lecture0", "title": "Lecture 0", "desc": "Erken dönem HTML ders alıştırması — ilk deneme.", "cat": "diger", "lang": "HTML", "live": "", "repo": "https://github.com/hakanatas/lecture0", "date": "2018-08-24"},
+{"name": "keybright", "title": "Keybright", "desc": "Projeksiyon ve klavyeyle kurulan kendin yap ışık enstalasyonu (2018).", "cat": "sanat", "lang": "JavaScript", "live": "https://hakanatas.github.io/keybright/", "repo": "https://github.com/hakanatas/keybright", "date": "2018-05-17"},
 {"name": "JS", "title": "JS", "desc": "İlk JavaScript alıştırmaları arşivi (2017).", "cat": "diger", "lang": "", "live": "", "repo": "https://github.com/hakanatas/JS", "date": "2017-02-27"}
 ]
