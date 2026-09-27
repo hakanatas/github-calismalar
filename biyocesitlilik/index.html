@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biyoçeşitlilik Koleksiyonu — Hakan Ataş</title>
+<meta name="description" content="Beş iş, bir rota: yağmur ormanının katmanları, tozlayıcılar, parçalardan kurulan türler, sessizleşen bir koro ve çocuklar için bir biyoçeşitlilik dergisi.">
+<link rel="canonical" href="https://hakanatas.github.io/github-calismalar/biyocesitlilik/">
+<meta name="theme-color" content="#F4EEE0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Biyoçeşitlilik Koleksiyonu — Hakan Ataş">
+<meta property="og:description" content="Merak et, yakından bak, parçalarla kur, kaybı duy, harekete geç: sınıfta sırayla gezilen beş etkileşimli iş.">
+<meta property="og:url" content="https://hakanatas.github.io/github-calismalar/biyocesitlilik/">
+<meta property="og:locale" content="tr_TR">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F4EEE0'/%3E%3Ccircle cx='32' cy='32' r='20' fill='%23B7392A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4EEE0; --paper2:#EBE3D1; --ink:#1C1916; --rule:#C8BBA1; --muted:#6C6151;
+  --yellow:#DFA71C; --blue:#2B4E8F; --red:#B7392A; --leaf:#3F5B3A; --slate:#8C8270;
+  --g:"EB Garamond",Garamond,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--g);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background:radial-gradient(circle at 18% 10%,rgba(0,0,0,.045),transparent 60%),radial-gradient(circle at 85% 88%,rgba(0,0,0,.05),transparent 58%)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 26px;position:relative;z-index:1}
+a{color:inherit}
+.sc{font-variant:all-small-caps;letter-spacing:.15em}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* masthead */
+.crumbs{padding:26px 0 0;font-size:.86rem;color:var(--muted)}
+.crumbs a{text-decoration:none;border-bottom:1px solid var(--rule)}
+.mast{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end;padding:54px 0 30px}
+.mast h1{font-weight:500;font-size:clamp(2.8rem,8vw,5.6rem);line-height:.95;margin:.1em 0 0;letter-spacing:-.005em;text-wrap:balance}
+.mast h1 .r{color:var(--red);font-style:italic}
+.mast .sub{font-size:1.14rem;font-style:italic;color:#3A342B;margin:0;max-width:44ch}
+.mast .k{font-size:.84rem;color:var(--muted);margin:0}
+.hr{border:0;border-top:1px solid var(--ink);margin:0}
+.hr.thin{border-top:1px solid var(--rule);margin:5px 0 0}
+
+/* tally */
+.tally{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--rule)}
+.tally div{padding:18px 14px 16px;border-right:1px solid var(--rule)}
+.tally div:last-child{border-right:0}
+.tally b{display:block;font-weight:500;font-size:2.1rem;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.tally span{font-size:.84rem;color:var(--muted)}
+
+/* route strip */
+.strip{display:flex;align-items:center;gap:0;margin:44px 0 10px;flex-wrap:wrap}
+.strip a{display:flex;align-items:center;gap:10px;text-decoration:none;padding:6px 0;font-size:1rem}
+.strip a:hover .v{border-bottom-color:var(--red)}
+.strip .v{border-bottom:1.5px solid transparent}
+.strip .n{font-size:.8rem;color:var(--muted)}
+.strip .arr{flex:1;min-width:24px;border-top:1px dashed var(--rule);margin:0 12px}
+
+/* stations */
+.route{list-style:none;padding:0;margin:26px 0 0;position:relative}
+.route::before{content:"";position:absolute;left:37px;top:10px;bottom:40px;border-left:1.5px solid var(--ink)}
+.st{display:grid;grid-template-columns:76px minmax(0,1fr) minmax(0,1.05fr);gap:30px;padding:0 0 64px;position:relative}
+.st .mk{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px}
+.st .dot{width:30px;height:30px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink);display:grid;place-items:center;margin-top:4px;z-index:1}
+.st .dot i{width:14px;height:14px;border-radius:50%;background:var(--red);display:block}
+.st .rn{font-size:.9rem;color:var(--muted);background:var(--paper);padding:2px 0}
+.st figure{margin:0;border:1px solid var(--ink);background:var(--paper2);align-self:start}
+.st figure a{display:block}
+.st figure img{display:block;width:100%;aspect-ratio:420/262;object-fit:cover;object-position:top center}
+.st figure figcaption{border-top:1px solid var(--ink);padding:7px 12px;font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between;gap:10px}
+.st .verb{font-size:.92rem;color:var(--red);margin:0}
+.st h2{font-weight:500;font-size:1.85rem;line-height:1.1;margin:4px 0 10px;text-wrap:balance}
+.st h2 a{text-decoration:none}
+.st h2 a:hover{border-bottom:1px solid var(--ink)}
+.st .d{margin:0 0 16px;color:#3A342B}
+.st dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0 0 16px;font-size:.95rem}
+.st dt{color:var(--muted);font-size:.82rem;padding-top:2px}
+.st dd{margin:0}
+.st .ask{margin:0 0 16px;padding:10px 14px;border-left:3px solid var(--leaf);background:rgba(63,91,58,.07);font-style:italic}
+.st .ask span{font-style:normal;color:var(--leaf);font-size:.78rem;display:block}
+.st .go{font-size:.84rem;margin:0}
+.st .go a{margin-right:1.3em;text-decoration:none;border-bottom:1px solid var(--rule)}
+.st .go a.p{color:var(--red);border-bottom-color:var(--red)}
+.st.new .dot{border-color:var(--red)}
+.badge{font-size:.72rem;color:var(--paper);background:var(--red);padding:1px 7px;margin-left:8px;vertical-align:3px}
+
+/* lesson */
+.sechead{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:.95rem;margin:10px 0 22px}
+.sechead::before,.sechead::after{content:"";flex:1;border-top:1px solid var(--rule)}
+.lesson{display:grid;grid-template-columns:1fr 1.6fr;gap:40px;padding-bottom:40px}
+.lesson h3{font-weight:500;font-size:1.6rem;margin:0 0 10px;line-height:1.15}
+.lesson p{margin:0 0 12px;color:#3A342B}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.98rem}
+th,td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
+th{font-weight:400;color:var(--muted);font-size:.8rem;border-bottom:1px solid var(--ink)}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--muted);width:6.5em}
+
+footer{border-top:1px solid var(--ink);padding:26px 0 70px;font-size:.92rem;color:var(--muted)}
+footer p{margin:0 0 8px;max-width:78ch}
+footer code{font-size:.84rem;background:var(--paper2);border:1px solid var(--rule);padding:1px 6px}
+
+/* one orchestrated entrance */
+.in{opacity:0;transform:translateY(12px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.in{animation:none;opacity:1;transform:none}html{scroll-behavior:auto}}
+
+@media (max-width:860px){
+  .mast{grid-template-columns:1fr;gap:18px;padding-top:36px}
+  .st{grid-template-columns:52px minmax(0,1fr);gap:18px}
+  .st figure{grid-column:2}
+  .st .tx{grid-column:2}
+  .route::before{left:25px}
+  .tally{grid-template-columns:repeat(3,1fr)}
+  .tally div:nth-child(3){border-right:0}
+  .tally div:nth-child(n+4){border-top:1px solid var(--rule)}
+  .lesson{grid-template-columns:1fr;gap:14px}
+  .strip .arr{display:none}
+  .strip{gap:4px 18px}
+}
+@media (max-width:520px){ body{font-size:17px} .wrap{padding:0 18px} .tally{grid-template-columns:repeat(2,1fr)} .tally div{border-right:0!important;border-top:1px solid var(--rule)} .st h2{font-size:1.5rem} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumbs sc"><a href="../">Çalışmalar Fihristi</a> · koleksiyon</p>
+  <header class="mast">
+    <div>
+      <p class="k sc in" style="animation-delay:.05s">Beş iş · bir rota · FIRST Canopy sezonundan bugüne</p>
+      <h1 class="in" style="animation-delay:.15s">Biyo<span class="r">çeşitlilik</span></h1>
+    </div>
+    <p class="sub in" style="animation-delay:.35s">Aynı soruya beş ayrı kapıdan girilir: yağmur ormanının katmanları, tozlayıcıların kanatları, parçalardan kurulan türler, sessizleşen bir koro ve çocuklar için bir dergi. Sırayla gezildiğinde merakla başlayan, eylemle biten bir ders rotası olur.</p>
+  </header>
+  <hr class="hr"><hr class="hr thin">
+
+  <section class="tally in" style="animation-delay:.5s" aria-label="Koleksiyonun içindekiler">
+    <div><b>34</b><span>tür, beş orman katmanında</span></div>
+    <div><b>7</b><span>tozlayıcı grubu, 3B örnekle</span></div>
+    <div><b>8</b><span>poligondan kurulan figür</span></div>
+    <div><b>14</b><span>canlı sentezlenen hayvan sesi</span></div>
+    <div><b>38</b><span>sayfalık çocuk dergisi</span></div>
+  </section>
+
+  <nav class="strip in" style="animation-delay:.65s" id="strip" aria-label="Rota"></nav>
+
+  <ol class="route" id="route"></ol>
+  <noscript><p>Koleksiyon JavaScript ile diziliyor. İşler: canopy-ftc, canopy-biodiversity-lab, biobuzz-in-pieces, biophony, doga-dedektifleri — hepsi <a href="https://github.com/hakanatas">github.com/hakanatas</a> altında.</p></noscript>
+
+  <p class="sechead sc">sınıfta: bir ders saati</p>
+  <section class="lesson">
+    <div>
+      <h3>40 dakikalık rota</h3>
+      <p>Beş işin hepsini tek derste açmak gerekmez. Aşağıdaki akış üç istasyonla yetinir; kalan ikisi ödev ya da kulüp saati için kalır.</p>
+      <p style="font-size:.92rem;color:var(--muted)">Önerilen düzey ortaokul. Biophony için hoparlör ya da kulaklık gerekir.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>dakika</th><th>istasyon</th><th>sınıfın yaptığı</th></tr></thead>
+        <tbody>
+          <tr><td class="t">0–10</td><td>I · Canopy</td><td>Tahtaya yansıtılır, gökyüzünden toprağın altına birlikte inilir. Her katmanda bir öğrenci bir tür seçip bilgi kartını okur.</td></tr>
+          <tr><td class="t">10–22</td><td>IV · Biophony</td><td>Işıklar kısılır. 1970 korosu dinlenir; zaman ilerledikçe hangi sesin önce sustuğu not edilir. Sonunda sınıf ormana dokunarak koroyu geri getirir.</td></tr>
+          <tr><td class="t">22–34</td><td>V · Doğa Dedektifleri</td><td>“Sen de Yapabilirsin: 10 Adım” sayfası okunur; her grup okulda uygulanabilecek bir adımı seçer.</td></tr>
+          <tr><td class="t">34–40</td><td>Kapanış</td><td>Çıkış kartı: “Bugün susan bir sesi geri getirmek için ne gerekir?”</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<footer class="wrap">
+  <p>Biophony’deki sesler kayıt değil, tarayıcıda sentezlenir. Türlerin azalma oranları temsilidir; koronun toplamı WWF Yaşayan Gezegen Raporu 2024’teki ortalama %73 düşüşe (1970–2020) göre ölçeklenmiştir. Ekrandaki diğer rakamlar Hallmann vd. 2017 (PLOS ONE) ve Rosenberg vd. 2019 (Science) çalışmalarından gelir.</p>
+  <p>Yeni bir biyoçeşitlilik işi eklemek için bu dosyadaki <code>ROUTE</code> listesine bir durak, fihristteki <code>D</code> listesine de <code>"c": "doga"</code> ile bir satır yaz. Kapak görselleri fihristle ortak <code>covers.js</code> dosyasından gelir.</p>
+  <p><a href="../">← Çalışmalar Fihristi</a></p>
+</footer>
+
+<script src="../covers.js"></script>
+<script>
+const U="hakanatas";
+/* rota: sıra bir ders akışıdır — merak → yakından bakış → bütünü kurma → kayıp → eylem */
+const ROUTE=[
+ {n:"canopy-ftc",verb:"Merak et",short:"Canopy",
+  t:"Canopy — Bir Biyoçeşitlilik Yolculuğu",
+  d:"Gökyüzünden başlayıp kaydırdıkça tropik yağmur ormanının beş katmanından toprağın altına inilir. Soldaki cetvel yüksekliği gösterir; her katmanda o katmana özgü canlılar belirir.",
+  meta:[["Biçim","kaydırmalı keşif, katmana göre değişen ortam sesi"],["İçerik","34 tür · bilgi kartı, IUCN durumu, ekosistemdeki rolü"],["Dil","Türkçe / İngilizce"],["Süre","10–15 dk"]],
+  ask:"Hangi katmanda yaşayan bir tür, orman kesildiğinde ilk kaybolur? Neden?"},
+ {n:"canopy-biodiversity-lab",verb:"Yakından bak",short:"Field Lab",
+  t:"Canopy Biodiversity Lab",
+  d:"Eski usul bir saha rehberi: arılardan yarasalara yedi tozlayıcı grubu, döndürülüp yakınlaştırılabilen hareketli 3B örneklerle. Her örneğin ailesi, sevdiği çiçekler ve orman katmanı yanında yazar.",
+  meta:[["Biçim","3B saha rehberi, bitki–tozlayıcı eşleştirmeleri"],["İçerik","7 tozlayıcı grubu"],["Dil","Türkçe / İngilizce"],["Süre","10 dk"]],
+  ask:"Bir tozlayıcı yok olursa, onun ziyaret ettiği çiçeğe ne olur?"},
+ {n:"biobuzz-in-pieces",verb:"Parçalarla kur",short:"In Pieces",
+  t:"BIOBUZZ: In Pieces",
+  d:"“Species in Pieces”ten esinlenen galeri: bal arısı, kelebek, bukalemun, kanopi ağacı ve BIOBUZZ robotu aynı poligonlardan kurulur ve birbirine dönüşür. Her parça, bütünün bir parçası.",
+  meta:[["Biçim","poligon dönüşümlü galeri, anlatımlı giriş"],["İçerik","8 figür · FTC 2026–27 Canopy sezonu"],["Dil","Türkçe"],["Süre","5 dk"]],
+  ask:"Bir figürden tek bir parça eksilse hâlâ tanır mıydın? Bir ekosistem kaç parça kaybını kaldırır?"},
+ {n:"biophony",host:"github-calismalar",p:"biyocesitlilik/biophony/",verb:"Kaybı duy",short:"Biophony",isNew:true,
+  t:"Biophony — Sessizleşen Koro",
+  d:"Ormanın sesi gökyüzüne aurora gibi yazılır: yükseklik perdeyi, parlaklık şiddeti gösterir. Her tür kendi frekans bandında öter. Zaman 1970’ten bugüne akarken sesler seyrelir, yerini insan gürültüsü alır; sonunda ormana dokunarak koro geri getirilir.",
+  meta:[["Biçim","dinleme deneyimi, canlı spektrogram, zaman çizelgesi"],["İçerik","14 hayvan grubu · jeofoni ve antropofoni"],["Dil","İngilizce / Türkçe"],["Süre","3 dk ve serbest keşif"]],
+  ask:"Gökyüzünde ilk hangi bant karardı? O bandı dolduran ses neydi?"},
+ {n:"doga-dedektifleri",live:"https://canopy.alkevtech.com/",verb:"Harekete geç",short:"Doğa Dedektifleri",
+  t:"Doğa Dedektifleri — Sayı 1",
+  d:"FTC 24230 AG Robotik takımının çocuklar için hazırladığı biyoçeşitlilik dergisi: kapak konusu Canopy, yaşam bölgeleri, endemik canlılar, besin ağı, şişede mini ekosistem, bulmacalar ve “Sen de Yapabilirsin: 10 Adım”.",
+  meta:[["Biçim","sayfa sayfa dergi, yazdırılabilir PDF"],["İçerik","38 sayfa · sözlük, deney, gözlem defteri"],["Dil","Türkçe"],["Süre","ders boyunca, evde devam"]],
+  ask:"Okulun bahçesinde bu hafta hangi adımı atabiliriz?"}
+];
+const urls=r=>{ const h=r.host||r.n; return {live:r.live||("https://"+U+".github.io/"+h+"/"+(r.p||"")), repo:"https://github.com/"+U+"/"+h+(r.host?"/tree/main/"+r.p.replace(/\/$/,""):"")}; };
+const roman=["I","II","III","IV","V","VI","VII"];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+document.getElementById("strip").innerHTML=ROUTE.map((r,i)=>
+  `${i?'<span class="arr" aria-hidden="true"></span>':''}<a href="#${r.n}"><span class="n sc">${roman[i]}</span><span class="v">${r.verb}</span></a>`).join("");
+
+document.getElementById("route").innerHTML=ROUTE.map((r,i)=>{
+  const u=urls(r), img=(typeof IMG!=="undefined"&&IMG[r.n])?IMG[r.n]:"";
+  return `<li class="st${r.isNew?" new":""}" id="${r.n}">
+    <div class="mk"><span class="dot"><i></i></span><span class="rn sc">durak ${roman[i]}</span></div>
+    <figure>
+      <a href="${u.live}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${img?`<img loading="lazy" src="${img}" alt="">`:`<svg viewBox="0 0 420 262" style="display:block;width:100%"><rect width="420" height="262" fill="#EBE3D1"/><circle cx="210" cy="131" r="60" fill="#B7392A"/></svg>`}</a>
+      <figcaption class="sc"><span>${esc(r.n)}</span><span>${esc(r.short)}</span></figcaption>
+    </figure>
+    <div class="tx">
+      <p class="verb sc">${roman[i]} · ${esc(r.verb)}</p>
+      <h2><a href="${u.live}" target="_blank" rel="noopener">${esc(r.t)}</a>${r.isNew?'<span class="badge sc">yeni</span>':''}</h2>
+      <p class="d">${esc(r.d)}</p>
+      <dl>${r.meta.map(([k,v])=>`<dt class="sc">${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+      <p class="ask"><span class="sc">sınıfa soru</span>${esc(r.ask)}</p>
+      <p class="go sc"><a class="p" href="${u.live}" target="_blank" rel="noopener">sayfayı aç</a><a href="${u.repo}" target="_blank" rel="noopener">kodu gör</a></p>
+    </div>
+  </li>`;}).join("");
+</script>
+</body>
+</html>

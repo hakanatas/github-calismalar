@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Biophony: a live-synthesized forest chorus that paints its own sound across the sky, then fades through fifty years of biodiversity loss until you restore it.">
+<meta property="og:title" content="Biophony">
+<meta property="og:description" content="Ormanın sesi gökyüzünü boyuyor — elli yıllık biyoçeşitlilik kaybını dinleyin, sonra koroyu geri getirin.">
+<meta name="theme-color" content="#050c0b">
+<title>Biophony</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --ink:#050c0b; --moss:#0f2621; --mist:#9fb8ae; --dawn:#f2b66d; --glow:#8ef0d2; --rust:#d0613f; --paper:#ece6d6; --ash:#7d807a;
+  --display:"Gloock","Bodoni Moda",Georgia,serif;
+  --body:"Literata",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--paper);overflow:hidden;font-family:var(--body);-webkit-font-smoothing:antialiased}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible{outline:1px solid var(--glow);outline-offset:3px}
+
+/* HUD */
+#hud{text-shadow:0 1px 14px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.8);position:fixed;top:calc(env(safe-area-inset-top,0px) + 18px);left:24px;pointer-events:none;display:flex;flex-direction:column;gap:6px;opacity:0;transition:opacity 1.6s ease}
+#hud.on{opacity:1}
+#year{font-family:var(--display);font-size:clamp(46px,7.5vw,104px);line-height:.86;letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+#chorus{display:flex;gap:14px;flex-wrap:wrap}
+#chorus b{font-weight:500;color:var(--paper)}
+#chorus .an b{color:var(--rust)}
+
+/* Caption */
+#cap{position:fixed;left:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);max-width:min(40ch,calc(100vw - 48px));pointer-events:none;transition:opacity .7s ease,transform .7s ease}
+#cap.out{opacity:0;transform:translateY(8px)}
+#cap .t{font-size:clamp(17px,2vw,23px);line-height:1.42;text-wrap:balance;text-shadow:0 2px 18px rgba(0,0,0,.85)}
+#cap .ci{margin-top:10px;font-size:10px}
+#cap .ci:empty{display:none}
+
+/* Solo tag */
+#solo{position:fixed;right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);text-align:right;pointer-events:none;max-width:60vw}
+
+/* Bottom bar */
+#bar{position:fixed;left:0;right:0;bottom:0;padding:14px 24px calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;align-items:center;gap:16px;background:linear-gradient(to top,rgba(3,8,7,.92),rgba(3,8,7,0));opacity:0;transition:opacity 1.6s ease .4s}
+#bar.on{opacity:1}
+#bar .btn{height:34px;min-width:34px;padding:0 10px;border:1px solid rgba(159,184,174,.28);border-radius:2px;display:grid;place-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--mist)}
+#bar .btn:hover{border-color:var(--glow);color:var(--paper)}
+#track{position:relative;flex:1;height:44px;cursor:ew-resize;touch-action:none}
+#spark{position:absolute;left:0;top:0;width:100%;height:30px}
+#ticks{position:absolute;left:0;right:0;top:32px;height:12px}
+#ticks span{position:absolute;transform:translateX(-50%);font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--ash)}
+#head{position:absolute;top:-4px;width:1px;height:38px;background:var(--paper);box-shadow:0 0 10px var(--glow)}
+#head::after{content:"";position:absolute;left:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--paper)}
+
+/* Intro */
+#intro{position:fixed;inset:0;display:flex;align-items:flex-end;padding:0 24px calc(env(safe-area-inset-bottom,0px) + 9vh);background:linear-gradient(100deg,rgba(3,7,6,.94) 0%,rgba(3,7,6,.72) 45%,rgba(3,7,6,.15) 100%);transition:opacity 1.8s ease}
+#intro.gone{opacity:0;pointer-events:none}
+#intro .wrap{max-width:720px;display:flex;flex-direction:column;gap:18px}
+#intro h1{font-family:var(--display);font-weight:400;padding-bottom:.16em;font-size:clamp(68px,15vw,210px);line-height:.8;margin:0;letter-spacing:-.03em}
+#intro h1 i{font-style:normal;color:var(--glow);text-shadow:0 0 40px rgba(142,240,210,.45)}
+#intro p{margin:0;font-size:clamp(16px,1.7vw,19px);line-height:1.55;max-width:46ch;color:#d5d1c3}
+#go{align-self:flex-start;margin-top:8px;padding:14px 22px;border:1px solid var(--glow);color:var(--paper);font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;display:flex;gap:14px;align-items:center;transition:background .3s}
+#go:hover{background:rgba(142,240,210,.1)}
+#go .dot{width:8px;height:8px;border-radius:50%;background:var(--glow);box-shadow:0 0 12px var(--glow);animation:pulse 1.8s ease-in-out infinite}
+#back{position:absolute;top:calc(env(safe-area-inset-top,0px) + 26px);left:24px;color:var(--mist);text-decoration:none}
+#back:hover{color:var(--paper)}
+#langI{position:absolute;top:calc(env(safe-area-inset-top,0px) + 20px);right:24px;padding:6px 10px;border:1px solid rgba(159,184,174,.3)}
+.st{opacity:0;transform:translateY(14px);animation:rise 1.4s cubic-bezier(.2,.7,.2,1) forwards}
+.st:nth-child(1){animation-delay:.3s}.st:nth-child(2){animation-delay:.55s}.st:nth-child(3){animation-delay:.9s}.st:nth-child(4){animation-delay:1.3s}.st:nth-child(5){animation-delay:1.6s}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
+@media (prefers-reduced-motion:reduce){.st{animation:none;opacity:1;transform:none}#go .dot{animation:none}}
+@media (max-width:640px){
+  #bar{gap:8px;padding-inline:16px}
+  #hud,#cap{left:16px}
+  #cap{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
+  #solo{display:none}
+  #ticks span.m{display:none}
+}
+</style>
+
+</head>
+<body>
+<canvas id="c" aria-label="A forest at night. Its sound is drawn above it as an aurora spectrogram."></canvas>
+
+<div id="hud" aria-live="polite">
+  <div class="mono" id="hudLabel">Year</div>
+  <div id="year">1970</div>
+  <div id="chorus" class="mono"><span><span data-i="chorus">Chorus</span> <b id="ci">100</b></span><span class="an"><span data-i="anthro">Anthrophony</span> <b id="ai">15</b></span></div>
+</div>
+
+<div id="cap"><div class="t"></div><div class="ci mono"></div></div>
+<div id="solo" class="mono"></div>
+
+<div id="bar">
+  <button class="btn" id="play" aria-label="Pause">❚❚</button>
+  <div id="track" aria-label="Timeline 1970 to 2024" role="slider" aria-valuemin="1970" aria-valuemax="2024" aria-valuenow="1970" tabindex="0">
+    <canvas id="spark"></canvas><div id="ticks"></div><div id="head"></div>
+  </div>
+  <button class="btn" id="lang">TR</button>
+  <button class="btn" id="snd" aria-label="Mute">♪</button>
+</div>
+
+<div id="intro">
+  <a class="mono" id="back" href="../">← Biyoçeşitlilik koleksiyonu</a>
+  <button class="mono" id="langI">Türkçe</button>
+  <div class="wrap">
+    <div class="mono st" data-i="eyebrow">A listening piece · 1970 → now</div>
+    <h1 class="st">Bio<i>phony</i></h1>
+    <p class="st" data-i="intro">Every wild place has a voice, and every species holds its own band of pitch inside it. Here, the forest's sound paints the sky above it. Watch what fifty years do to the song.</p>
+    <button id="go" class="st"><span class="dot"></span><span data-i="go">Begin listening</span></button>
+    <div class="mono st" data-i="note" style="line-height:1.8;max-width:60ch;text-transform:none;letter-spacing:.04em;font-size:11px">Headphones recommended. Every sound is synthesized live in your browser. Nothing is recorded.</div>
+  </div>
+</div>
+
+<script>
+(()=>{
+"use strict";
+/* ------------------------------------------------------------ i18n */
+const T={
+en:{eyebrow:"A listening piece · 1970 → now",intro:"Every wild place has a voice, and every species holds its own band of pitch inside it. Here, the forest's sound paints the sky above it. Watch what fifty years do to the song.",go:"Begin listening",note:"Headphones recommended. Every sound is synthesized live in your browser. Nothing is recorded.",chorus:"Chorus",anthro:"Anthrophony",year:"Year",restoring:"Restoring",silent:"silent since",solo:"Solo",release:"tap again to release",langBtn:"TR",langI:"Türkçe",geo:"geophony",anth:"anthrophony"},
+tr:{eyebrow:"Bir dinleme deneyimi · 1970 → bugün",intro:"Her yaban yerin bir sesi vardır ve her tür o sesin içinde kendi perde bandını tutar. Burada ormanın sesi, üstündeki gökyüzünü boyuyor. Elli yılın bu şarkıya ne yaptığını izleyin.",go:"Dinlemeye başla",note:"Kulaklık önerilir. Tüm sesler tarayıcınızda canlı olarak sentezlenir. Hiçbiri kayıt değildir.",chorus:"Koro",anthro:"Antropofoni",year:"Yıl",restoring:"Onarım",silent:"sessiz:",solo:"Solo",release:"bırakmak için tekrar dokunun",langBtn:"EN",langI:"English",geo:"jeofoni",anth:"antropofoni"}
+};
+const CAP={
+ listen1:{en:"This sky is made of sound. Height is pitch. Brightness is loudness.",tr:"Bu gökyüzü sesten yapılmış. Yükseklik perdeyi, parlaklık şiddeti gösterir."},
+ listen2:{en:"Each species sings in its own band so it can be heard over the rest. Ecologists call this the acoustic niche. Together the voices make a biophony.",tr:"Her tür, diğerlerinin arasından duyulabilmek için kendi frekans bandında öter. Ekologlar buna akustik niş der. Seslerin tümü birlikte biyofoniyi oluşturur.",ci:"Niche hypothesis · Bernie Krause"},
+ decline:{en:"Now let fifty years pass. Each voice thins as its population falls: fewer calls, softer choruses.",tr:"Şimdi elli yıl geçsin. Popülasyonu azalan her ses seyrelir: daha az ötüş, daha cılız korolar."},
+ fresh:{en:"Wetlands go first. Freshwater species have declined fastest of all: −85% on average since 1970.",tr:"Önce sulak alanlar gider. En hızlı azalan grup tatlı su türleri: 1970'ten bu yana ortalama −%85.",ci:"WWF Living Planet Report 2024"},
+ insects:{en:"In German nature reserves, the biomass of flying insects fell by more than 75% in 27 years.",tr:"Almanya'daki koruma alanlarında uçan böceklerin biyokütlesi 27 yılda %75'ten fazla azaldı.",ci:"Hallmann et al. · PLOS ONE · 2017"},
+ birds:{en:"North America now has nearly 3 billion fewer birds than in 1970.",tr:"Kuzey Amerika'da bugün 1970'e göre yaklaşık 3 milyar daha az kuş var.",ci:"Rosenberg et al. · Science · 2019"},
+ lpi:{en:"Monitored wildlife populations have fallen by 73% on average since 1970.",tr:"İzlenen yaban hayatı popülasyonları 1970'ten bu yana ortalama %73 azaldı.",ci:"WWF Living Planet Report 2024 · 1970–2020"},
+ gap:{en:"Listen to what fills the gap. Low, steady, and ours. Soundscape ecologists call it anthrophony.",tr:"Boşluğu dolduran sese kulak verin: alçak, kesintisiz ve bizim. Ses ekolojistleri buna antropofoni der."},
+ krause:{en:"Bernie Krause has recorded wild places since 1968. He estimates that about half the habitats in his archive are now silent, or so altered they no longer sound as they did.",tr:"Bernie Krause 1968'den beri yaban yerleri kaydediyor. Arşivindeki yaşam alanlarının yaklaşık yarısının bugün sessizleştiğini ya da artık eskisi gibi duyulmayacak kadar değiştiğini söylüyor.",ci:"Krause · The Great Animal Orchestra"},
+ restore:{en:"The chorus is not gone yet. Tap the forest to give voices back their habitat.",tr:"Koro henüz yok olmadı. Seslere yaşam alanlarını geri vermek için ormana dokunun."},
+ restored:{en:"Every voice came back because its habitat did. Where wetlands, hedgerows and forests return, the singers follow.",tr:"Her ses, yaşam alanı geri geldiği için döndü. Sulak alanlar, çalılıklar ve ormanlar geri geldiğinde şarkıcılar da gelir.",ci:"Voices synthesized · declines illustrative, scaled to the Living Planet Index"}
+};
+let lang="en";
+
+/* ------------------------------------------------------------ voices */
+// d = fractional decline by 2020 (illustrative; biotic mean ≈ 0.72, in line with LPI −73%)
+const V=[
+ {id:"wind",en:"Wind",tr:"Rüzgâr",kind:"geo",f:[70,420],d:0,place:"none"},
+ {id:"stream",en:"Stream",tr:"Dere",kind:"geo",f:[500,3200],d:0,place:"water"},
+ {id:"traffic",en:"Traffic",tr:"Trafik",kind:"anthro",f:[40,230],place:"none"},
+ {id:"saw",en:"Chainsaws",tr:"Motorlu testere",kind:"anthro",f:[95,2400],place:"ground",rate:.05},
+ {id:"bee",en:"Bumblebees",tr:"Bombus arıları",kind:"bio",f:[170,420],d:.80,place:"ground",rate:.08,grp:"ins"},
+ {id:"owl",en:"Owls",tr:"Baykuşlar",kind:"bio",f:[320,420],d:.55,place:"tree",rate:.06,grp:"bird"},
+ {id:"dove",en:"Turtle doves",tr:"Üveyikler",kind:"bio",f:[470,580],d:.88,place:"tree",rate:.1,grp:"bird"},
+ {id:"cuckoo",en:"Cuckoos",tr:"Guguk kuşları",kind:"bio",f:[590,780],d:.70,place:"tree",rate:.07,grp:"bird"},
+ {id:"marsh",en:"Marsh frogs",tr:"Ova kurbağaları",kind:"bio",f:[800,1400],d:.85,place:"water",rate:.24,grp:"frog"},
+ {id:"wood",en:"Woodpeckers",tr:"Ağaçkakanlar",kind:"bio",f:[900,2600],d:.45,place:"tree",rate:.06,grp:"bird"},
+ {id:"night",en:"Nightingales",tr:"Bülbüller",kind:"bio",f:[1200,4200],d:.60,place:"tree",rate:.12,grp:"bird"},
+ {id:"thrush",en:"Thrushes",tr:"Ardıçkuşları",kind:"bio",f:[1700,3100],d:.60,place:"tree",rate:.17,grp:"bird"},
+ {id:"treefrog",en:"Tree frogs",tr:"Ağaç kurbağaları",kind:"bio",f:[2100,2700],d:.92,place:"water",rate:.3,grp:"frog"},
+ {id:"lark",en:"Skylarks",tr:"Tarlakuşları",kind:"bio",f:[2800,5200],d:.80,place:"sky",rate:.045,grp:"bird"},
+ {id:"cricket",en:"Field crickets",tr:"Tarla cırcırları",kind:"bio",f:[4300,4800],d:.72,place:"ground",rate:1.0,grp:"ins"},
+ {id:"warbler",en:"Warblers",tr:"Ötleğenler",kind:"bio",f:[4800,7500],d:.78,place:"tree",rate:.16,grp:"bird"},
+ {id:"cicada",en:"Cicadas",tr:"Ağustos böcekleri",kind:"bio",f:[6000,8000],d:.78,place:"tree",rate:.06,grp:"ins"},
+ {id:"swift",en:"Swifts",tr:"Ebabiller",kind:"bio",f:[7000,9800],d:.70,place:"sky",rate:.06,grp:"bird"}
+];
+const BIO=V.filter(v=>v.kind==="bio");
+const byId=Object.fromEntries(V.map(v=>[v.id,v]));
+const SILENT=.1, Y0=1970, Y1=2024;
+const ease=u=>u<=1?Math.pow(Math.max(u,0),1.25):1+(u-1)*.8;
+function baseIdx(v,y){ if(v.kind!=="bio")return 1; return Math.max(0,1-v.d*ease((y-Y0)/50)); }
+function idx(v){ const b=baseIdx(v,year); return b+(1-b)*(v.rc||0); }
+for(const v of BIO){ v.silentYear=null; for(let y=Y0;y<=Y1;y+=.25){ if(baseIdx(v,y)<SILENT){v.silentYear=Math.floor(y);break;} } v.rc=0; v.rt=0; }
+let restoredFrac=0;
+function anthroLevel(){ const u=Math.min(1,Math.max(0,(year-Y0)/(Y1-Y0))); return (.12+.88*u*u*(3-2*u))*(1-.75*restoredFrac); }
+function chorusIdx(){ let s=0; for(const v of BIO) s+=idx(v); return s/BIO.length; }
+function grpIdx(g){ let s=0,n=0; for(const v of BIO) if(v.grp===g){s+=idx(v);n++;} return n?s/n:0; }
+
+/* ------------------------------------------------------------ colour (frequency → hue) */
+const FMIN=60,FMAX=11000,LF=Math.log(FMAX/FMIN);
+const fracOf=f=>Math.log(Math.max(FMIN,Math.min(FMAX,f))/FMIN)/LF;
+const STOPS=[[0,[208,97,63]],[.2,[242,182,109]],[.42,[142,240,210]],[.66,[110,198,236]],[.86,[200,232,255]],[1,[250,248,240]]];
+function colAt(fr){ for(let i=1;i<STOPS.length;i++){ if(fr<=STOPS[i][0]){ const a=STOPS[i-1],b=STOPS[i],k=(fr-a[0])/(b[0]-a[0]); return a[1].map((c,j)=>c+(b[1][j]-c)*k);} } return STOPS[STOPS.length-1][1]; }
+for(const v of V){ v.fc=Math.sqrt(v.f[0]*v.f[1]); v.col=v.kind==="anthro"?[208,97,63]:colAt(fracOf(v.fc)); v.flash=0; }
+const rgba=(c,a)=>`rgba(${c[0]|0},${c[1]|0},${c[2]|0},${a})`;
+
+/* ------------------------------------------------------------ canvas */
+const cv=document.getElementById("c"), g=cv.getContext("2d");
+let W=0,H=0,DPR=1, layers=[], stars=[], flies=[], birds=[], pulses=[], blooms=[], labelBoxes=[];
+const RED=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const SPW=720, SPR=220;
+const spec=document.createElement("canvas"); spec.width=SPW; spec.height=SPR;
+const sg=spec.getContext("2d"); sg.fillStyle="#000"; sg.fillRect(0,0,SPW,SPR);
+const glow=document.createElement("canvas"), gg=glow.getContext("2d");
+const LUT=[]; for(let r=0;r<SPR;r++) LUT.push(colAt(r/(SPR-1)));
+const col=sg.createImageData(1,SPR);
+const floor=new Float32Array(SPR).fill(40), COLS_PER_S=95; let colAcc=0;
+const FEATHER=[]; for(let r=0;r<SPR;r++){ const u=r/(SPR-1); FEATHER.push(Math.min(1,u/.06)*Math.min(1,(1-u)/.12)); }
+
+function rng(seed){ return ()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const Rn=Math.random;
+const M=60; // parallax margin
+const SKY_T=()=>H*.05, SKY_B=()=>H*.76, WATER=()=>H*.845;
+const yOfF=f=>SKY_B()-fracOf(f)*(SKY_B()-SKY_T());
+
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,1.6);
+  W=innerWidth; H=innerHeight;
+  cv.width=W*DPR|0; cv.height=H*DPR|0;
+  glow.width=Math.max(40,W/7|0); glow.height=Math.max(40,H/7|0);
+  genLayers(); genStars(); drawSpark(); drawTicks();
+}
+function genStars(){ const r=rng(7); stars=[]; const n=Math.round(W*H/5200); for(let i=0;i<n;i++) stars.push({x:r()*W,y:r()*H*.7,s:r()*1.1+.2,p:r()*6.28,a:r()*.6+.2}); }
+
+function genLayers(){
+  layers=[];
+  const L=[
+    {c:"#15302c",base:.715,n:Math.max(8,Math.round(W/46)),h:[.06,.13],depth:7,par:5},
+    {c:"#0b1d18",base:.78,n:Math.max(5,Math.round(W/95)),h:[.12,.24],depth:8,par:13},
+    {c:"#030907",base:WATER()/H,n:0,h:[.34,.5],depth:10,par:26,edge:true}
+  ];
+  L.forEach((s,li)=>{
+    const c=document.createElement("canvas"); c.width=(W+2*M)*DPR|0; c.height=H*DPR|0;
+    const x=c.getContext("2d"); x.scale(DPR,DPR); const r=rng(11+li*97);
+    const lw=W+2*M, tips=[];
+    const gy=px=>s.base*H - (li<2? (Math.sin(px*.004+li*2)*H*.012+Math.sin(px*.013+li)*H*.005):0);
+    x.fillStyle=s.c; x.strokeStyle=s.c; x.lineCap="round";
+    x.beginPath(); x.moveTo(0,H); for(let px=0;px<=lw;px+=8) x.lineTo(px,gy(px)); x.lineTo(lw,H); x.closePath(); x.fill();
+    const tree=(tx,h,depth)=>{
+      const ty=gy(tx), trunk=h/3.1;
+      const br=(bx,by,a,len,w,d)=>{
+        const ex=bx+Math.cos(a)*len, ey=by+Math.sin(a)*len;
+        x.lineWidth=Math.max(.6,w); x.beginPath(); x.moveTo(bx,by); x.lineTo(ex,ey); x.stroke();
+        if(d<=2){ x.beginPath(); x.arc(ex,ey,1.2+r()*(li===2?5.5:3),0,6.283); x.fill(); }
+        if(d===0){ if(r()<.25) tips.push({x:ex,y:ey}); return; }
+        const n=r()<.28?3:2;
+        for(let i=0;i<n;i++){ let na=a+(r()-.5)*.9+(i-(n-1)/2)*.62; na=na*.88+(-Math.PI/2)*.12; br(ex,ey,na,len*(.66+r()*.13),w*.66,d-1); }
+      };
+      br(tx,ty+2,-Math.PI/2+(r()-.5)*.08,trunk,h*.04,depth);
+    };
+    if(s.edge){
+      const pos=[[M-W*.02,.52],[M+W*.07,.4],[M+W*.93,.46],[M+W*1.02,.55],[M+W*.62,.2],[M+W*.3,.16]];
+      pos.forEach(([px,hh])=>tree(px,H*hh*(W<700?.8:1),s.depth-(hh<.25?2:0)));
+      // reeds at the water line
+      x.lineWidth=1.1;
+      for(let i=0;i<lw/5;i++){ const px=r()*lw, hh=6+r()*26*(r()<.2?2:1); const yy=gy(px); x.beginPath(); x.moveTo(px,yy); x.quadraticCurveTo(px+(r()-.5)*6,yy-hh*.6,px+(r()-.5)*10,yy-hh); x.stroke(); }
+    } else {
+      for(let k=0;k<s.n;k++) tree(r()*lw,H*(s.h[0]+r()*(s.h[1]-s.h[0])),s.depth-(r()<.4?1:0));
+    }
+    layers.push({cv:c,par:s.par,tips,base:s.base});
+  });
+  // perches
+  const treeTips=[...layers[1].tips.map(t=>({...t,l:1})),...layers[2].tips.filter(t=>t.y<H*.7).map(t=>({...t,l:2}))];
+  const r=rng(3);
+  for(const v of V){
+    v.perches=[];
+    for(let i=0;i<4;i++){
+      let p;
+      if(v.place==="tree"&&treeTips.length) p=treeTips[r()*treeTips.length|0];
+      else if(v.place==="water") p={x:M+r()*W,y:WATER()-2-r()*4,l:2};
+      else if(v.place==="ground") p={x:M+r()*W,y:H*(.74+r()*.08),l:1};
+      else if(v.place==="sky") p={x:M+r()*W,y:H*(.3+r()*.25),l:-1};
+      else p={x:M+W/2,y:H*.8,l:-1};
+      v.perches.push(p);
+    }
+  }
+  flies=[]; const fr=rng(5); for(let i=0;i<90;i++) flies.push({x:fr()*W,y:H*(.55+fr()*.28),p:fr()*6.28,s:.3+fr()*.7,k:i/90});
+  birds=[]; const br2=rng(9); for(let i=0;i<22;i++) birds.push({x:br2()*W,y:H*(.12+br2()*.35),v:18+br2()*26,p:br2()*6.28,k:i/22,s:.6+br2()*.8});
+}
+let mx=0,mxs=0;
+const layerX=l=>-M+(l>=0?mxs*layers[l].par:0);
+const perchXY=p=>({x:p.x+(p.l>=0?layerX(p.l):-M),y:p.y});
+
+/* ------------------------------------------------------------ audio */
+let A=null,bus,mute,analyser,revIn,noiseBuf,fdata,binLo=[],binHi=[],muted=false,solo=null;
+function initAudio(){
+  A=new (window.AudioContext||window.webkitAudioContext)();
+  bus=A.createGain(); bus.gain.value=.85;
+  const comp=A.createDynamicsCompressor(); comp.threshold.value=-20; comp.ratio.value=3.5; comp.attack.value=.01; comp.release.value=.25;
+  mute=A.createGain();
+  analyser=A.createAnalyser(); analyser.fftSize=4096; analyser.smoothingTimeConstant=.5; analyser.minDecibels=-96; analyser.maxDecibels=-22;
+  fdata=new Uint8Array(analyser.frequencyBinCount);
+  const hz=A.sampleRate/analyser.fftSize;
+  for(let r=0;r<SPR;r++){ const f0=FMIN*Math.exp(LF*r/SPR), f1=FMIN*Math.exp(LF*(r+1)/SPR); binLo[r]=Math.floor(f0/hz); binHi[r]=Math.max(binLo[r],Math.floor(f1/hz)); }
+  // reverb
+  const len=A.sampleRate*3.4|0, ir=A.createBuffer(2,len,A.sampleRate);
+  for(let ch=0;ch<2;ch++){ const d=ir.getChannelData(ch); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.2)*(i<A.sampleRate*.02?.3:1); }
+  const conv=A.createConvolver(); conv.buffer=ir; revIn=A.createGain(); const revOut=A.createGain(); revOut.gain.value=.42;
+  revIn.connect(conv); conv.connect(revOut); revOut.connect(bus);
+  bus.connect(comp); comp.connect(analyser); comp.connect(mute); mute.connect(A.destination);
+  noiseBuf=A.createBuffer(1,A.sampleRate*2,A.sampleRate); { const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; }
+  for(const v of V){ v.out=A.createGain(); v.out.gain.value=0; const send=A.createGain(); send.gain.value=v.kind==="anthro"?.15:(v.place==="sky"?.55:.4); v.out.connect(bus); v.out.connect(send); send.connect(revIn); v.next=A.currentTime+.5+Math.random()*(v.id==="cricket"?1:5); }
+  // continuous beds
+  const nsrc=()=>{ const s=A.createBufferSource(); s.buffer=noiseBuf; s.loop=true; s.start(0,Math.random()*1.9); return s; };
+  const lfo=(rate,depth,param,off)=>{ const o=A.createOscillator(); o.frequency.value=rate; const k=A.createGain(); k.gain.value=depth; o.connect(k); k.connect(param); o.start(); if(off!==undefined) param.value=off; };
+  { const v=byId.stream; const s=nsrc(), bp=A.createBiquadFilter(); bp.type="bandpass"; bp.Q.value=.7; lfo(.13,220,bp.frequency,1100); const gn=A.createGain(); gn.gain.value=.05; s.connect(bp); bp.connect(gn); gn.connect(v.out);
+    const s2=nsrc(), hp=A.createBiquadFilter(); hp.type="bandpass"; hp.frequency.value=2600; hp.Q.value=1.3; const g2=A.createGain(); lfo(.31,.012,g2.gain,.018); s2.connect(hp); hp.connect(g2); g2.connect(v.out); }
+  { const v=byId.wind; const s=nsrc(), lp=A.createBiquadFilter(); lp.type="lowpass"; lp.Q.value=1.5; lfo(.05,160,lp.frequency,280); const gn=A.createGain(); lfo(.037,.05,gn.gain,.08); s.connect(lp); lp.connect(gn); gn.connect(v.out); }
+  { const v=byId.traffic; const s=nsrc(), lp=A.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=170; lp.Q.value=.8; const gn=A.createGain(); gn.gain.value=.55; s.connect(lp); lp.connect(gn); gn.connect(v.out);
+    const o=A.createOscillator(); o.type="sawtooth"; o.frequency.value=49; const lp2=A.createBiquadFilter(); lp2.type="lowpass"; lp2.frequency.value=140; const g2=A.createGain(); g2.gain.value=.05; o.connect(lp2); lp2.connect(g2); g2.connect(v.out); o.start();
+    const o2=A.createOscillator(); o2.type="triangle"; o2.frequency.value=98.5; const g3=A.createGain(); g3.gain.value=.018; o2.connect(g3); g3.connect(v.out); o2.start(); }
+}
+const clampP=p=>Math.max(-.95,Math.min(.95,p));
+function pan(v,p){ const n=A.createStereoPanner(); n.pan.value=clampP(p); n.connect(v.out); return n; }
+function env(t,dur,amp,att,rel){ const e=A.createGain(); const hold=Math.max(att,dur-rel); e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(amp,t+att); e.gain.setValueAtTime(amp,t+hold); e.gain.linearRampToValueAtTime(0,t+Math.max(dur,hold+.005)); return e; }
+function tone(t,dest,f0,f1,dur,amp,type="sine",att=.008,rel=.03,vib=0,vr=0){
+  const o=A.createOscillator(); o.type=type; o.frequency.setValueAtTime(f0,t); if(f1&&f1!==f0) o.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  if(vib){ const l=A.createOscillator(); l.frequency.value=vr; const lg=A.createGain(); lg.gain.value=vib; l.connect(lg); lg.connect(o.frequency); l.start(t); l.stop(t+dur+.05); }
+  const e=env(t,dur,amp,att,rel); o.connect(e); e.connect(dest); o.start(t); o.stop(t+dur+.06); return o;
+}
+function nz(t,dest,f0,f1,Q,dur,amp,att=.004,rel=.03,type="bandpass"){
+  const s=A.createBufferSource(); s.buffer=noiseBuf; s.loop=true; const f=A.createBiquadFilter(); f.type=type; f.Q.value=Q; f.frequency.setValueAtTime(f0,t); if(f1&&f1!==f0) f.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  const e=env(t,dur,amp,att,rel); s.connect(f); f.connect(e); e.connect(dest); s.start(t,Math.random()*1.5); s.stop(t+dur+.06);
+}
+function amNode(t,dur,rate,depth,dest){ const gN=A.createGain(); gN.gain.value=1-depth; const l=A.createOscillator(); l.frequency.value=rate; const lg=A.createGain(); lg.gain.value=depth; l.connect(lg); lg.connect(gN.gain); l.start(t); l.stop(t+dur+.1); gN.connect(dest); return gN; }
+const rr=(a,b)=>a+Math.random()*(b-a);
+
+const CALL={
+ bee(v,t,P){ const d=rr(2.4,4.2), f=rr(175,235); const o=A.createOscillator(); o.type="sawtooth"; o.frequency.value=f; const l=A.createOscillator(); l.frequency.value=rr(5,8); const lg=A.createGain(); lg.gain.value=7; l.connect(lg); lg.connect(o.frequency);
+   const lp=A.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=950; const e=env(t,d,.09,d*.4,d*.45); const pn=A.createStereoPanner(); pn.pan.setValueAtTime(clampP(P.pan-.6),t); pn.pan.linearRampToValueAtTime(clampP(P.pan+.6),t+d);
+   o.connect(lp); lp.connect(e); e.connect(pn); pn.connect(v.out); o.start(t); l.start(t); o.stop(t+d+.1); l.stop(t+d+.1); mark(v,t,P); mark(v,t+d*.5,P); },
+ owl(v,t,P){ const d=pan(v,P.pan); tone(t,d,395,372,.55,.22,"sine",.07,.2); let k=t+1.05; for(let i=0;i<3;i++){ tone(k,d,388,366,.26,.16,"sine",.04,.12); k+=.36; } tone(k+.25,d,392,360,.7,.2,"sine",.08,.3); mark(v,t,P); mark(v,t+1.05,P); },
+ dove(v,t,P){ const d=pan(v,P.pan); let k=t; const n=3+(Math.random()*2|0); for(let i=0;i<n;i++){ const a=amNode(k,.75,rr(19,24),.5,d); tone(k,a,rr(520,560),rr(470,500),.72,.2,"sine",.12,.2); tone(k,a,1050,960,.72,.03,"sine",.12,.2); k+=.95; } mark(v,t,P); mark(v,t+1.9,P); },
+ cuckoo(v,t,P){ const d=pan(v,P.pan); let k=t; const n=2+(Math.random()*3|0); for(let i=0;i<n;i++){ tone(k,d,745,735,.2,.2,"sine",.03,.08); tone(k+.33,d,610,598,.32,.17,"sine",.03,.14); k+=1.05; } mark(v,t,P); },
+ marsh(v,t,P){ const n=2+(Math.random()*3|0); let k=t; for(let i=0;i<n;i++){ const d=pan(v,P.pan+rr(-.15,.15)); const du=rr(.35,.7); const a=amNode(k,du,rr(24,32),.5,d); const bp=A.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=rr(900,1250); bp.Q.value=3.5; bp.connect(a); tone(k,bp,rr(120,150),rr(110,130),du,.5,"sawtooth",.02,.08); k+=du+rr(.12,.35); } mark(v,t,P); },
+ wood(v,t,P){ const d=pan(v,P.pan); const n=14+(Math.random()*8|0), f=rr(1200,1700); for(let i=0;i<n;i++) nz(t+i*.058,d,f,f,1.4,.014,.5*(1-i/n*.55),.001,.01); mark(v,t,P); },
+ night(v,t,P){ const d=pan(v,P.pan); let k=t; const n=5+(Math.random()*6|0), f=rr(1300,1600); for(let i=0;i<n;i++){ tone(k,d,f*1.12,f,.055,.14,"sine",.004,.02); k+=.095; } k+=.12; tone(k,d,rr(2900,3400),rr(3100,3700),rr(.6,1),.16,"sine",.5,.08,24,30); k+=1; for(let i=0;i<8;i++){ tone(k,d,rr(3500,4100),2600,.035,.11,"sine",.003,.01); k+=.05; } mark(v,t,P); mark(v,t+.9,P); },
+ thrush(v,t,P){ const d=pan(v,P.pan); const m=[]; const n=2+(Math.random()*4|0); for(let i=0;i<n;i++) m.push([rr(1800,3000),rr(.8,1.2),rr(.09,.22),Math.random()<.3]); let k=t; const reps=2+(Math.random()*2|0); for(let r=0;r<reps;r++){ for(const [f,gl,du,vb] of m){ tone(k,d,f,f*gl,du,.13,"sine",.01,.04,vb?60:0,34); k+=du+.05; } k+=.18; } mark(v,t,P); mark(v,k-.4,P); },
+ treefrog(v,t,P){ for(let ind=0;ind<2;ind++){ const d=pan(v,P.pan+(ind?.3:-.3)); const n=6+(Math.random()*6|0), f=rr(2250,2550), st=t+ind*.045; for(let i=0;i<n;i++) tone(st+i*.09,d,f,f*.97,.035,.09,"triangle",.003,.015); } mark(v,t,P); },
+ lark(v,t,P){ const d=pan(v,P.pan); const du=rr(3,5.5); let k=t; while(k<t+du){ const e=rr(.022,.05), f=rr(2900,5100); tone(k,d,f,f*rr(.85,1.2),e,.075,"sine",.003,.01); k+=e+rr(.004,.03); } mark(v,t,P); mark(v,t+du*.5,P); },
+ cricket(v,t,P){ const d=pan(v,P.pan); const f=rr(4400,4700); for(let i=0;i<3+(Math.random()*2|0);i++) tone(t+i*.034,d,f,f,.02,.055,"sine",.002,.008); if(Math.random()<.35) mark(v,t,P); },
+ warbler(v,t,P){ const d=pan(v,P.pan); const n=9+(Math.random()*8|0); let k=t; for(let i=0;i<n;i++){ const f=7300-(2400*i/n)+rr(-200,200); tone(k,d,f*1.14,f,.042,.1,"sine",.003,.012); k+=.058; } tone(k+.03,d,5200,7400,.12,.1,"sine",.01,.03); mark(v,t,P); },
+ cicada(v,t,P){ const d=pan(v,P.pan); const du=rr(2.5,4.5); const a=amNode(t,du,rr(95,125),.5,d); nz(t,a,6900,7100,6,du,.35,du*.35,du*.35); mark(v,t,P); mark(v,t+du*.5,P); },
+ swift(v,t,P){ const n=3+(Math.random()*3|0); for(let i=0;i<n;i++){ const k=t+i*rr(.09,.2); const pn=A.createStereoPanner(); pn.pan.setValueAtTime(clampP(P.pan-.5),k); pn.pan.linearRampToValueAtTime(clampP(P.pan+.5),k+.5); pn.connect(v.out); nz(k,pn,rr(8600,9600),rr(7200,7800),9,rr(.25,.45),.55,.01,.1); } mark(v,t,P); },
+ saw(v,t,P){ const d=pan(v,P.pan); const du=rr(2,4.5); const o=A.createOscillator(); o.type="sawtooth"; o.frequency.setValueAtTime(95,t); o.frequency.linearRampToValueAtTime(rr(125,140),t+.4); o.frequency.setValueAtTime(130,t+du*.7); o.frequency.linearRampToValueAtTime(100,t+du);
+   const ws=A.createWaveShaper(); const cu=new Float32Array(256); for(let i=0;i<256;i++){ const x=i/128-1; cu[i]=Math.tanh(x*3); } ws.curve=cu; const lp=A.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2400; const e=env(t,du,.12,.08,.3);
+   o.connect(ws); ws.connect(lp); lp.connect(e); e.connect(d); o.start(t); o.stop(t+du+.1); mark(v,t,P); }
+};
+const markQ=[];
+function mark(v,t,P){ markQ.push({v,t,P}); }
+function schedule(){
+  if(!A) return; const now=A.currentTime;
+  for(const v of V){
+    if(!CALL[v.id]) continue;
+    let rate;
+    if(v.kind==="bio"){ const i=idx(v); if(i<SILENT){ v.next=now+.5; continue; } rate=v.rate*i; }
+    else { const al=anthroLevel(); rate=v.rate*Math.max(0,(al-.35)/.65)*(phase==="listen"?0:1); if(rate<=.001){ v.next=now+.5; continue; } }
+    while(v.next<now+.25){
+      const t=Math.max(v.next,now+.03);
+      const P=v.perches[Math.random()*v.perches.length|0]; const px=perchXY(P).x;
+      P.pan=(px/W)*2-1;
+      CALL[v.id](v,t,P);
+      v.next=t+Math.max(.15,-Math.log(1-Math.random())/rate);
+    }
+  }
+}
+function setLevels(){
+  if(!A) return; const now=A.currentTime, al=anthroLevel();
+  for(const v of V){
+    let lv = v.kind==="bio"? Math.sqrt(idx(v)) : v.kind==="geo"? 1 : (v.id==="traffic"? al : .4+.6*al);
+    if(v.kind==="bio"&&idx(v)<SILENT) lv=0;
+    if(solo&&solo!==v) lv*=.05;
+    v.out.gain.setTargetAtTime(lv,now,.25);
+  }
+}
+
+/* ------------------------------------------------------------ story */
+let phase="intro", year=Y0, clock=0, paused=false, capKey=null, dragging=false;
+const MILESTONES=[[1970,"decline"],[1983,"fresh"],[1998,"insects"],[2008,"birds"],[2018,"lpi"],[2024,"gap"]];
+const capEl=document.getElementById("cap"), capT=capEl.querySelector(".t"), capC=capEl.querySelector(".ci");
+let capTimer=null;
+function showCap(k){ if(k===capKey) return; capKey=k; capEl.classList.add("out"); clearTimeout(capTimer); capTimer=setTimeout(()=>{ renderCap(); capEl.classList.remove("out"); },650); }
+function renderCap(){ const c=capKey&&CAP[capKey]; capT.textContent=c?c[lang]:""; capC.textContent=c&&c.ci?c.ci:""; }
+function update(dt){
+  if(phase==="intro"||paused) return;
+  clock+=dt;
+  if(phase==="listen"){ year=Y0; if(clock>1.5) showCap("listen1"); if(clock>10) showCap("listen2"); if(clock>21){ phase="decline"; clock=0; } }
+  else if(phase==="decline"){ year=Math.min(Y1,year+dt*(Y1-Y0)/72); let k=null; for(const [y,c] of MILESTONES) if(year>=y) k=c; if(k) showCap(k); if(year>=Y1){ phase="now"; clock=0; } }
+  else if(phase==="now"){ if(clock<11) showCap("gap"); else showCap("krause"); if(clock>24){ phase="restore"; clock=0; showCap("restore"); } }
+  else if(phase==="restore"){ if(BIO.every(v=>v.rt>=1) && BIO.every(v=>v.rc>.97)){ phase="restored"; showCap("restored"); } }
+  // restoration easing
+  let s=0; for(const v of BIO){ v.rc+=(v.rt-v.rc)*Math.min(1,dt*.45); s+=v.rc; } restoredFrac=s/BIO.length;
+}
+function restoreNext(x,y){
+  const cand=BIO.filter(v=>v.rt<1).sort((a,b)=>baseIdx(a,year)-baseIdx(b,year));
+  cand.slice(0,2).forEach(v=>{ v.rt=1; v.flash=1.5; v.next=A?A.currentTime+.4:0; });
+  blooms.push({x,y,t:0});
+  if(phase==="restore"&&cand.length<=2){ /* last ones */ }
+}
+
+/* ------------------------------------------------------------ render */
+let last=performance.now(), T0=0;
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000); last=now; T0+=dt;
+  update(dt); schedule(); setLevels();
+  mxs+=(mx-mxs)*Math.min(1,dt*2);
+  const t=RED?T0*.3:T0;
+  const vital=chorusIdx(), al=A?anthroLevel():.12;
+  // spectrogram column
+  if(A){
+    analyser.getByteFrequencyData(fdata);
+    colAcc+=dt*COLS_PER_S; const nc=Math.min(8,Math.floor(colAcc)); colAcc-=nc;
+    if(nc>0){
+      sg.drawImage(spec,-nc,0);
+      const d=col.data;
+      for(let r=0;r<SPR;r++){ let m=0; for(let b=binLo[r];b<=binHi[r];b++) if(fdata[b]>m) m=fdata[b];
+        floor[r]+= (m-floor[r])*(m>floor[r]?.004:.02);
+        let x=(m-floor[r]-14)/95; x=x<0?0:x>1?1:x; x=Math.pow(x,1.2);
+        const bed=Math.pow(Math.max(0,m-60)/195,2.2)*.24;
+        x=Math.min(1,x+bed)*FEATHER[r];
+        const c=LUT[r], py=(SPR-1-r)*4;
+        d[py]=c[0]*x; d[py+1]=c[1]*x; d[py+2]=c[2]*x; d[py+3]=255; }
+      for(let k=0;k<nc;k++) sg.putImageData(col,SPW-1-k,0);
+    }
+  }
+  g.setTransform(DPR,0,0,DPR,0,0);
+  g.globalCompositeOperation="source-over"; g.globalAlpha=1;
+  // sky
+  const sky=g.createLinearGradient(0,0,0,WATER());
+  const hz=[Math.round(40+30*vital+60*al*(1-vital)),Math.round(34+22*vital),Math.round(30+8*vital)];
+  sky.addColorStop(0,"#03080b"); sky.addColorStop(.55,"#071517"); sky.addColorStop(.9,`rgb(${hz[0]},${hz[1]},${hz[2]})`); sky.addColorStop(1,`rgb(${hz[0]+10},${hz[1]+4},${hz[2]})`);
+  g.fillStyle=sky; g.fillRect(0,0,W,H);
+  // stars
+  for(const s of stars){ const a=s.a*(.55+.45*Math.sin(t*1.3+s.p))*(1-s.y/(H*.8)); g.fillStyle=`rgba(220,235,230,${a})`; g.fillRect(s.x,s.y,s.s,s.s); }
+  // frequency grid
+  g.font='10px "IBM Plex Mono", monospace';
+  g.textBaseline="middle";
+  for(const [f,lab] of [[125,"125 Hz"],[250,"250"],[500,"500"],[1000,"1 kHz"],[2000,"2"],[4000,"4"],[8000,"8 kHz"]]){ const y=yOfF(f); g.fillStyle="rgba(159,184,174,.07)"; g.fillRect(0,y,W,1); if(phase!=="intro"&&y>(W<700?150:190)&&y<H-230){ g.fillStyle="rgba(159,184,174,.42)"; g.fillText(lab,24,y-7); } }
+  // aurora
+  const top=SKY_T(), h=SKY_B()-top, sw=W<700?5:6, n=Math.ceil(W/sw), amp=RED?.3:1;
+  const wave=i=>(Math.sin(i*.045+t*.33)*H*.016+Math.sin(i*.012-t*.19)*H*.028)*amp;
+  gg.globalCompositeOperation="source-over"; gg.clearRect(0,0,glow.width,glow.height); gg.globalCompositeOperation="lighter";
+  const kx=glow.width/W, ky=glow.height/H;
+  g.globalCompositeOperation="lighter";
+  for(let i=0;i<n;i++){ const sx=i/n*SPW, ssw=SPW/n, dy=wave(i), x=i*sw;
+    g.globalAlpha=.66; g.drawImage(spec,sx,0,ssw,SPR,x,top+dy,sw+.6,h);
+    if(i%2===0) gg.drawImage(spec,sx,0,ssw*2,SPR,x*kx,(top+dy-h*.04)*ky,sw*2*kx+1,h*1.08*ky); }
+  g.globalAlpha=1; g.imageSmoothingEnabled=true; g.globalAlpha=.8; g.drawImage(glow,0,0,W,H); g.globalAlpha=.28; g.drawImage(glow,0,-H*.01,W,H*1.02);
+  g.globalAlpha=1; g.globalCompositeOperation="source-over";
+  // horizon smoulder (anthrophony)
+  const hg=g.createLinearGradient(0,H*.5,0,WATER()); hg.addColorStop(0,"rgba(208,97,63,0)"); hg.addColorStop(1,`rgba(208,97,63,${.28*al})`); g.fillStyle=hg; g.fillRect(0,H*.5,W,WATER()-H*.5);
+  // birds
+  const bi=grpIdx("bird"), nb=Math.round(birds.length*bi*(phase==="intro"?.5:1));
+  g.strokeStyle="rgba(4,10,9,.85)"; g.lineWidth=1.3;
+  for(let i=0;i<nb;i++){ const b=birds[i]; b.x+=b.v*dt; if(b.x>W+30){ b.x=-30; b.y=H*(.12+Math.random()*.35);} const w=5*b.s, fl=Math.sin(t*9*b.s+b.p)*w*.7, y=b.y+Math.sin(t*.5+b.p)*6;
+    g.beginPath(); g.moveTo(b.x-w,y-fl); g.quadraticCurveTo(b.x-w*.4,y-fl*.3,b.x,y); g.quadraticCurveTo(b.x+w*.4,y-fl*.3,b.x+w,y-fl); g.stroke(); }
+  // layers
+  for(let li=0;li<layers.length;li++){
+    const L=layers[li];
+    g.drawImage(L.cv,0,0,L.cv.width,L.cv.height,layerX(li),0,W+2*M,H);
+    if(li===0){ const fg=g.createLinearGradient(0,H*.6,0,H*.8); const mc=vital>.5?"120,160,150":"130,128,118"; fg.addColorStop(0,`rgba(${mc},0)`); fg.addColorStop(1,`rgba(${mc},${.1+.1*(1-vital)})`); g.fillStyle=fg; g.fillRect(0,H*.6,W,H*.2); }
+    if(li===1){ // fireflies between mid and near
+      const fi=grpIdx("ins"); g.globalCompositeOperation="lighter";
+      for(const f of flies){ if(f.k>fi*(phase==="intro"?.7:1)) continue; f.x+=Math.sin(t*.4*f.s+f.p)*.35; f.y+=Math.cos(t*.3*f.s+f.p*2)*.22; if(f.x<0)f.x+=W; if(f.x>W)f.x-=W;
+        const a=Math.max(0,Math.sin(t*1.6*f.s+f.p*3)); if(a<.05) continue; const rg=g.createRadialGradient(f.x,f.y,0,f.x,f.y,7); rg.addColorStop(0,`rgba(230,250,180,${.9*a})`); rg.addColorStop(1,"rgba(160,240,160,0)"); g.fillStyle=rg; g.fillRect(f.x-7,f.y-7,14,14); }
+      g.globalCompositeOperation="source-over"; }
+  }
+  // pulses (sound → light)
+  if(A){ const ct=A.currentTime; for(let i=markQ.length-1;i>=0;i--){ const m=markQ[i]; if(m.t<=ct){ const p=perchXY(m.P); pulses.push({v:m.v,x:p.x,y:p.y,a:0}); m.v.flash=Math.min(1.4,m.v.flash+.8); markQ.splice(i,1);} } }
+  g.globalCompositeOperation="lighter";
+  for(let i=pulses.length-1;i>=0;i--){ const p=pulses[i]; p.a+=dt; const k=p.a/1.6; if(k>=1){ pulses.splice(i,1); continue; }
+    const c=p.v.col, rad=4+k*26, al2=(1-k);
+    const rg=g.createRadialGradient(p.x,p.y,0,p.x,p.y,rad); rg.addColorStop(0,rgba(c,.9*al2)); rg.addColorStop(.35,rgba(c,.35*al2)); rg.addColorStop(1,rgba(c,0)); g.fillStyle=rg; g.fillRect(p.x-rad,p.y-rad,rad*2,rad*2);
+    const ty=yOfF(p.v.fc); if(ty<p.y){ const lg=g.createLinearGradient(0,p.y,0,ty); lg.addColorStop(0,rgba(c,.35*al2)); lg.addColorStop(1,rgba(c,0)); g.strokeStyle=lg; g.lineWidth=1; g.beginPath(); g.moveTo(p.x,p.y); g.lineTo(p.x,ty+(p.y-ty)*k*.6); g.stroke(); } }
+  // blooms (restoration)
+  for(let i=blooms.length-1;i>=0;i--){ const b=blooms[i]; b.t+=dt; const k=b.t/2.4; if(k>=1){ blooms.splice(i,1); continue; }
+    g.strokeStyle=`rgba(142,240,210,${.7*(1-k)})`; g.lineWidth=1.5; g.beginPath(); g.ellipse(b.x,b.y,20+k*260,(20+k*260)*.28,0,0,6.283); g.stroke();
+    const rg=g.createRadialGradient(b.x,b.y,0,b.x,b.y,120*(1-k*.5)); rg.addColorStop(0,`rgba(142,240,210,${.35*(1-k)})`); rg.addColorStop(1,"rgba(142,240,210,0)"); g.fillStyle=rg; g.fillRect(b.x-130,b.y-130,260,260); }
+  g.globalCompositeOperation="source-over";
+  // water reflection
+  const wt=WATER(), rh=H-wt;
+  for(let y=0;y<rh;y+=3){ const sy=wt-y-3; if(sy<0) break; const off=Math.sin(y*.14+t*1.8)*(1+y*.05)*amp; g.drawImage(cv,0,sy*DPR,W*DPR,3*DPR,off,wt+y,W,3); }
+  const wg=g.createLinearGradient(0,wt,0,H); wg.addColorStop(0,"rgba(3,10,10,.35)"); wg.addColorStop(1,"rgba(2,6,6,.88)"); g.fillStyle=wg; g.fillRect(0,wt,W,rh);
+  g.fillStyle="rgba(142,240,210,.10)"; g.fillRect(0,wt,W,1);
+  // desaturate + haze with loss
+  const loss=1-vital;
+  if(loss>.02){ g.globalCompositeOperation="saturation"; g.fillStyle=`rgba(128,128,128,${Math.min(.85,loss*1.05)})`; g.fillRect(0,0,W,H); g.globalCompositeOperation="source-over";
+    g.fillStyle=`rgba(40,38,34,${loss*.16})`; g.fillRect(0,0,W,H); }
+  // labels (the niche legend)
+  if(phase!=="intro") drawLabels();
+  requestAnimationFrame(frame);
+}
+
+function drawLabels(){
+  const small=W<700, fs=small?10.5:12.5, gap=small?13:16, xr=W-(small?16:24);
+  const items=V.map(v=>({v,y:yOfF(v.fc)})).sort((a,b)=>b.y-a.y);
+  for(let i=1;i<items.length;i++) if(items[i].y>items[i-1].y-gap) items[i].y=items[i-1].y-gap;
+  const topMin=SKY_T()+6; if(items.length&&items[items.length-1].y<topMin){ const sh=topMin-items[items.length-1].y; for(const it of items) it.y+=sh; }
+  labelBoxes=[];
+  g.textBaseline="middle"; g.textAlign="right"; g.shadowColor="rgba(0,0,0,.95)"; g.shadowBlur=7;
+  for(const it of items){
+    const v=it.v; v.flash=Math.max(0,v.flash-.02);
+    const i=v.kind==="bio"?idx(v):(v.kind==="anthro"?anthroLevel():1);
+    const silent=v.kind==="bio"&&i<SILENT;
+    let a=v.kind==="bio"?(.3+.7*Math.sqrt(i)):(v.kind==="anthro"?.35+.65*i:.55);
+    if(solo&&solo!==v) a*=.3;
+    a=Math.min(1,a+v.flash*.35);
+    const c=silent?[125,128,122]:v.col;
+    // niche bracket
+    const y0=yOfF(v.f[0]), y1=yOfF(v.f[1]);
+    g.fillStyle=rgba(c,silent?.18:.25+.5*Math.min(1,i+v.flash*.3)); g.fillRect(xr+(small?6:10),y1,2,Math.max(2,y0-y1));
+    g.strokeStyle=rgba(c,.18); g.lineWidth=1; g.beginPath(); g.moveTo(xr+2,it.y); g.lineTo(xr+(small?6:10),(y0+y1)/2); g.stroke();
+    // text
+    const name=v[lang]; g.font=`italic ${fs}px ${"Literata, Georgia, serif"}`;
+    g.fillStyle=rgba(silent?[140,142,136]:[236,230,214],a);
+    let tag="";
+    if(silent) tag=`${T[lang].silent} ${v.silentYear||""}`;
+    else if(v.kind==="geo") tag=T[lang].geo; else if(v.kind==="anthro") tag=T[lang].anth;
+    else if(!small) tag=v.f[1]>=1000?`${(v.f[0]/1000).toFixed(1)}–${(v.f[1]/1000).toFixed(1)} kHz`:`${v.f[0]}–${v.f[1]} Hz`;
+    let tw=0;
+    if(tag){ g.font=`${small?8.5:9.5}px "IBM Plex Mono", monospace`; tw=g.measureText(tag).width; g.fillStyle=rgba(silent?[208,97,63]:[159,184,174],a*.85); g.fillText(tag,xr,it.y+.5); }
+    g.font=`italic ${fs}px Literata, Georgia, serif`; g.fillStyle=rgba(silent?[140,142,136]:[236,230,214],a);
+    const nx=xr-(tw?tw+8:0); g.fillText(name,nx,it.y); const nw=g.measureText(name).width;
+    if(silent){ g.fillStyle=rgba([140,142,136],.7); g.fillRect(nx-nw,it.y,nw,1); }
+    // colour chip
+    g.fillStyle=rgba(c,Math.min(1,a)); g.beginPath(); g.arc(nx-nw-8,it.y,2.5+v.flash*1.5,0,6.283); g.fill();
+    labelBoxes.push({v,x0:nx-nw-16,x1:W,y0:it.y-gap/2,y1:it.y+gap/2});
+  }
+  g.textAlign="left"; g.shadowBlur=0; g.shadowColor="transparent";
+}
+
+/* ------------------------------------------------------------ UI */
+const hud=document.getElementById("hud"), bar=document.getElementById("bar"), yEl=document.getElementById("year"), ciEl=document.getElementById("ci"), aiEl=document.getElementById("ai"), hudLabel=document.getElementById("hudLabel");
+const track=document.getElementById("track"), head=document.getElementById("head"), spark=document.getElementById("spark"), soloEl=document.getElementById("solo");
+function drawTicks(){ const tk=document.getElementById("ticks"); tk.innerHTML=""; [1970,1980,1990,2000,2010,2020].forEach((y,i)=>{ const s=document.createElement("span"); s.textContent=y; if(i%2) s.className="m"; s.style.left=((y-Y0)/(Y1-Y0)*100)+"%"; tk.appendChild(s); }); }
+function drawSpark(){
+  const w=spark.clientWidth||300, h=30, c=spark.getContext("2d"); spark.width=w*DPR; spark.height=h*DPR; c.setTransform(DPR,0,0,DPR,0,0); c.clearRect(0,0,w,h);
+  const pts=[]; for(let i=0;i<=100;i++){ const y=Y0+(Y1-Y0)*i/100; let s=0; for(const v of BIO) s+=baseIdx(v,y); pts.push([i/100*w,h-2-(s/BIO.length)*(h-6)]); }
+  const gr=c.createLinearGradient(0,0,w,0); gr.addColorStop(0,"rgba(142,240,210,.35)"); gr.addColorStop(1,"rgba(125,128,122,.2)");
+  c.beginPath(); c.moveTo(0,h); pts.forEach(p=>c.lineTo(p[0],p[1])); c.lineTo(w,h); c.fillStyle=gr; c.fill();
+  c.beginPath(); pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1])); c.strokeStyle="rgba(142,240,210,.8)"; c.lineWidth=1; c.stroke();
+  c.fillStyle="rgba(159,184,174,.5)"; c.font='9px "IBM Plex Mono", monospace'; c.fillText("100",2,9);
+  const end=pts[pts.length-1]; c.fillStyle="#d0613f"; c.beginPath(); c.arc(end[0]-2,end[1],2.5,0,6.283); c.fill();
+}
+let lastHud="";
+function hudTick(){
+  const ch=Math.round(chorusIdx()*100), an=Math.round(anthroLevel()*100);
+  const lbl=(phase==="restore"||phase==="restored")&&restoredFrac>.01?`${T[lang].restoring} ${Math.round(restoredFrac*100)}%`:T[lang].year;
+  const yTxt=year>=Y1-.01&&phase!=="free"?"2024":String(Math.floor(year));
+  const key=lbl+yTxt+ch+an; if(key!==lastHud){ lastHud=key; hudLabel.textContent=lbl; yEl.textContent=yTxt; ciEl.textContent=ch; aiEl.textContent=an; track.setAttribute("aria-valuenow",Math.floor(year)); }
+  head.style.left=((year-Y0)/(Y1-Y0)*100)+"%";
+  soloEl.textContent=solo?`${T[lang].solo} · ${solo[lang]} — ${T[lang].release}`:"";
+  requestAnimationFrame(hudTick);
+}
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i]").forEach(el=>{ const k=el.dataset.i; if(T[lang][k]) el.textContent=T[lang][k]; });
+  document.getElementById("lang").textContent=T[lang].langBtn; document.getElementById("langI").textContent=T[lang].langI;
+  renderCap(); lastHud="";
+}
+document.getElementById("langI").onclick=document.getElementById("lang").onclick=()=>{ lang=lang==="en"?"tr":"en"; applyLang(); };
+document.getElementById("go").onclick=()=>{
+  if(!A) initAudio(); A.resume();
+  document.getElementById("intro").classList.add("gone");
+  setTimeout(()=>document.getElementById("intro").hidden=true,1900);
+  hud.classList.add("on"); bar.classList.add("on");
+  phase="listen"; clock=0; year=Y0;
+};
+const playBtn=document.getElementById("play");
+playBtn.onclick=()=>{
+  if(phase==="restored"){ // replay
+    for(const v of BIO){ v.rt=0; v.rc=0; } restoredFrac=0; year=Y0; phase="listen"; clock=0; capKey=null; paused=false; playBtn.textContent="❚❚"; return; }
+  if(phase==="free"){ phase=year>=Y1?"now":"decline"; clock=0; paused=false; playBtn.textContent="❚❚"; return; }
+  paused=!paused; playBtn.textContent=paused?"▶":"❚❚"; playBtn.setAttribute("aria-label",paused?"Play":"Pause");
+};
+setInterval(()=>{ if(phase==="restored"){ playBtn.textContent="↺"; playBtn.setAttribute("aria-label","Replay"); } },500);
+document.getElementById("snd").onclick=e=>{ muted=!muted; if(mute) mute.gain.setTargetAtTime(muted?0:1,A.currentTime,.1); e.currentTarget.style.opacity=muted?.4:1; e.currentTarget.setAttribute("aria-label",muted?"Unmute":"Mute"); };
+function scrubTo(ev){ const r=track.getBoundingClientRect(); const u=Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width)); year=Y0+u*(Y1-Y0); phase="free"; paused=false; playBtn.textContent="▶";
+  let k="listen2"; for(const [y,c] of MILESTONES) if(year>=y) k=c; if(k==="decline") k="listen2"; showCap(k); }
+track.addEventListener("pointerdown",e=>{ if(phase==="intro")return; dragging=true; track.setPointerCapture(e.pointerId); scrubTo(e); });
+track.addEventListener("pointermove",e=>{ if(dragging) scrubTo(e); });
+track.addEventListener("pointerup",()=>dragging=false);
+track.addEventListener("keydown",e=>{ if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ year=Math.min(Y1,Math.max(Y0,year+(e.key==="ArrowRight"?1:-1))); phase="free"; playBtn.textContent="▶"; e.preventDefault(); } });
+addEventListener("pointermove",e=>{ mx=(e.clientX/W-.5)*-2; });
+cv.addEventListener("pointerdown",e=>{
+  if(phase==="intro") return;
+  const x=e.clientX,y=e.clientY;
+  const hit=labelBoxes.find(b=>x>=b.x0&&x<=b.x1&&y>=b.y0&&y<=b.y1);
+  if(hit){ solo=solo===hit.v?null:hit.v; if(solo&&A&&CALL[solo.id]&&(solo.kind!=="bio"||idx(solo)>=SILENT)) solo.next=A.currentTime+.1; return; }
+  if(solo){ solo=null; return; }
+  if((phase==="restore"||phase==="free"||phase==="restored")&&y>H*.45){ restoreNext(x,y); }
+});
+addEventListener("resize",()=>{ clearTimeout(resize.t); resize.t=setTimeout(resize,150); });
+resize(); applyLang(); requestAnimationFrame(frame); requestAnimationFrame(hudTick);
+})();
+</script>
+
+</body>
+</html>
