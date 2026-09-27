@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -75,7 +75,50 @@ button:focus-visible{outline:1px solid var(--glow);outline-offset:3px}
 @keyframes rise{to{opacity:1;transform:none}}
 @keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
 @media (prefers-reduced-motion:reduce){.st{animation:none;opacity:1;transform:none}#go .dot{animation:none}}
+/* guided tour */
+#spot{position:fixed;z-index:6;pointer-events:none;border:1px solid rgba(142,240,210,.75);border-radius:8px;box-shadow:0 0 0 200vmax rgba(2,6,5,.58),0 0 24px rgba(142,240,210,.25) inset;transition:left .8s cubic-bezier(.2,.7,.2,1),top .8s cubic-bezier(.2,.7,.2,1),width .8s cubic-bezier(.2,.7,.2,1),height .8s cubic-bezier(.2,.7,.2,1)}
+#tip{position:fixed;z-index:7;left:24px;width:min(360px,calc(100vw - 48px));background:rgba(6,16,14,.95);border:1px solid rgba(142,240,210,.35);padding:14px 16px 12px;display:flex;flex-direction:column;gap:8px;animation:tipIn .6s cubic-bezier(.2,.7,.2,1)}
+@keyframes tipIn{from{opacity:0;transform:translateY(8px)}}
+#tip .k{display:flex;align-items:center;gap:12px;font-size:10px}
+#tip .pb{flex:1;height:1px;background:rgba(159,184,174,.25);position:relative}
+#tip .pb i{position:absolute;left:0;top:0;bottom:0;background:var(--glow);width:0}
+#tip .h{font-family:var(--display);font-size:23px;line-height:1.1}
+#tip p{margin:0;font-size:14.5px;line-height:1.55;color:#d5d1c3}
+#tip .row{display:flex;justify-content:space-between;margin-top:4px}
+#tip .row button{font-size:11px;padding:6px 0}
+#tip .row .pri{color:var(--glow);border-bottom:1px solid var(--glow)}
+/* restore hint */
+#hint{position:fixed;z-index:4;transform:translate(-50%,-50%);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:10px;transition:left 1s ease,top 1s ease}
+#hint .ring{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--glow);box-shadow:0 0 18px rgba(142,240,210,.5);animation:ring 1.8s ease-out infinite}
+#hint .mono{color:var(--paper);text-shadow:0 1px 10px #000}
+@keyframes ring{0%{transform:scale(.55);opacity:1}100%{transform:scale(1.6);opacity:0}}
+/* legend */
+#legend{position:fixed;top:0;right:0;bottom:0;z-index:9;width:min(430px,100vw);background:rgba(5,12,11,.97);border-left:1px solid rgba(159,184,174,.2);padding:calc(env(safe-area-inset-top,0px) + 22px) 22px calc(env(safe-area-inset-bottom,0px) + 28px);overflow-y:auto;animation:legIn .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes legIn{from{transform:translateX(30px);opacity:0}}
+#legend .lh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+#legend .lt{font-family:var(--display);font-size:32px;line-height:1}
+#legend .x{font-size:12px;padding:6px 2px;color:var(--mist)}
+#legend .li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:15px 0;border-top:1px solid rgba(159,184,174,.14)}
+#legend b{font-weight:400;font-style:italic;font-size:16.5px;display:block;margin-bottom:4px;color:var(--paper)}
+#legend p{margin:0;font-size:14px;line-height:1.58;color:#cfcabb}
+#legend .re{margin-top:18px;padding:11px 16px;border:1px solid var(--glow);font-size:11px;color:var(--paper)}
+.sw{width:44px;height:44px;border-radius:3px;background:#0b1715}
+.sw.sky{background:linear-gradient(to top,#d0613f,#f2b66d 20%,#8ef0d2 42%,#6ec6ec 66%,#c8e8ff 86%,#faf8f0)}
+.sw.niche{background:linear-gradient(#8ef0d2,#8ef0d2) 31px 6px/3px 32px no-repeat,radial-gradient(circle at 13px 22px,#ece6d6 0 3px,transparent 4px),#0b1715}
+.sw.silent{display:grid;place-items:center;font-style:italic;color:#8c8e88;font-size:17px}
+.sw.silent s{text-decoration-color:#d0613f}
+.sw.pulse{background:radial-gradient(circle at 22px 30px,rgba(142,240,210,.95) 0 3px,rgba(142,240,210,.3) 8px,transparent 16px),linear-gradient(to top,rgba(142,240,210,.55),transparent) 21px 4px/2px 22px no-repeat,#0b1715}
+.sw.life{background:radial-gradient(circle at 11px 31px,rgba(230,250,180,.95) 0 2px,transparent 6px),radial-gradient(circle at 30px 24px,rgba(230,250,180,.8) 0 2px,transparent 6px),radial-gradient(circle at 21px 11px,rgba(230,250,180,.6) 0 1.5px,transparent 5px),#0b1715}
+.sw.grey{background:linear-gradient(135deg,#2f7a66 0 45%,#7d807a 55%)}
+.sw.rust{background:linear-gradient(to top,rgba(208,97,63,.85),rgba(208,97,63,0) 80%),#0b1715}
+.sw.nums,.sw.data{display:grid;place-items:center;border:1px solid rgba(159,184,174,.25);background:none;font-family:var(--display);font-size:19px}
+.sw.data{font-family:var(--mono);font-size:13px;color:var(--mist)}
+.scale{position:relative;margin-top:10px;padding-bottom:30px}
+.scale .g{height:7px;border-radius:2px;background:linear-gradient(to right,#d0613f,#f2b66d 20%,#8ef0d2 42%,#6ec6ec 66%,#c8e8ff 86%,#faf8f0)}
+.scale span{position:absolute;top:11px;transform:translateX(-50%);font-family:var(--mono);font-size:9.5px;color:var(--mist);white-space:nowrap}
+.scale span.w{top:24px;font-family:var(--body);font-style:italic;font-size:11px;letter-spacing:0}
 @media (max-width:640px){
+  #tip{left:16px;width:calc(100vw - 32px)}
   #bar{gap:8px;padding-inline:16px}
   #hud,#cap{left:16px}
   #cap{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
@@ -96,12 +139,22 @@ button:focus-visible{outline:1px solid var(--glow);outline-offset:3px}
 
 <div id="cap"><div class="t"></div><div class="ci mono"></div></div>
 <div id="solo" class="mono"></div>
+<div id="spot" hidden></div>
+<div id="tip" hidden role="dialog" aria-labelledby="tipH">
+  <div class="k mono"><span id="tipStep"></span><span class="pb"><i id="tipProg"></i></span></div>
+  <div class="h" id="tipH"></div>
+  <p id="tipP"></p>
+  <div class="row"><button class="mono" id="tipSkip"></button><button class="mono pri" id="tipNext"></button></div>
+</div>
+<div id="hint" hidden><span class="ring"></span><span class="mono" id="hintT"></span></div>
+<aside id="legend" hidden></aside>
 
 <div id="bar">
   <button class="btn" id="play" aria-label="Pause">❚❚</button>
   <div id="track" aria-label="Timeline 1970 to 2024" role="slider" aria-valuemin="1970" aria-valuemax="2024" aria-valuenow="1970" tabindex="0">
     <canvas id="spark"></canvas><div id="ticks"></div><div id="head"></div>
   </div>
+  <button class="btn" id="help" aria-label="How to read">?</button>
   <button class="btn" id="lang">TR</button>
   <button class="btn" id="snd" aria-label="Mute">♪</button>
 </div>
@@ -123,8 +176,8 @@ button:focus-visible{outline:1px solid var(--glow);outline-offset:3px}
 "use strict";
 /* ------------------------------------------------------------ i18n */
 const T={
-en:{eyebrow:"A listening piece · 1970 → now",intro:"Every wild place has a voice, and every species holds its own band of pitch inside it. Here, the forest's sound paints the sky above it. Watch what fifty years do to the song.",go:"Begin listening",note:"Headphones recommended. Every sound is synthesized live in your browser. Nothing is recorded.",chorus:"Chorus",anthro:"Anthrophony",year:"Year",restoring:"Restoring",silent:"silent since",solo:"Solo",release:"tap again to release",langBtn:"TR",langI:"Türkçe",geo:"geophony",anth:"anthrophony"},
-tr:{eyebrow:"Bir dinleme deneyimi · 1970 → bugün",intro:"Her yaban yerin bir sesi vardır ve her tür o sesin içinde kendi perde bandını tutar. Burada ormanın sesi, üstündeki gökyüzünü boyuyor. Elli yılın bu şarkıya ne yaptığını izleyin.",go:"Dinlemeye başla",note:"Kulaklık önerilir. Tüm sesler tarayıcınızda canlı olarak sentezlenir. Hiçbiri kayıt değildir.",chorus:"Koro",anthro:"Antropofoni",year:"Yıl",restoring:"Onarım",silent:"sessiz:",solo:"Solo",release:"bırakmak için tekrar dokunun",langBtn:"EN",langI:"English",geo:"jeofoni",anth:"antropofoni"}
+en:{eyebrow:"A listening piece · 1970 → now",intro:"Every wild place has a voice, and every species holds its own band of pitch inside it. Here, the forest's sound paints the sky above it. Watch what fifty years do to the song.",go:"Begin listening",note:"Headphones recommended. Every sound is synthesized live in your browser. Nothing is recorded.",chorus:"Chorus",anthro:"Anthrophony",year:"Year",restoring:"Restoring",silent:"silent since",solo:"Solo",release:"tap again to release",langBtn:"TR",langI:"Türkçe",geo:"geophony",anth:"anthrophony",tourNext:"Next →",tourGo:"Start the years →",tourSkip:"Skip tour",tap:"Tap the forest",help:"How to read"},
+tr:{eyebrow:"Bir dinleme deneyimi · 1970 → bugün",intro:"Her yaban yerin bir sesi vardır ve her tür o sesin içinde kendi perde bandını tutar. Burada ormanın sesi, üstündeki gökyüzünü boyuyor. Elli yılın bu şarkıya ne yaptığını izleyin.",go:"Dinlemeye başla",note:"Kulaklık önerilir. Tüm sesler tarayıcınızda canlı olarak sentezlenir. Hiçbiri kayıt değildir.",chorus:"Koro",anthro:"Antropofoni",year:"Yıl",restoring:"Onarım",silent:"sessiz:",solo:"Solo",release:"bırakmak için tekrar dokunun",langBtn:"EN",langI:"English",geo:"jeofoni",anth:"antropofoni",tourNext:"İleri →",tourGo:"Yılları başlat →",tourSkip:"Turu atla",tap:"Ormana dokun",help:"Nasıl okunur"}
 };
 const CAP={
  listen1:{en:"This sky is made of sound. Height is pitch. Brightness is loudness.",tr:"Bu gökyüzü sesten yapılmış. Yükseklik perdeyi, parlaklık şiddeti gösterir."},
@@ -139,7 +192,43 @@ const CAP={
  restore:{en:"The chorus is not gone yet. Tap the forest to give voices back their habitat.",tr:"Koro henüz yok olmadı. Seslere yaşam alanlarını geri vermek için ormana dokunun."},
  restored:{en:"Every voice came back because its habitat did. Where wetlands, hedgerows and forests return, the singers follow.",tr:"Her ses, yaşam alanı geri geldiği için döndü. Sulak alanlar, çalılıklar ve ormanlar geri geldiğinde şarkıcılar da gelir.",ci:"Voices synthesized · declines illustrative, scaled to the Living Planet Index"}
 };
-let lang="en";
+let lang=(navigator.language||"").toLowerCase().startsWith("tr")?"tr":"en";
+/* guided tour: one step per element on screen */
+const TT={
+ en:{sky:["The sky is made of sound","This is a spectrogram: a live picture of what you hear. Height is pitch, low sounds near the trees and high ones near the top. Brightness is loudness. New sound enters on the right and drifts left, so the right edge is now and the left edge is a few seconds ago."],
+     labels:["Every group has its own band","Each name on the right is a group of animals. The coloured line beside it marks the pitch range where that group sings: its acoustic niche. The groups share the sky so they don't drown each other out, and together they make the biophony. Tap a name to hear that group alone."],
+     forest:["A flash of light is a call","When an animal calls, light flares where it sits and a thin trace rises to its band in the sky. Its left-right position is also where you hear it. The fireflies and the flock of birds rise and fall with insect and bird populations."],
+     hud:["The year and two counters","Chorus: how much of the 1970 animal sound is left (100 = the full chorus). Anthrophony: human noise such as traffic and chainsaws (100 = today's level). It collects at the lowest pitches as a rust-coloured glow on the horizon."],
+     time:["The timeline","The curve shows the chorus falling from 1970 to 2024. In a moment time will start moving on its own; you can also drag to any year. When a group falls silent its name is struck through and the year is shown. Press ? any time to see this key again."]},
+ tr:{sky:["Gökyüzü sesten yapılmış","Bu bir spektrogram, yani duyduğun sesin canlı resmi. Yükseklik perdeyi gösterir: kalın sesler ağaçlara yakın, ince sesler en üstte. Parlaklık ses şiddetidir. Yeni ses sağdan girer ve sola kayar; sağ kenar şu anı, sol kenar birkaç saniye öncesini gösterir."],
+     labels:["Her grubun kendi bandı var","Sağdaki her ad bir hayvan grubudur. Yanındaki renkli çizgi o grubun öttüğü perde aralığını, yani akustik nişini gösterir. Gruplar birbirinin sesini bastırmamak için gökyüzünü paylaşır; hepsi birlikte biyofoniyi oluşturur. Bir ada dokunursan yalnız o grubu dinlersin."],
+     forest:["Işık çakması bir ötüştür","Bir hayvan öttüğünde bulunduğu yerde ışık çakar ve ince bir iz gökyüzündeki bandına yükselir. Sesi sağdan mı soldan mı duyduğun da bu konumdan gelir. Ateşböcekleri ve kuş sürüsü, böcek ve kuş popülasyonlarıyla birlikte azalır ya da çoğalır."],
+     hud:["Yıl ve iki sayaç","Koro: 1970'teki hayvan sesinin ne kadarının kaldığı (100 = tam koro). Antropofoni: trafik, motorlu testere gibi insan kaynaklı gürültü (100 = bugünkü düzey). En alçak perdelerde birikir ve ufukta pas rengi bir parıltı olarak görünür."],
+     time:["Zaman çizelgesi","Eğri, koronun 1970'ten 2024'e düşüşünü gösterir. Birazdan zaman kendiliğinden akmaya başlayacak; istersen çizgiyi sürükleyip herhangi bir yıla gidebilirsin. Bir grup sustuğunda adının üstü çizilir ve sustuğu yıl yazılır. Bu anlatıma ? düğmesinden her zaman dönebilirsin."]}
+};
+/* legend: [swatch class, swatch inner html, key] */
+const LEG={
+ en:{title:"How to read",restart:"Replay the guided tour",items:[
+  ["sky","","The sky: a live spectrogram","The forest's sound is drawn as it happens. Height is pitch, brightness is loudness, and new sound enters from the right. Colour also tracks pitch:",true],
+  ["niche","","A name and its band","Each name is a group of animals; the coloured line beside it is the pitch range it sings in, its acoustic niche. Tap a name to solo it, tap again to return to the chorus."],
+  ["silent","<s>Aa</s>","A struck-through name","That group has thinned out until it can no longer be heard. The year it fell silent is shown beside it."],
+  ["pulse","","A flash of light","An animal just called. The light flares where it sits and a trace rises to its band. The sound is panned left or right to match."],
+  ["life","","Fireflies and the bird flock","They rise and fall with the average population of the insect and bird groups."],
+  ["grey","","Fading colour, grey haze","As the chorus weakens, colour drains from the scene."],
+  ["rust","","Rust glow on the horizon","Anthrophony: human noise such as traffic and chainsaws. It fills the lowest pitches."],
+  ["nums","100","The two counters","Chorus: the share of 1970's animal sound still left (100 = full chorus). Anthrophony: loudness of human noise relative to today (100 = 2024)."],
+  ["data","i","About the data","Every sound is synthesized in your browser, not recorded. Each group's decline is illustrative; the chorus as a whole is scaled to the WWF Living Planet Report 2024 average of −73% (1970–2020)."]]},
+ tr:{title:"Nasıl okunur?",restart:"Anlatımlı turu yeniden başlat",items:[
+  ["sky","","Gökyüzü: canlı spektrogram","Ormanın sesi anı anına çizilir. Yükseklik perdedir, parlaklık ses şiddetidir; yeni ses sağdan girer. Renk de perdeyi gösterir:",true],
+  ["niche","","Ad ve bandı","Her ad bir hayvan grubudur; yanındaki renkli çizgi o grubun öttüğü perde aralığıdır, yani akustik nişi. Ada dokun: yalnız onu dinle. Tekrar dokun: koroya dön."],
+  ["silent","<s>Aa</s>","Üstü çizili ad","O grup artık duyulmayacak kadar azaldı. Yanında sustuğu yıl yazar."],
+  ["pulse","","Işık çakması","Bir hayvan az önce öttü. Işık bulunduğu yerde yanar, bir iz kendi bandına yükselir. Ses de aynı yönden, sağdan ya da soldan gelir."],
+  ["life","","Ateşböcekleri ve kuş sürüsü","Böcek ve kuş gruplarının ortalama popülasyonuyla birlikte azalır ya da çoğalır."],
+  ["grey","","Solan renkler, gri pus","Koro zayıfladıkça sahnenin rengi çekilir."],
+  ["rust","","Ufuktaki pas rengi parıltı","Antropofoni: trafik, motorlu testere gibi insan kaynaklı gürültü. En alçak perdeleri doldurur."],
+  ["nums","100","İki sayaç","Koro: 1970'teki hayvan sesinin kalan payı (100 = tam koro). Antropofoni: insan gürültüsünün bugüne göre şiddeti (100 = 2024)."],
+  ["data","i","Veri notu","Tüm sesler tarayıcıda sentezlenir, kayıt değildir. Her grubun azalması temsilîdir; koronun toplamı WWF Yaşayan Gezegen Raporu 2024'teki ortalama %73 düşüşe (1970–2020) göre ayarlanmıştır."]]}
+};
 
 /* ------------------------------------------------------------ voices */
 // d = fractional decline by 2020 (illustrative; biotic mean ≈ 0.72, in line with LPI −73%)
@@ -372,8 +461,9 @@ function showCap(k){ if(k===capKey) return; capKey=k; capEl.classList.add("out")
 function renderCap(){ const c=capKey&&CAP[capKey]; capT.textContent=c?c[lang]:""; capC.textContent=c&&c.ci?c.ci:""; }
 function update(dt){
   if(phase==="intro"||paused) return;
+  if(tour.on){ tour.t+=dt; tipProg.style.width=Math.min(100,tour.t/TOUR_DUR*100)+"%"; if(tour.t>=TOUR_DUR) nextStep(); return; }
   clock+=dt;
-  if(phase==="listen"){ year=Y0; if(clock>1.5) showCap("listen1"); if(clock>10) showCap("listen2"); if(clock>21){ phase="decline"; clock=0; } }
+  if(phase==="listen"){ year=Y0; if(clock>3.5){ if(!tour.done) startTour(); else { phase="decline"; clock=0; } } }
   else if(phase==="decline"){ year=Math.min(Y1,year+dt*(Y1-Y0)/72); let k=null; for(const [y,c] of MILESTONES) if(year>=y) k=c; if(k) showCap(k); if(year>=Y1){ phase="now"; clock=0; } }
   else if(phase==="now"){ if(clock<11) showCap("gap"); else showCap("krause"); if(clock>24){ phase="restore"; clock=0; showCap("restore"); } }
   else if(phase==="restore"){ if(BIO.every(v=>v.rt>=1) && BIO.every(v=>v.rc>.97)){ phase="restored"; showCap("restored"); } }
@@ -384,6 +474,7 @@ function restoreNext(x,y){
   const cand=BIO.filter(v=>v.rt<1).sort((a,b)=>baseIdx(a,year)-baseIdx(b,year));
   cand.slice(0,2).forEach(v=>{ v.rt=1; v.flash=1.5; v.next=A?A.currentTime+.4:0; });
   blooms.push({x,y,t:0});
+  hintPos={x:.2+Math.random()*.6,y:.66+Math.random()*.12};
   if(phase==="restore"&&cand.length<=2){ /* last ones */ }
 }
 
@@ -538,14 +629,63 @@ function hudTick(){
   const yTxt=year>=Y1-.01&&phase!=="free"?"2024":String(Math.floor(year));
   const key=lbl+yTxt+ch+an; if(key!==lastHud){ lastHud=key; hudLabel.textContent=lbl; yEl.textContent=yTxt; ciEl.textContent=ch; aiEl.textContent=an; track.setAttribute("aria-valuenow",Math.floor(year)); }
   head.style.left=((year-Y0)/(Y1-Y0)*100)+"%";
+  placeTour();
+  hint.hidden=!(phase==="restore"&&!tour.on&&BIO.some(v=>v.rt<1));
+  if(!hint.hidden){ hint.style.left=(hintPos.x*W)+"px"; hint.style.top=(hintPos.y*H)+"px"; }
   soloEl.textContent=solo?`${T[lang].solo} · ${solo[lang]} — ${T[lang].release}`:"";
   requestAnimationFrame(hudTick);
 }
+/* ---- tour ---- */
+const spot=document.getElementById("spot"), tip=document.getElementById("tip"), tipProg=document.getElementById("tipProg"), hint=document.getElementById("hint"), legend=document.getElementById("legend");
+const tour={on:false,i:0,t:0,done:false}, TOUR_DUR=14;
+const TOUR=[
+ {id:"sky",at:"bl",rect:()=>{ const lw=W<700?150:290; return {x:W*.03,y:SKY_T()-4,w:W-lw-W*.03-12,h:(SKY_B()-SKY_T())*.6}; }},
+ {id:"labels",at:"bl",rect:()=>{ const lw=W<700?150:290; return {x:W-lw-6,y:SKY_T()-8,w:lw,h:SKY_B()-SKY_T()+16}; }},
+ {id:"forest",at:"tl",rect:()=>({x:8,y:H*.5,w:W-16,h:WATER()-H*.5+10})},
+ {id:"hud",at:"below",rect:()=>{ const r=hud.getBoundingClientRect(); return {x:r.left-12,y:r.top-8,w:r.width+24,h:r.height+16}; }},
+ {id:"time",at:"bl",rect:()=>{ const r=track.getBoundingClientRect(); return {x:r.left-10,y:r.top-10,w:r.width+20,h:r.height+16}; }}
+];
+function startTour(){ closeLegend(); tour.on=true; tour.i=0; tour.t=0; capEl.classList.add("out"); showStep(); }
+function showStep(){ const s=TOUR[tour.i], tx=TT[lang][s.id]; spot.hidden=false; tip.hidden=false;
+  document.getElementById("tipStep").textContent=`${tour.i+1} / ${TOUR.length}`;
+  document.getElementById("tipH").textContent=tx[0]; document.getElementById("tipP").textContent=tx[1];
+  document.getElementById("tipNext").textContent=tour.i===TOUR.length-1?T[lang].tourGo:T[lang].tourNext;
+  document.getElementById("tipSkip").textContent=T[lang].tourSkip;
+  tip.style.animation="none"; void tip.offsetWidth; tip.style.animation="";
+  tipProg.style.width="0"; placeTour(); }
+function placeTour(){ if(!tour.on) return; const s=TOUR[tour.i], r=s.rect();
+  Object.assign(spot.style,{left:r.x+"px",top:r.y+"px",width:r.w+"px",height:r.h+"px"});
+  const sb="calc(env(safe-area-inset-bottom,0px) + 92px)";
+  if(s.at==="bl"){ tip.style.top="auto"; tip.style.bottom=s.id==="time"?"calc(env(safe-area-inset-bottom,0px) + 96px)":sb; }
+  else if(s.at==="tl"){ tip.style.bottom="auto"; tip.style.top=Math.max(20,Math.min(H*.5-tip.offsetHeight-16,170))+"px"; }
+  else { tip.style.bottom="auto"; tip.style.top=(r.y+r.h+14)+"px"; } }
+function nextStep(){ tour.i++; tour.t=0; if(tour.i>=TOUR.length) endTour(); else showStep(); }
+function endTour(){ tour.on=false; tour.done=true; spot.hidden=true; tip.hidden=true; capKey=null; capEl.classList.remove("out"); if(phase==="listen"){ phase="decline"; clock=0; } }
+document.getElementById("tipNext").onclick=nextStep;
+document.getElementById("tipSkip").onclick=endTour;
+/* ---- legend ---- */
+function buildLegend(){ const L=LEG[lang];
+  const sc=`<div class="scale"><div class="g"></div>${[[100,"100 Hz"],[1000,"1 kHz"],[8000,"8 kHz"]].map(([f,l])=>`<span style="left:${(fracOf(f)*100).toFixed(1)}%">${l}</span>`).join("")}<span class="w" style="left:6%">${lang==="tr"?"kalın":"low"}</span><span class="w" style="left:94%">${lang==="tr"?"ince":"high"}</span></div>`;
+  legend.innerHTML=`<div class="lh"><div class="lt">${L.title}</div><button class="mono x" id="legX" aria-label="Close">✕</button></div>`+
+   L.items.map(([c,inner,h,p,scale])=>`<div class="li"><div class="sw ${c}">${inner}</div><div><b>${h}</b><p>${p}</p>${scale?sc:""}</div></div>`).join("")+
+   `<button class="mono re" id="legRe">${L.restart}</button>`;
+  document.getElementById("legX").onclick=closeLegend;
+  document.getElementById("legRe").onclick=()=>{ if(phase==="intro") return closeLegend(); startTour(); };
+}
+function openLegend(){ buildLegend(); legend.hidden=false; document.getElementById("legX").focus(); }
+function closeLegend(){ legend.hidden=true; }
+document.getElementById("help").onclick=()=>legend.hidden?openLegend():closeLegend();
+addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(!legend.hidden) closeLegend(); else if(tour.on) endTour(); } });
+/* ---- restore hint ---- */
+let hintPos={x:.5,y:.74};
 function applyLang(){
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-i]").forEach(el=>{ const k=el.dataset.i; if(T[lang][k]) el.textContent=T[lang][k]; });
   document.getElementById("lang").textContent=T[lang].langBtn; document.getElementById("langI").textContent=T[lang].langI;
   renderCap(); lastHud="";
+  document.getElementById("help").setAttribute("aria-label",T[lang].help);
+  document.getElementById("hintT").textContent=T[lang].tap;
+  if(tour.on) showStep(); if(!legend.hidden) buildLegend();
 }
 document.getElementById("langI").onclick=document.getElementById("lang").onclick=()=>{ lang=lang==="en"?"tr":"en"; applyLang(); };
 document.getElementById("go").onclick=()=>{
